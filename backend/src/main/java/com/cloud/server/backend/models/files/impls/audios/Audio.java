@@ -1,6 +1,6 @@
 package com.cloud.server.backend.models.files.impls.audios;
 
-import com.cloud.server.backend.enums.FileTypes;
+import com.cloud.server.backend.enums.EFileType;
 import com.cloud.server.backend.models.files.GenericFile;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import org.springframework.stereotype.Component;
@@ -51,7 +51,7 @@ public class Audio extends GenericFile implements Serializable {
 
     @JsonGetter
     @Override
-    public final FileTypes fileType() {
-        return FileTypes.AUDIO;
+    public final EFileType fileType() {
+        return EFileType.AUDIO;
     }
 }

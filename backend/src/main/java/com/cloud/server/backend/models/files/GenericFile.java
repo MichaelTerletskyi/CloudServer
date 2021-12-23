@@ -1,6 +1,6 @@
 package com.cloud.server.backend.models.files;
 
-import com.cloud.server.backend.enums.FileTypes;
+import com.cloud.server.backend.enums.EFileType;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -90,7 +90,7 @@ public abstract class GenericFile implements Serializable {
     public abstract BigInteger getSize();
 
     @JsonGetter
-    public abstract FileTypes fileType();
+    public abstract EFileType fileType();
 
     @Override
     public boolean equals(Object o) {

@@ -5,7 +5,7 @@ package com.cloud.server.backend.enums;
  * @Author Michael Terletskyi
  */
 
-public enum FileTypes {
+public enum EFileType {
     IMAGE,
     VIDEO,
     AUDIO
