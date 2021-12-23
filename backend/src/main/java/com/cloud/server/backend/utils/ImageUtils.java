@@ -16,6 +16,10 @@ import java.util.Set;
 
 @Component
 public class ImageUtils {
+    private ImageUtils() {
+
+    }
+
     public static Set<Tag> drewTagsAdapter(Metadata metadata) {
         Set<Tag> tags = new LinkedHashSet<>();
         Iterable<Directory> directories = metadata.getDirectories();

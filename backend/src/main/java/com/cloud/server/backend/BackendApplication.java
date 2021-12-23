@@ -1,5 +1,9 @@
 package com.cloud.server.backend;
 
+import com.cloud.server.backend.enums.ERole;
+import com.cloud.server.backend.models.users.Role;
+import com.cloud.server.backend.repository.users.RoleRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.MessageSource;
@@ -9,6 +13,7 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
 
 @SpringBootApplication
 public class BackendApplication {
@@ -37,6 +42,15 @@ public class BackendApplication {
                         .allowedOrigins("*")
                         .allowedHeaders("*");
             }
+        };
+    }
+
+    @Bean
+    CommandLineRunner commandLineRunner(RoleRepository roleRepository) {
+        return args -> {
+            roleRepository.save(new Role(ERole.ROLE_USER));
+            roleRepository.save(new Role(ERole.ROLE_MODERATOR));
+            roleRepository.save(new Role(ERole.ROLE_ADMIN));
         };
     }
 

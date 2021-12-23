@@ -1,6 +1,6 @@
 package com.cloud.server.backend.models.files.impls.images;
 
-import com.cloud.server.backend.enums.FileTypes;
+import com.cloud.server.backend.enums.EFileType;
 import com.cloud.server.backend.models.files.GenericFile;
 
 import com.cloud.server.backend.utils.ImageUtils;
@@ -69,8 +69,8 @@ public class Image extends GenericFile implements Serializable {
 
     @JsonGetter
     @Override
-    public final FileTypes fileType() {
-        return FileTypes.IMAGE;
+    public final EFileType fileType() {
+        return EFileType.IMAGE;
     }
 
     @JsonGetter

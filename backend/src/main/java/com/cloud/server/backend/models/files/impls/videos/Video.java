@@ -1,6 +1,6 @@
 package com.cloud.server.backend.models.files.impls.videos;
 
-import com.cloud.server.backend.enums.FileTypes;
+import com.cloud.server.backend.enums.EFileType;
 import com.cloud.server.backend.models.files.GenericFile;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import org.springframework.stereotype.Component;
@@ -51,7 +51,7 @@ public class Video extends GenericFile implements Serializable {
 
     @JsonGetter
     @Override
-    public FileTypes fileType() {
-        return FileTypes.VIDEO;
+    public EFileType fileType() {
+        return EFileType.VIDEO;
     }
 }
