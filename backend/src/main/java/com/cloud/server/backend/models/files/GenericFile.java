@@ -1,7 +1,9 @@
 package com.cloud.server.backend.models.files;
 
 import com.cloud.server.backend.enums.EFileType;
+import com.cloud.server.backend.models.users.User;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -52,6 +54,11 @@ public abstract class GenericFile implements Serializable {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     protected LocalDateTime dateOfLastUpdate;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @JsonGetter
     public Long getId() {
         return this.id;
@@ -91,6 +98,14 @@ public abstract class GenericFile implements Serializable {
 
     @JsonGetter
     public abstract EFileType fileType();
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Override
     public boolean equals(Object o) {
