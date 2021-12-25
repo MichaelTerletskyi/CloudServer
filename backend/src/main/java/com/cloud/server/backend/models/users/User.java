@@ -1,11 +1,14 @@
 package com.cloud.server.backend.models.users;
 
+import com.cloud.server.backend.models.files.GenericFile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import net.sf.oval.constraint.Email;
 import net.sf.oval.constraint.NotBlank;
 import net.sf.oval.constraint.Size;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -17,22 +20,25 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
         })
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = -7704786855879035969L;
+
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
-    @Size(max = 20)
+    @Size(max = 16)
     private String username;
 
     @NotBlank
-    @Size(max = 50)
+    @Size(max = 128)
     @Email
     private String email;
 
     @NotBlank
-    @Size(max = 120)
+    @Size(max = 32)
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -41,7 +47,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<GenericFile> files = new HashSet<>();
+
     public User() {
+
     }
 
     public User(String username, String email, String password) {
@@ -88,6 +99,14 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<GenericFile> getFiles() {
+        return files;
+    }
+
+    public void setFiles(Set<GenericFile> files) {
+        this.files = files;
     }
 
     @Override

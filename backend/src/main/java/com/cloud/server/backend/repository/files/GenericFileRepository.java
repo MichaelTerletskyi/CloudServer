@@ -2,7 +2,10 @@ package com.cloud.server.backend.repository.files;
 
 import com.cloud.server.backend.models.files.GenericFile;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.Set;
 
 /**
  * @Create 12/17/2021
@@ -12,5 +15,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GenericFileRepository extends JpaRepository<GenericFile, Long> {
-
+    Set<GenericFile> findAllByUserId(@Param("user_id") Long userId);
 }

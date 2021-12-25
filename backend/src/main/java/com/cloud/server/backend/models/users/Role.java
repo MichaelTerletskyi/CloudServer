@@ -3,11 +3,14 @@ package com.cloud.server.backend.models.users;
 import com.cloud.server.backend.enums.ERole;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "roles")
-public class Role {
+public class Role implements Serializable {
+    private static final long serialVersionUID = 7280647451476987002L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,10 +18,6 @@ public class Role {
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private ERole name;
-
-    public Role() {
-
-    }
 
     public Role(ERole name) {
         this.name = name;
