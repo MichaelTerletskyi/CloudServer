@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -15,5 +16,5 @@ import java.util.Set;
 
 @Repository
 public interface GenericFileRepository extends JpaRepository<GenericFile, Long> {
-    Set<GenericFile> findAllByUserId(@Param("user_id") Long userId);
+    Optional<Set<GenericFile>> findAllByUserId(@Param("user_id") Long userId);
 }

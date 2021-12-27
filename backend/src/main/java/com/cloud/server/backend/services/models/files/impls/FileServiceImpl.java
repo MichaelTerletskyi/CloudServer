@@ -1,18 +1,28 @@
 package com.cloud.server.backend.services.models.files.impls;
 
+import com.cloud.server.backend.exceptions.UserNotFoundException;
 import com.cloud.server.backend.models.files.GenericFile;
 import com.cloud.server.backend.models.users.User;
 import com.cloud.server.backend.repository.files.GenericFileRepository;
 import com.cloud.server.backend.services.models.files.FileService;
+import com.cloud.server.backend.services.models.users.UserService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @Create 12/25/2021
+ * @Author Michael Terletskyi
+ * @Extends of {@link FileService} class.
+ */
+
 @Service
-public class FileServiceImpl extends FileService {
+public class FileServiceImpl extends FileService<GenericFile> {
+    private static final String USER_NOT_FOUND = "User not found";
     private final GenericFileRepository genericFileRepository;
 
     @Autowired
@@ -21,12 +31,13 @@ public class FileServiceImpl extends FileService {
     }
 
     @Override
-    public Set<GenericFile> getAllFilesByUserId(Long id) {
-        return genericFileRepository.findAllByUserId(id);
+    public Set<GenericFile> getAllByUserId(Long id) {
+        return genericFileRepository.findAllByUserId(id)
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
     }
 
     @Override
-    public Set<GenericFile> getAllFilesByUser(User user) {
+    public GenericFile saveWithUserId(MultipartFile file, Long id) {
         return null;
     }
 
