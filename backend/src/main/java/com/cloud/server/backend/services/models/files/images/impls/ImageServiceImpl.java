@@ -24,7 +24,6 @@ import java.util.Set;
 public class ImageServiceImpl extends ImageService {
     private final ImageRepository imageRepository;
     private final UserService userService;
-    private static final String USER_NOT_FOUND = "User not found";
 
     @Autowired
     public ImageServiceImpl(ImageRepository imageRepository, UserService userService) {
@@ -50,7 +49,7 @@ public class ImageServiceImpl extends ImageService {
     @Override
     public Image saveWithUserId(MultipartFile file, Long id) {
         if (!userService.isExistById(id)) {
-            throw new UserNotFoundException(USER_NOT_FOUND);
+            throw new UserNotFoundException();
         }
 
         Image image = new Image(file);

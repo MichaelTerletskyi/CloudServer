@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * @Create 12/19/2021
  * @Author Michael Terletskyi
- * @Implements of {@link UserDetails} interface.
+ * @Implements of {@link UserDetails} and {@link Serializable} interfaces.
  */
 
 public class UserDetailsImpl implements UserDetails, Serializable {

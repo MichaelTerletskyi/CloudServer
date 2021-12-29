@@ -6,9 +6,9 @@ import com.cloud.server.backend.models.users.User;
 import com.cloud.server.backend.repository.files.audios.AudioRepository;
 import com.cloud.server.backend.services.models.files.audios.AudioService;
 import com.cloud.server.backend.services.models.users.UserService;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -24,7 +24,6 @@ import java.util.Set;
 public class AudioServiceImpl extends AudioService {
     private final AudioRepository audioRepository;
     private final UserService userService;
-    private static final String USER_NOT_FOUND = "User not found";
 
     @Autowired
     public AudioServiceImpl(AudioRepository audioRepository, UserService userService) {
@@ -50,7 +49,7 @@ public class AudioServiceImpl extends AudioService {
     @Override
     public Audio saveWithUserId(MultipartFile file, Long id) {
         if (!userService.isExistById(id)) {
-            throw new UserNotFoundException(USER_NOT_FOUND);
+            throw new UserNotFoundException();
         }
 
         Audio audio = new Audio(file);
@@ -72,7 +71,7 @@ public class AudioServiceImpl extends AudioService {
 
     @Override
     public boolean hasId(Audio audio) {
-        return ObjectUtils.isEmpty(audio.getId());
+        return ObjectUtils.isNotEmpty(audio);
     }
 
     @Override

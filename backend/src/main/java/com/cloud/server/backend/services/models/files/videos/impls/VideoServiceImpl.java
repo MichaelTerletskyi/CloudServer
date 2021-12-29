@@ -24,7 +24,6 @@ import java.util.Set;
 public class VideoServiceImpl extends VideoService {
     private final VideoRepository videoRepository;
     private final UserService userService;
-    private static final String USER_NOT_FOUND = "User not found";
 
     @Autowired
     public VideoServiceImpl(VideoRepository videoRepository, UserService userService) {
@@ -50,7 +49,7 @@ public class VideoServiceImpl extends VideoService {
     @Override
     public Video saveWithUserId(MultipartFile file, Long id) {
         if (!userService.isExistById(id)) {
-            throw new UserNotFoundException(USER_NOT_FOUND);
+            throw new UserNotFoundException();
         }
 
         Video video = new Video(file);
