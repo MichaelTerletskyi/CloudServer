@@ -21,7 +21,7 @@ import java.util.Set;
 /**
  * @Create 12/16/2021
  * @Author Michael Terletskyi
- * @Extends of {@link GenericFile} interface.
+ * @Extends of {@link GenericFile} class.
  * @Implements of {@link Serializable} interface.
  */
 

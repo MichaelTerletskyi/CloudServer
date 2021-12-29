@@ -19,7 +19,6 @@ import java.util.List;
 @Service
 public class UserServiceImpl extends UserService {
     private final UserRepository userRepository;
-    private static final String USER_NOT_FOUND = "User not found";
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -28,8 +27,7 @@ public class UserServiceImpl extends UserService {
 
     @Override
     protected User findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+        return userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
     }
 
     @Override

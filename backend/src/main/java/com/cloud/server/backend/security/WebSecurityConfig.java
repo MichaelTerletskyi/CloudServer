@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 /**
  * @Create 12/19/2021
  * @Author Michael Terletskyi
- * @Extends of {@link WebSecurityConfigurerAdapter} interface.
+ * @Extends of {@link WebSecurityConfigurerAdapter} class.
  */
 
 @Configuration
