@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -94,7 +95,14 @@ public abstract class GenericFile implements Serializable {
     }
 
     @JsonGetter
-    public abstract BigInteger getSize();
+    public BigInteger getSizeInBytes() {
+        return BigInteger.valueOf(this.bytes.length);
+    }
+
+    @JsonGetter
+    public String getDisplaySize() {
+        return FileUtils.byteCountToDisplaySize(getSizeInBytes());
+    }
 
     @JsonGetter
     public abstract EFileType fileType();

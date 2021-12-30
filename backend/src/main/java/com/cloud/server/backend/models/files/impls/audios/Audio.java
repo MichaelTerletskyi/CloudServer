@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 /**
@@ -41,12 +40,6 @@ public class Audio extends GenericFile implements Serializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @JsonGetter
-    @Override
-    public BigInteger getSize() {
-        return BigInteger.valueOf(this.bytes.length);
     }
 
     @JsonGetter

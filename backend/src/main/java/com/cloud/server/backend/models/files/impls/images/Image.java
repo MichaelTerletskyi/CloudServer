@@ -2,7 +2,6 @@ package com.cloud.server.backend.models.files.impls.images;
 
 import com.cloud.server.backend.enums.EFileType;
 import com.cloud.server.backend.models.files.GenericFile;
-
 import com.cloud.server.backend.utils.ImageUtils;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
@@ -13,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
@@ -59,12 +57,6 @@ public class Image extends GenericFile implements Serializable {
     @JsonGetter
     public String getOriginalFilename() {
         return this.originalFilename;
-    }
-
-    @JsonGetter
-    @Override
-    public BigInteger getSize() {
-        return BigInteger.valueOf(this.bytes.length);
     }
 
     @JsonGetter
