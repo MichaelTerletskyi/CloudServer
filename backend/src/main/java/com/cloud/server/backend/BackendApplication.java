@@ -49,7 +49,6 @@ public class BackendApplication {
 //    CommandLineRunner commandLineRunner(RoleRepository roleRepository) {
 //        return args -> {
 //            roleRepository.save(new Role(ERole.ROLE_USER));
-//            roleRepository.save(new Role(ERole.ROLE_MODERATOR));
 //            roleRepository.save(new Role(ERole.ROLE_ADMIN));
 //        };
 //    }

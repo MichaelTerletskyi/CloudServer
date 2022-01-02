@@ -22,15 +22,9 @@ public class TestRestController {
     }
 
     @GetMapping("/user")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String userPageAccess() {
         return "User Page Test";
-    }
-
-    @GetMapping("/mod")
-    @PreAuthorize("hasRole('MODERATOR')")
-    public String moderatorPageAccess() {
-        return "Moderator Page";
     }
 
     @GetMapping("/admin")
