@@ -1,2 +1,2 @@
 # CloudServer
-This is my simple microservice application
+This Cloud Server application

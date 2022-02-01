@@ -77,7 +77,9 @@ const Login = (props) => {
 
                 <Form onSubmit={handleLogin} ref={form}>
                     <div className="form-group">
-                        <label htmlFor="username">Username</label>
+                        <label>
+                            <h4 className={"UserName"}>Username</h4>
+                        </label>
                         <Input
                             type="text"
                             className="form-control"
@@ -89,7 +91,9 @@ const Login = (props) => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="password">Password</label>
+                        <label>
+                            <h4 className={"Password"}>Password</h4>
+                        </label>
                         <Input
                             type="password"
                             className="form-control"
@@ -101,11 +105,11 @@ const Login = (props) => {
                     </div>
 
                     <div className="form-group">
-                        <button className="btn btn-primary btn-block" disabled={loading}>
+                        <button className="btn btn-success btn-block" disabled={loading}>
                             {loading && (
                                 <span className="spinner-border spinner-border-sm"></span>
                             )}
-                            <span>Login</span>
+                            <span className="">Sign in</span>
                         </button>
                     </div>
 

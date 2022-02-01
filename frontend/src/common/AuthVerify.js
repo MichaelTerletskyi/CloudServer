@@ -23,9 +23,7 @@ const AuthVerify = (props) => {
         }
     });
 
-    return <div>
-        <h1>Verify</h1>
-    </div>;
+    return <div/>;
 };
 
 export default AuthVerify;

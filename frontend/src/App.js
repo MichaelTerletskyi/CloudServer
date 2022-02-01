@@ -1,16 +1,11 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useEffect, useCallback} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Router, Switch, Route, Link} from "react-router-dom";
+import {Router} from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 import Login from "./components/Login";
-import Register from "./components/Register";
-import Home from "./components/Home";
-import Profile from "./components/Profile";
-import BoardUser from "./components/BoardUser";
-import BoardAdmin from "./components/BoardAdmin";
 
 import {logout} from "./actions/auth";
 import {clearMessage} from "./actions/message";
@@ -18,11 +13,9 @@ import {clearMessage} from "./actions/message";
 import {history} from "./helpers/history";
 
 import EventBus from "./common/EventBus";
-import AuthVerify from "./common/AuthVerify";
+import NavBarPanel from "./components/NavBarPanel";
 
 const App = () => {
-    const [showAdminBoard, setShowAdminBoard] = useState(false);
-
     const {user: currentUser} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
@@ -37,12 +30,6 @@ const App = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        if (currentUser) {
-            setShowAdminBoard(currentUser.roles.includes("ROLE_ADMIN"));
-        } else {
-            setShowAdminBoard(false);
-        }
-
         EventBus.on("logout", () => {
             logOut();
         });
@@ -55,77 +42,74 @@ const App = () => {
     return (
         <Router history={history}>
             <div>
-                <nav className="navbar navbar-expand navbar-dark bg-dark">
-                    <Link to={"/"} className="navbar-brand">
-                        Main
-                    </Link>
-                    <div className="navbar-nav mr-auto">
-                        <li className="nav-item">
-                            <Link to={"/home"} className="nav-link">
-                                Home
-                            </Link>
-                        </li>
 
-                        {showAdminBoard && (
-                            <li className="nav-item">
-                                <Link to={"/admin"} className="nav-link">
-                                    Admin Board
-                                </Link>
-                            </li>
-                        )}
 
-                        {currentUser && (
-                            <li className="nav-item">
-                                <Link to={"/user"} className="nav-link">
-                                    User Board
-                                </Link>
-                            </li>
-                        )}
-                    </div>
 
-                    {currentUser ? (
-                        <div className="navbar-nav ml-auto">
-                            <li className="nav-item">
-                                <Link to={"/profile"} className="nav-link">
-                                    {currentUser.username}
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <a href="/login" className="nav-link" onClick={logOut}>
-                                    LogOut
-                                </a>
-                            </li>
-                        </div>
-                    ) : (
-                        <div className="navbar-nav ml-auto">
-                            <li className="nav-item">
-                                <Link to={"/login"} className="nav-link">
-                                    Login
-                                </Link>
-                            </li>
 
-                            <li className="nav-item">
-                                <Link to={"/register"} className="nav-link">
-                                    Sign Up
-                                </Link>
-                            </li>
-                        </div>
-                    )}
-                </nav>
+                {/*<nav className="navbar navbar-expand navbar-dark bg-dark">*/}
+                {/*        <Link to={"/"} className="navbar-brand">*/}
+                {/*            Main*/}
+                {/*        </Link>*/}
+                {/*        <div className="navbar-nav mr-auto">*/}
+                {/*            <li className="nav-item">*/}
+                {/*                <Link to={"/home"} className="nav-link">*/}
+                {/*                    Home*/}
+                {/*                </Link>*/}
+                {/*            </li>*/}
 
-                <div className="container mt-3">
-                    <Switch>
-                        <Route exact path={["/", "/home"]} component={Home}/>
-                        <Route exact path="/login" component={Login}/>
-                        <Route exact path="/register" component={Register}/>
-                        <Route exact path="/profile" component={Profile}/>
+                {/*            {isAdmin && (*/}
+                {/*                <li className="nav-item">*/}
+                {/*                    <Link to={"/admin"} className="nav-link">*/}
+                {/*                        Admin Board*/}
+                {/*                    </Link>*/}
+                {/*                </li>*/}
+                {/*            )}*/}
 
-                        <Route path="/user" component={BoardUser}/>
-                        <Route path="/admin" component={BoardAdmin}/>
-                    </Switch>
-                </div>
+                {/*            {currentUser && (*/}
+                {/*                <li className="nav-item">*/}
+                {/*                    <Link to={"/user"} className="nav-link">*/}
+                {/*                        User Board*/}
+                {/*                    </Link>*/}
+                {/*                </li>*/}
+                {/*            )}*/}
+                {/*        </div>*/}
 
-                <AuthVerify logOut={logOut}/>
+                {/*    {currentUser ? (*/}
+                {/*        <div className="navbar-nav ml-auto">*/}
+                {/*            <li className="nav-item">*/}
+                {/*                <Link to={"/profile"} className="nav-link">*/}
+                {/*                    {currentUser.username} ABC*/}
+                {/*                </Link>*/}
+                {/*            </li>*/}
+                {/*            <li className="nav-item">*/}
+                {/*                <a href="/logOut" className="nav-link" onClick={logOut}>*/}
+                {/*                    LogOut ABC*/}
+                {/*                </a>*/}
+                {/*            </li>*/}
+                {/*        </div>*/}
+                {/*    ) : (*/}
+                {/*        <div className="navbar-nav ml-auto">*/}
+                {/*            <li className="nav-item">*/}
+                {/*                <Link to={"/login"} className="nav-link">*/}
+                {/*                    Login (In)*/}
+                {/*                </Link>*/}
+                {/*            </li>*/}
+
+                {/*            <li className="nav-item">*/}
+                {/*                <Link to={"/register"} className="nav-link">*/}
+                {/*                    Sign Up (Registered)*/}
+                {/*                </Link>*/}
+                {/*            </li>*/}
+                {/*        </div>*/}
+                {/*    )}*/}
+                {/*</nav>*/}
+
+
+                <NavBarPanel/>
+
+                {
+                    <h1>{JSON.stringify(currentUser)}</h1>
+                }
             </div>
         </Router>
     );
