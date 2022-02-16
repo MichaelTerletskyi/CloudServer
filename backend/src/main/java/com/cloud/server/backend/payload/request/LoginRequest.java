@@ -8,6 +8,7 @@ import net.sf.oval.constraint.NotBlank;
  */
 
 public class LoginRequest {
+
     @NotBlank
     private String username;
 

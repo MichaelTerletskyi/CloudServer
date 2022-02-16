@@ -29,7 +29,7 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "DISCRIMINATOR_COLUMN")
 @Table(name = "FILES")
-public abstract class GenericFile implements Serializable {
+public abstract class GenericFile implements Serializable, AutoCloseable {
     private static final long serialVersionUID = 6786256300350384940L;
 
     @Id
@@ -131,5 +131,10 @@ public abstract class GenericFile implements Serializable {
         int result = Objects.hash(id, contentType, fileName);
         result = 31 * result + Arrays.hashCode(bytes);
         return result;
+    }
+
+    @Override
+    public void close() throws Exception {
+
     }
 }

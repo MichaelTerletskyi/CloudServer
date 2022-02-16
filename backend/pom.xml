@@ -13,7 +13,7 @@
     <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>backend</name>
-    <description>Simple microservice project</description>
+    <description>Simple Cloud Server</description>
 
     <properties>
         <java.version>11</java.version>
