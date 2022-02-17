@@ -1,9 +1,9 @@
 import React from "react";
 
-export const Contact = () => {
+export const LogOut = () => {
     return (
         <div>
-            <h1>Contact Us</h1>
+            <h1>Logout Page</h1>
         </div>
     );
 };
