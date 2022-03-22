@@ -1,12 +1,18 @@
 import React, {useState} from "react";
 import {NavLink} from "react-router-dom";
 import "./NavBar.css";
+import {NavBarHome} from "./NavBar/NavBarHome";
+import {NavBarLogIn} from "./NavBar/NavBarLogIn";
+import {NavBarRegister} from "./NavBar/NavBarRegister";
+import {NavBarLogOut} from "./NavBar/NavBarLogOut";
+import {NavBarContactUs} from "./NavBar/NavBarContactUs";
+
 
 function NavBar() {
     const [click, setClick] = useState(false);
+    const [user] = useState(localStorage.getItem("user"));
 
     const handleClick = () => {
-        alert("Clicked");
         setClick(!click)
     };
 
@@ -20,41 +26,17 @@ function NavBar() {
                     </NavLink>
 
                     <ul className={click ? "nav-menu active" : "nav-menu"}>
-                        <li className="nav-item">
-                            <NavLink
-                                exact
-                                to="/"
-                                activeClassName="active"
-                                className="nav-links"
-                                onClick={handleClick}
-                            >
-                                Home
-                            </NavLink>
-                        </li>
 
-                        <li className="nav-item">
-                            <NavLink
-                                exact
-                                to="/contact"
-                                activeClassName="active"
-                                className="nav-links"
-                                onClick={handleClick}
-                            >
-                                Contact Us
-                            </NavLink>
-                        </li>
+                        <NavBarHome/>
 
-                        <li className="nav-item">
-                            <NavLink
-                                exact
-                                to="/logout"
-                                activeClassName="active"
-                                className="nav-links"
-                                onClick={handleClick}
-                            >
-                                Log Out
-                            </NavLink>
-                        </li>
+                        {user === null ? <NavBarLogIn/> : null}
+
+                        {user === null ? <NavBarRegister/> : null}
+
+                        <NavBarContactUs/>
+
+                        {user !== null ? <NavBarLogOut/> : null}
+
                     </ul>
 
                     <div className="nav-icon" onClick={handleClick}>
