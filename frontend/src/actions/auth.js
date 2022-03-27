@@ -78,8 +78,6 @@ export const login = (username, password) => (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-    alert("was here");
-
     AuthService.logout();
 
     dispatch({

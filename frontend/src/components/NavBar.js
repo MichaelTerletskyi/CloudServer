@@ -13,7 +13,7 @@ function NavBar() {
     const [user] = useState(localStorage.getItem("user"));
 
     const handleClick = () => {
-        setClick(!click)
+        setClick(!click);
     };
 
     return (
@@ -33,9 +33,9 @@ function NavBar() {
 
                         {user === null ? <NavBarRegister/> : null}
 
-                        <NavBarContactUs/>
-
                         {user !== null ? <NavBarLogOut/> : null}
+
+                        <NavBarContactUs/>
 
                     </ul>
 

@@ -6,7 +6,8 @@ export const NavBarLogOut = () => {
 
     const handleClick = () => {
         alert("NavBarLogOut clicked");
-        setClick(!click)
+        setClick(!click);
+        localStorage.removeItem("user");
     };
 
     return (
