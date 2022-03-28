@@ -98,70 +98,21 @@ export const LogIn = (props) => {
                         />
                     </div>
 
-                    <div className="form-group">
-                        <div className="custom-control custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="customCheck1"/>
-                            <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
-                        </div>
-                    </div>
+                    {/*<div className="form-group">*/}
+                    {/*    <div className="custom-control custom-checkbox">*/}
+                    {/*        <input type="checkbox" className="custom-control-input" id="customCheck1"/>*/}
+                    {/*        <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
 
                     <button type="submit" className="btn btn-dark btn-lg btn-block" disabled={loading}>Sign in</button>
-                    <p className="forgot-password text-right">
-                        Forgot <a href="#">password?</a>
-                    </p>
+                    {/*<p className="forgot-password text-right">*/}
+                    {/*    Forgot <a href="#">password?</a>*/}
+                    {/*</p>*/}
 
                     <CheckButton style={{display: "none"}} ref={checkBtn}/>
                 </Form>
 
-
-
-                {/*<Form onSubmit={handleLogin} ref={form}>*/}
-                {/*    <div className="form-group">*/}
-                {/*        <label>*/}
-                {/*            <h4 className={"UserName"}>Username</h4>*/}
-                {/*        </label>*/}
-                {/*        <Input*/}
-                {/*            type="text"*/}
-                {/*            className="form-control"*/}
-                {/*            name="username"*/}
-                {/*            value={username}*/}
-                {/*            onChange={onChangeUsername}*/}
-                {/*            validations={[required]}*/}
-                {/*        />*/}
-                {/*    </div>*/}
-
-                {/*    <div className="form-group">*/}
-                {/*        <label>*/}
-                {/*            <h4 className={"Password"}>Password</h4>*/}
-                {/*        </label>*/}
-                {/*        <Input*/}
-                {/*            type="password"*/}
-                {/*            className="form-control"*/}
-                {/*            name="password"*/}
-                {/*            value={password}*/}
-                {/*            onChange={onChangePassword}*/}
-                {/*            validations={[required]}*/}
-                {/*        />*/}
-                {/*    </div>*/}
-
-                {/*    <div className="form-group">*/}
-                {/*        <button className="btn btn-success btn-block" disabled={loading}>*/}
-                {/*            {loading && (*/}
-                {/*                <span className="spinner-border spinner-border-sm"></span>*/}
-                {/*            )}*/}
-                {/*            <span className="">Sign in</span>*/}
-                {/*        </button>*/}
-                {/*    </div>*/}
-
-                {/*    {message && (*/}
-                {/*        <div className="form-group">*/}
-                {/*            <div className="alert alert-danger" role="alert">*/}
-                {/*                {message}*/}
-                {/*            </div>*/}
-                {/*        </div>*/}
-                {/*    )}*/}
-                {/*    <CheckButton style={{display: "none"}} ref={checkBtn}/>*/}
-                {/*</Form>*/}
 
 
             </div>

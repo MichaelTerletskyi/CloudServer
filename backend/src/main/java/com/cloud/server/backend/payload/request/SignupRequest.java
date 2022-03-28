@@ -5,7 +5,6 @@ import net.sf.oval.constraint.NotBlank;
 import net.sf.oval.constraint.Size;
 
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * @Create 12/19/2021
@@ -27,7 +26,8 @@ public class SignupRequest {
     @Size(min = 6, max = 40)
     private String password;
 
-    private Set<String> role;
+    @NotBlank
+    private String role;
 
     public String getUsername() {
         return username;
@@ -53,11 +53,11 @@ public class SignupRequest {
         this.password = password;
     }
 
-    public Set<String> getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Set<String> role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
@@ -68,11 +68,12 @@ public class SignupRequest {
         SignupRequest that = (SignupRequest) o;
         return Objects.equals(username, that.username) &&
                 Objects.equals(email, that.email) &&
-                Objects.equals(password, that.password);
+                Objects.equals(password, that.password) &&
+                Objects.equals(role, that.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, email, password);
+        return Objects.hash(username, email, password, role);
     }
 }

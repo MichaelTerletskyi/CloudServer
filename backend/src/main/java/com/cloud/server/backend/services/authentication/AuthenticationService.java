@@ -79,23 +79,11 @@ public class AuthenticationService {
         }
 
         User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
-        Set<String> strRoles = signUpRequest.getRole();
+        String role = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
-        if (ObjectUtils.isEmpty(strRoles)) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER).orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND_MSG));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                if ("admin".equals(role)) {
-                    Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN).orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND_MSG));
-                    roles.add(adminRole);
-                } else {
-                    Role userRole = roleRepository.findByName(ERole.ROLE_USER).orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND_MSG));
-                    roles.add(userRole);
-                }
-            });
-        }
+        roles.add(roleRepository.findByName(role.equalsIgnoreCase(ERole.ROLE_ADMIN.toString()) ? ERole.ROLE_ADMIN : ERole.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND_MSG)));
 
         user.setRoles(roles);
         userRepository.save(user);
