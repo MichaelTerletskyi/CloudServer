@@ -9,8 +9,6 @@ import {LogOut} from "./components/Pages/LogOut";
 import {LogIn} from "./components/Pages/LogIn";
 import {Register} from "./components/Pages/Register";
 
-// https://react-select.com/home
-
 const App = () => {
     return (
         <>
