@@ -50,6 +50,9 @@ public class File implements Serializable, AutoCloseable {
     @Column(name = "file_name")
     private String fileName;
 
+    @Column(name = "original_file_name")
+    private String originalFilename;
+
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime dateOfUpload;
@@ -63,9 +66,6 @@ public class File implements Serializable, AutoCloseable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "original_file_name")
-    private String originalFilename;
-
     @OneToMany(mappedBy = "file", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Tag> tags;
 
@@ -77,6 +77,7 @@ public class File implements Serializable, AutoCloseable {
             this.bytes = file.getBytes();
             this.contentType = file.getContentType();
             this.fileName = file.getName();
+            this.originalFilename = file.getOriginalFilename();
             this.dateOfUpload = LocalDateTime.now();
             this.dateOfLastUpdate = LocalDateTime.now();
             this.tags = FilesUtils.drewTagsAdapter(ImageMetadataReader.readMetadata(file.getInputStream()));
@@ -123,6 +124,16 @@ public class File implements Serializable, AutoCloseable {
     }
 
     @JsonGetter
+    public String getOriginalFilename() {
+        return originalFilename;
+    }
+
+    public void setOriginalFilename(String originalFilename) {
+        this.originalFilename = originalFilename;
+    }
+
+
+    @JsonGetter
     public LocalDateTime getDateOfUpload() {
         return dateOfUpload;
     }
@@ -147,15 +158,6 @@ public class File implements Serializable, AutoCloseable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    @JsonGetter
-    public String getOriginalFilename() {
-        return originalFilename;
-    }
-
-    public void setOriginalFilename(String originalFilename) {
-        this.originalFilename = originalFilename;
     }
 
     @JsonGetter
@@ -186,14 +188,14 @@ public class File implements Serializable, AutoCloseable {
                 Arrays.equals(bytes, file.bytes) &&
                 Objects.equals(contentType, file.contentType) &&
                 Objects.equals(fileName, file.fileName) &&
+                Objects.equals(originalFilename, file.originalFilename) &&
                 Objects.equals(dateOfUpload, file.dateOfUpload) &&
-                Objects.equals(dateOfLastUpdate, file.dateOfLastUpdate) &&
-                Objects.equals(originalFilename, file.originalFilename);
+                Objects.equals(dateOfLastUpdate, file.dateOfLastUpdate);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, contentType, fileName, dateOfUpload, dateOfLastUpdate, originalFilename);
+        int result = Objects.hash(id, contentType, fileName, originalFilename, dateOfUpload, dateOfLastUpdate);
         result = 31 * result + Arrays.hashCode(bytes);
         return result;
     }
