@@ -1,4 +1,4 @@
-package com.cloud.server.backend.models.files.impls.images;
+package com.cloud.server.backend.models.files;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,12 +16,12 @@ import java.util.Objects;
 
 @Component
 @Entity
-@Table(name = "IMAGE_TAGS")
+@Table(name = "TAGS")
 public class Tag implements Serializable {
     private static final long serialVersionUID = 3871678542200642437L;
 
     @Id
-    @Column(name = "image_tag_id")
+    @Column(name = "tag_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private Long id;
@@ -44,7 +44,7 @@ public class Tag implements Serializable {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_id")
-    private Image image;
+    private File file;
 
     public Tag() {
 
@@ -89,12 +89,12 @@ public class Tag implements Serializable {
     }
 
     @JsonIgnore
-    public Image getImage() {
-        return image;
+    public File getFile() {
+        return file;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setFile(File file) {
+        this.file = file;
     }
 
     @Override

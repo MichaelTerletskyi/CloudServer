@@ -1,6 +1,6 @@
 package com.cloud.server.backend.utils;
 
-import com.cloud.server.backend.models.files.impls.images.Tag;
+import com.cloud.server.backend.models.files.Tag;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import org.springframework.stereotype.Component;
@@ -15,8 +15,8 @@ import java.util.Set;
  */
 
 @Component
-public class ImageUtils {
-    private ImageUtils() {
+public class FilesUtils {
+    private FilesUtils() {
 
     }
 

@@ -5,7 +5,6 @@ export const NavBarContactUs = () => {
     const [click, setClick] = useState(false);
 
     const handleClick = () => {
-        alert("NavBarContactUs clicked");
         setClick(!click)
     };
 

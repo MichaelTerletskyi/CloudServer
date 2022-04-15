@@ -1,7 +1,6 @@
 import React from "react";
 import {SocialIcon} from 'react-social-icons';
 
-// TODO
 export const Contact = () => {
     return (
         <div>

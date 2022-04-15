@@ -5,7 +5,6 @@ export const NavBarLogIn = () => {
     const [click, setClick] = useState(false);
 
     const handleClick = () => {
-        alert("NavBarLog in clicked");
         setClick(!click)
     };
 
