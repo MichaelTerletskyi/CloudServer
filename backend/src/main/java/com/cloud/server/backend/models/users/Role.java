@@ -7,17 +7,22 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "ROLES")
 public class Role implements Serializable {
     private static final long serialVersionUID = 7280647451476987002L;
 
     @Id
+    @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private ERole name;
+
+    public Role() {
+
+    }
 
     public Role(ERole name) {
         this.name = name;

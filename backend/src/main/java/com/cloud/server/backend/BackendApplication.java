@@ -14,7 +14,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-
 @SpringBootApplication
 public class BackendApplication {
 
@@ -31,28 +30,27 @@ public class BackendApplication {
         return messageSource;
     }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .allowedOrigins("*")
-                        .allowedHeaders("*");
-            }
-        };
-    }
-
 //    @Bean
-//    CommandLineRunner commandLineRunner(RoleRepository roleRepository) {
-//        return args -> {
-//            roleRepository.save(new Role(ERole.ROLE_USER));
-//            roleRepository.save(new Role(ERole.ROLE_MODERATOR));
-//            roleRepository.save(new Role(ERole.ROLE_ADMIN));
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurerAdapter() {
+//
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**")
+//                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+//                        .allowedOrigins("*")
+//                        .allowedHeaders("*");
+//            }
 //        };
 //    }
+
+    @Bean
+    CommandLineRunner commandLineRunner(RoleRepository roleRepository) {
+        return args -> {
+            roleRepository.save(new Role(ERole.ROLE_USER));
+            roleRepository.save(new Role(ERole.ROLE_ADMIN));
+        };
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);

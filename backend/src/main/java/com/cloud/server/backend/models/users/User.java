@@ -1,6 +1,6 @@
 package com.cloud.server.backend.models.users;
 
-import com.cloud.server.backend.models.files.GenericFile;
+import com.cloud.server.backend.models.files.File;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import net.sf.oval.constraint.Email;
 import net.sf.oval.constraint.NotBlank;
@@ -49,7 +49,7 @@ public class User implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<GenericFile> files = new HashSet<>();
+    private Set<File> files = new HashSet<>();
 
     public User() {
 
@@ -101,11 +101,12 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
-    public Set<GenericFile> getFiles() {
+    @JsonIgnore
+    public Set<File> getFiles() {
         return files;
     }
 
-    public void setFiles(Set<GenericFile> files) {
+    public void setFiles(Set<File> files) {
         this.files = files;
     }
 
