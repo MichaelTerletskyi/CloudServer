@@ -1,6 +1,9 @@
 package com.cloud.server.backend.models.users;
 
+import com.cloud.server.backend.enums.ERole;
+import com.cloud.server.backend.exceptions.RoleNotFoundException;
 import com.cloud.server.backend.models.files.File;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import net.sf.oval.constraint.Email;
 import net.sf.oval.constraint.NotBlank;
@@ -41,6 +44,7 @@ public class User implements Serializable {
     @Size(max = 32)
     private String password;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -85,6 +89,7 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -110,6 +115,16 @@ public class User implements Serializable {
         this.files = files;
     }
 
+    @JsonGetter
+    public long amountOfFiles() {
+        return this.files.size();
+    }
+
+    @JsonIgnore
+    public boolean isAdmin() {
+        return this.getRoles().stream().allMatch(role -> role.getName() == ERole.ROLE_ADMIN);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -124,5 +139,15 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, username, email, password);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

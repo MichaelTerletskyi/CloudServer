@@ -1,11 +1,8 @@
 package com.cloud.server.backend.repository.files;
 
-import com.cloud.server.backend.models.files.Tag;
+import com.cloud.server.backend.models.files.FileTag;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.Set;
 
 /**
  * @Create 12/17/2021
@@ -14,6 +11,6 @@ import java.util.Set;
  */
 
 @Repository
-public interface TagRepository extends JpaRepository<Tag, Long> {
-    Set<Tag> findAllByFileId(@Param("file_id") Long id);
+public interface FileTagRepository extends JpaRepository<FileTag, Long> {
+
 }

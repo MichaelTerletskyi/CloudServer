@@ -1,6 +1,6 @@
 package com.cloud.server.backend.utils;
 
-import com.cloud.server.backend.models.files.Tag;
+import com.cloud.server.backend.models.files.FileTag;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import org.springframework.stereotype.Component;
@@ -20,17 +20,17 @@ public class FilesUtils {
 
     }
 
-    public static Set<Tag> drewTagsAdapter(Metadata metadata) {
-        Set<Tag> tags = new LinkedHashSet<>();
+    public static Set<FileTag> drewTagsAdapter(Metadata metadata) {
+        Set<FileTag> fileTags = new LinkedHashSet<>();
         Iterable<Directory> directories = metadata.getDirectories();
         directories.forEach(directory -> {
             Collection<com.drew.metadata.Tag> drewTags = directory.getTags();
-            drewTags.forEach(tag -> tags.add(convertDrewTagToTag(tag)));
+            drewTags.forEach(tag -> fileTags.add(convertDrewTagToFileTag(tag)));
         });
-        return tags;
+        return fileTags;
     }
 
-    private static Tag convertDrewTagToTag(com.drew.metadata.Tag tag) {
-        return new Tag(tag.getDescription(), tag.getDirectoryName(), tag.getTagName(), tag.getTagTypeHex(), tag.getTagType());
+    private static FileTag convertDrewTagToFileTag(com.drew.metadata.Tag tag) {
+        return new FileTag(tag.getDescription(), tag.getDirectoryName(), tag.getTagName(), tag.getTagTypeHex(), tag.getTagType());
     }
 }

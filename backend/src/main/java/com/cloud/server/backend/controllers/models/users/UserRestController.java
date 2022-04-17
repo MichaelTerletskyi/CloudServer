@@ -30,14 +30,10 @@ public class UserRestController {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/get/user/by/id/{id}")
+    @GetMapping("/get/user/by/id={id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
-    }
-
-    @PostMapping("/save/user")
-    public ResponseEntity<User> saveUser(@RequestBody User user) {
-        return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
+        User user = userService.getById(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/user/by/id={id}")

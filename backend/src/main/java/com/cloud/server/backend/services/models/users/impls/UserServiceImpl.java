@@ -26,23 +26,8 @@ public class UserServiceImpl extends UserService {
     }
 
     @Override
-    protected User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
-    }
-
-    @Override
-    protected boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
-    }
-
-    @Override
-    protected boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
-    }
-
-    @Override
     public User getById(Long id) {
-        return userRepository.getById(id);
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
@@ -78,5 +63,20 @@ public class UserServiceImpl extends UserService {
     @Override
     public boolean isExistById(Long id) {
         return userRepository.existsById(id);
+    }
+
+    @Override
+    protected User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    protected boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    protected boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

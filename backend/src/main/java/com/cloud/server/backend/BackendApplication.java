@@ -30,27 +30,27 @@ public class BackendApplication {
         return messageSource;
     }
 
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurerAdapter() {
-//
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**")
-//                        .allowedMethods("GET", "POST", "PUT", "DELETE")
-//                        .allowedOrigins("*")
-//                        .allowedHeaders("*");
-//            }
-//        };
-//    }
-
     @Bean
-    CommandLineRunner commandLineRunner(RoleRepository roleRepository) {
-        return args -> {
-            roleRepository.save(new Role(ERole.ROLE_USER));
-            roleRepository.save(new Role(ERole.ROLE_ADMIN));
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedOrigins("*")
+                        .allowedHeaders("*");
+            }
         };
     }
+
+//    @Bean
+//    CommandLineRunner commandLineRunner(RoleRepository roleRepository) {
+//        return args -> {
+//            roleRepository.save(new Role(ERole.ROLE_USER));
+//            roleRepository.save(new Role(ERole.ROLE_ADMIN));
+//        };
+//    }
 
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);

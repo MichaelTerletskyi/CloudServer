@@ -1,9 +1,6 @@
 package com.cloud.server.backend.models.files;
 
 import com.cloud.server.backend.models.users.User;
-import com.cloud.server.backend.utils.FilesUtils;
-import com.drew.imaging.ImageMetadataReader;
-import com.drew.imaging.ImageProcessingException;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -61,13 +58,12 @@ public class File implements Serializable, AutoCloseable {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime dateOfLastUpdate;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "file", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Tag> tags;
+    private Set<FileTag> fileTags;
 
     public File() {
     }
@@ -80,9 +76,7 @@ public class File implements Serializable, AutoCloseable {
             this.originalFilename = file.getOriginalFilename();
             this.dateOfUpload = LocalDateTime.now();
             this.dateOfLastUpdate = LocalDateTime.now();
-            this.tags = FilesUtils.drewTagsAdapter(ImageMetadataReader.readMetadata(file.getInputStream()));
-            file.getInputStream().close();
-        } catch (IOException | ImageProcessingException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -161,12 +155,12 @@ public class File implements Serializable, AutoCloseable {
     }
 
     @JsonGetter
-    public Set<Tag> getTags() {
-        return tags;
+    public Set<FileTag> getFileTags() {
+        return fileTags;
     }
 
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
+    public void setFileTags(Set<FileTag> fileTags) {
+        this.fileTags = fileTags;
     }
 
     @JsonGetter
