@@ -26,6 +26,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtUtils jwtUtils;
+
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
@@ -53,9 +54,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     private String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Security ")) {
-            return headerAuth.substring(7);
-        }
-        return null;
+        return StringUtils.hasText(headerAuth) && headerAuth.startsWith("Security ") ? headerAuth.substring(7) : null;
     }
 }

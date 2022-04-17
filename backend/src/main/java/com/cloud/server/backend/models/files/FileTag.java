@@ -16,12 +16,12 @@ import java.util.Objects;
 
 @Component
 @Entity
-@Table(name = "TAGS")
-public class Tag implements Serializable {
+@Table(name = "FILE_TAGS")
+public class FileTag implements Serializable {
     private static final long serialVersionUID = 3871678542200642437L;
 
     @Id
-    @Column(name = "tag_id")
+    @Column(name = "file_tag_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private Long id;
@@ -46,11 +46,11 @@ public class Tag implements Serializable {
     @JoinColumn(name = "file_id")
     private File file;
 
-    public Tag() {
+    public FileTag() {
 
     }
 
-    public Tag(String description, String directoryName, String tagName, String tagTypeHex, Integer tagType) {
+    public FileTag(String description, String directoryName, String tagName, String tagTypeHex, Integer tagType) {
         this.description = description;
         this.directoryName = directoryName;
         this.tagName = tagName;
@@ -100,14 +100,14 @@ public class Tag implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Tag)) return false;
-        Tag tag = (Tag) o;
-        return Objects.equals(id, tag.id) &&
-                Objects.equals(description, tag.description) &&
-                Objects.equals(directoryName, tag.directoryName) &&
-                Objects.equals(tagName, tag.tagName) &&
-                Objects.equals(tagTypeHex, tag.tagTypeHex) &&
-                Objects.equals(tagType, tag.tagType);
+        if (!(o instanceof FileTag)) return false;
+        FileTag fileTag = (FileTag) o;
+        return Objects.equals(id, fileTag.id) &&
+                Objects.equals(description, fileTag.description) &&
+                Objects.equals(directoryName, fileTag.directoryName) &&
+                Objects.equals(tagName, fileTag.tagName) &&
+                Objects.equals(tagTypeHex, fileTag.tagTypeHex) &&
+                Objects.equals(tagType, fileTag.tagType);
     }
 
     @Override
