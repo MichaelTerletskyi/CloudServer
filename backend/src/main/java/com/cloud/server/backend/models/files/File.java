@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -164,13 +165,27 @@ public class File implements Serializable, AutoCloseable {
     }
 
     @JsonGetter
-    public BigInteger getSizeInBytes() {
+    public BigInteger sizeInBytes() {
         return BigInteger.valueOf(this.bytes.length);
     }
 
     @JsonGetter
-    public String getDisplaySize() {
-        return FileUtils.byteCountToDisplaySize(getSizeInBytes());
+    public String displaySize() {
+        return FileUtils.byteCountToDisplaySize(sizeInBytes());
+    }
+
+    @JsonGetter
+    public Set<String> logicalTags() {
+        Set<String> set = new HashSet<>();
+        if (Objects.nonNull(getFileTags())) {
+            getFileTags().forEach(fileTag -> {
+                if ("Windows XP Keywords".equals(fileTag.getTagName())) {
+                    String[] split = fileTag.getDescription().split(";");
+                    set.addAll(Arrays.asList(split));
+                }
+            });
+        }
+        return set;
     }
 
     @Override

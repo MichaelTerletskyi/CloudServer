@@ -113,8 +113,6 @@ export const LogIn = (props) => {
                     <CheckButton style={{display: "none"}} ref={checkBtn}/>
                 </Form>
 
-
-
             </div>
         </div>
     );

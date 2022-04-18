@@ -1,5 +1,6 @@
 package com.cloud.server.backend.controllers.models.files;
 
+import com.cloud.server.backend.exceptions.FileNotFoundException;
 import com.cloud.server.backend.models.files.File;
 import com.cloud.server.backend.models.users.User;
 import com.cloud.server.backend.services.models.files.impls.FileServiceImpl;
@@ -31,14 +32,25 @@ public class FileRestController {
         this.userService = userService;
     }
 
-    @GetMapping("/get/all/file/by/user/id={id}")
+    @GetMapping("/get/file/by/id={id}")
+    public ResponseEntity<File> getFileById(@PathVariable Long id) {
+        try {
+            File file = fileService.getById(id);
+            return new ResponseEntity<>(file, HttpStatus.OK);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/get/all/files/by/user/id={id}")
     public ResponseEntity<Set<File>> getAllFiles(@PathVariable Long id) {
         User user = userService.getById(id);
         if (!user.isAdmin()) {
             Set<File> allFilesByUserId = fileService.getAllByUserId(id);
             return new ResponseEntity<>(allFilesByUserId, HttpStatus.OK);
         }
-        return new ResponseEntity<>(new HashSet<>(), HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PostMapping("/save/files/user/id={id}")
