@@ -1,10 +1,10 @@
 package com.cloud.server.backend.models.users;
 
 import com.cloud.server.backend.enums.ERole;
-import com.cloud.server.backend.exceptions.RoleNotFoundException;
 import com.cloud.server.backend.models.files.File;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.jsonwebtoken.lang.Collections;
 import net.sf.oval.constraint.Email;
 import net.sf.oval.constraint.NotBlank;
 import net.sf.oval.constraint.Size;
@@ -123,6 +123,15 @@ public class User implements Serializable {
     @JsonIgnore
     public boolean isAdmin() {
         return this.getRoles().stream().allMatch(role -> role.getName() == ERole.ROLE_ADMIN);
+    }
+
+    @JsonGetter
+    public Set<String> logicalTagsOfAllUserFiles() {
+        Set<String> logicalTagsSet = new HashSet<>();
+        if (Objects.nonNull(getFiles()) && Collections.isEmpty(logicalTagsSet)) {
+            getFiles().forEach(file -> logicalTagsSet.addAll(file.logicalTags()));
+        }
+        return logicalTagsSet;
     }
 
     @Override

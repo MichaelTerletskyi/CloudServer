@@ -1,6 +1,7 @@
 package com.cloud.server.backend.controllers.models.files;
 
 import com.cloud.server.backend.exceptions.FileNotFoundException;
+import com.cloud.server.backend.exceptions.UserNotFoundException;
 import com.cloud.server.backend.models.files.File;
 import com.cloud.server.backend.models.users.User;
 import com.cloud.server.backend.services.models.files.impls.FileServiceImpl;
@@ -45,10 +46,15 @@ public class FileRestController {
 
     @GetMapping("/get/all/files/by/user/id={id}")
     public ResponseEntity<Set<File>> getAllFiles(@PathVariable Long id) {
-        User user = userService.getById(id);
-        if (!user.isAdmin()) {
-            Set<File> allFilesByUserId = fileService.getAllByUserId(id);
-            return new ResponseEntity<>(allFilesByUserId, HttpStatus.OK);
+        try {
+            User user = userService.getById(id);
+            if (!user.isAdmin()) {
+                Set<File> allFilesByUserId = fileService.getAllByUserId(id);
+                return new ResponseEntity<>(allFilesByUserId, HttpStatus.OK);
+            }
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
@@ -56,13 +62,19 @@ public class FileRestController {
     @PostMapping("/save/files/user/id={id}")
     public ResponseEntity<Set<File>> uploadFiles(@RequestParam(name = "file") MultipartFile[] files, @PathVariable Long id) {
         Set<File> fileSet = new HashSet<>();
-        User user = userService.getById(id);
-        if (!user.isAdmin()) {
-            for (MultipartFile file : files) {
-                fileSet.add(fileService.saveWithUserId(file, id));
+        try {
+            User user = userService.getById(id);
+            if (!user.isAdmin()) {
+                for (MultipartFile file : files) {
+                    fileSet.add(fileService.saveWithUserId(file, id));
+                    return new ResponseEntity<>(fileSet, HttpStatus.OK);
+                }
             }
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(fileSet, HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
     @DeleteMapping("/delete/file/by/id={id}")

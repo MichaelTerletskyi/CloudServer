@@ -26,6 +26,7 @@ export const LogIn = (props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [successful, setSuccessful] = useState(false);
 
     const {isLoggedIn} = useSelector(state => state.auth);
     const {message} = useSelector(state => state.message);
@@ -52,6 +53,7 @@ export const LogIn = (props) => {
         if (checkBtn.current.context._errors.length === 0) {
             dispatch(login(username, password))
                 .then(() => {
+                    setSuccessful(true);
                     props.history.push("/");
                     window.location.reload();
                 })
@@ -106,9 +108,19 @@ export const LogIn = (props) => {
                     {/*</div>*/}
 
                     <button type="submit" className="btn btn-dark btn-lg btn-block" disabled={loading}>Sign in</button>
+
                     {/*<p className="forgot-password text-right">*/}
-                    {/*    Forgot <a href="#">password?</a>*/}
+                    {/*    Forgot <a
+                     href="#">password?</a>*/}
                     {/*</p>*/}
+
+                    {message && (
+                        <div className="form-group">
+                            <div className={successful ? "alert alert-success" : "alert alert-danger"} role="alert">
+                                {message}
+                            </div>
+                        </div>
+                    )}
 
                     <CheckButton style={{display: "none"}} ref={checkBtn}/>
                 </Form>

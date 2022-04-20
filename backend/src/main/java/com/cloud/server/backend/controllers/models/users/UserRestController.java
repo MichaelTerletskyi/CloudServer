@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Create 12/27/2021
@@ -27,7 +28,11 @@ public class UserRestController {
 
     @GetMapping("/get/all/users")
     public ResponseEntity<List<User>> getAllUsers() {
-        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
+        List<User> all = userService.getAll()
+                .stream()
+                .filter(user -> !user.isAdmin())
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
     @GetMapping("/get/user/by/id={id}")

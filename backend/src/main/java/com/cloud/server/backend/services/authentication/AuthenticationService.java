@@ -82,7 +82,8 @@ public class AuthenticationService {
         String role = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
-        roles.add(roleRepository.findByName(role.equalsIgnoreCase(ERole.ROLE_ADMIN.toString()) ? ERole.ROLE_ADMIN : ERole.ROLE_USER)
+        roles.add(roleRepository
+                .findByName(role.equalsIgnoreCase(ERole.ROLE_ADMIN.toString()) ? ERole.ROLE_ADMIN : ERole.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND_MSG)));
 
         user.setRoles(roles);
