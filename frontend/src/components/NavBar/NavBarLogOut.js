@@ -1,5 +1,6 @@
 import {NavLink} from "react-router-dom";
 import React, {useState} from "react";
+import "./../NavBar.css";
 
 export const NavBarLogOut = () => {
     const [click, setClick] = useState(false);

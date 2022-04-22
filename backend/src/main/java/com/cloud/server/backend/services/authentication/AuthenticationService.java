@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 public class AuthenticationService {
     private static final String ROLE_NOT_FOUND_MSG = "Role not found";
     private static final String EMAIL_IS_ALREADY_IN_USE = "Email is already in use";
-    private static final String USERNAME_IS_ALREADY_TAKEN = "Username is already taken";
+    private static final String USERNAME_IS_ALREADY_TAKEN = "Username is already exist with this username";
     private static final String USER_REGISTERED_SUCCESSFULLY = "User registered successfully";
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
