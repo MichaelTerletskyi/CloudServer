@@ -126,7 +126,7 @@ a, a:hover {
     color: white !important;
     display: inline-block;
     text-decoration: none !important;
-    position: page;
+    position: relative;
 }
 
 .site-navbar .site-navigation .site-menu > li > a:before {
