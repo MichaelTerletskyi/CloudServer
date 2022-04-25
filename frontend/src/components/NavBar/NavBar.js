@@ -9,15 +9,6 @@ function NavBar() {
 
     return (
         <>
-            <div className="site-mobile-menu site-navbar-target">
-                <div className="site-mobile-menu-header">
-                    <div className="site-mobile-menu-close mt-3">
-                        <span className="icon-close2 js-menu-toggle"/>
-                    </div>
-                </div>
-                <div className="site-mobile-menu-body"/>
-            </div>
-
             <header className="site-navbar site-navbar-target" role="banner">
                 <div className="container">
                     <div className="row align-items-center position-relative">
@@ -55,15 +46,6 @@ function NavBar() {
                     </div>
                 </div>
             </header>
-
-            <div className="hero">
-
-            </div>
-
-            <script src="./navbar-menu/js/jquery-3.3.1.min.js"/>
-            <script src="./navbar-menu/js/popper.min.js"/>
-            <script src="./navbar-menu/js/bootstrap.min.js"/>
-            <script src="./navbar-menu/js/jquery.sticky.js"/>
         </>
     );
 }

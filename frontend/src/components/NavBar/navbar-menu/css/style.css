@@ -2,9 +2,10 @@
 
 body {
     font-family: "Quicksand", sans-serif;
-    background-color: #fff;
 
-    position: relative;
+    /*position: fixed;*/
+    /*top: 0;*/
+    /*left: 0;*/
 }
 
 body:before {
@@ -52,15 +53,16 @@ a, a:hover {
     height: 80px;
     width: 100%;
     background: black;
+
 }
 
 .site-navbar {
+    background: black;
     margin-bottom: 0px;
     z-index: 1999;
-    position: relative;
     top: 0;
     width: 100%;
-    padding: 1rem;
+    padding: 20px;
     position: absolute;
 }
 
