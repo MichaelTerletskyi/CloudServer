@@ -1,8 +1,6 @@
 import {NavLink} from "react-router-dom";
 import React, {useState} from "react";
 
-import "./../NavBar.css";
-
 export const NavBarRegister = () => {
     const [click, setClick] = useState(false);
 

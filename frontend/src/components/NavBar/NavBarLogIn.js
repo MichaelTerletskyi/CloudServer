@@ -1,8 +1,6 @@
 import {NavLink} from "react-router-dom";
 import React, {useState} from "react";
 
-import "./../NavBar.css";
-
 export const NavBarLogIn = () => {
     const [click, setClick] = useState(false);
 
@@ -19,7 +17,7 @@ export const NavBarLogIn = () => {
                 className="nav-links"
                 onClick={handleClick}
             >
-                Log In
+                Login
             </NavLink>
         </li>
     );

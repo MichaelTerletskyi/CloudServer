@@ -1,5 +1,8 @@
 import React, {useState} from "react";
-import "./NavBar/navbar-menu/css/style.css"
+import "./navbar-menu/css/style.css"
+import {NavBarLogOut} from "././NavBarLogOut";
+import {NavBarLogIn} from "./NavBarLogIn";
+import {NavBarRegister} from "./NavBarRegister";
 
 function NavBar() {
     const [isLoggedIn] = useState(localStorage.hasOwnProperty("user"));
@@ -14,7 +17,6 @@ function NavBar() {
                 </div>
                 <div className="site-mobile-menu-body"/>
             </div>
-
 
             <header className="site-navbar site-navbar-target" role="banner">
                 <div className="container">
@@ -34,27 +36,16 @@ function NavBar() {
                             </span>
 
                             <nav className="site-navigation text-right ml-auto d-none d-lg-block" role="navigation">
-                                <ul className="site-menu main-menu js-clone-nav ml-auto ">
-
+                                <ul className="site-menu main-menu js-clone-nav ml-auto">
                                     {
                                         !isLoggedIn ? (
                                             <>
-
-                                                <li><
-                                                    a href={"/login"} className={"nav-link"}>Login</a>
-                                                </li>
-                                                <li>
-                                                    <a href={"register"} className={"nav-link"}>Register</a>
-                                                </li>
-
+                                                <NavBarLogIn/>
+                                                <NavBarRegister/>
                                             </>
                                         ) : (
                                             <>
-
-                                                <li>
-                                                    <a href={"logout"} className={"nav-link"}>Logout</a>
-                                                </li>
-
+                                                <NavBarLogOut/>
                                             </>
                                         )
                                     }
@@ -63,18 +54,16 @@ function NavBar() {
                         </div>
                     </div>
                 </div>
-
             </header>
 
             <div className="hero">
 
             </div>
 
-            <script src="./NavBar/navbar-menu/js/jquery-3.3.1.min.js"/>
-            <script src="./NavBar/navbar-menu/js/popper.min.js"/>
-            <script src="./NavBar/navbar-menu/js/bootstrap.min.js"/>
-            <script src="./NavBar/navbar-menu/js/jquery.sticky.js"/>
-
+            <script src="./navbar-menu/js/jquery-3.3.1.min.js"/>
+            <script src="./navbar-menu/js/popper.min.js"/>
+            <script src="./navbar-menu/js/bootstrap.min.js"/>
+            <script src="./navbar-menu/js/jquery.sticky.js"/>
         </>
     );
 }

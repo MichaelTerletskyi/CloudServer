@@ -1,12 +1,12 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import NavBar from "./components/NavBar";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import {Home} from "./components/Pages/Home";
 import {LogOut} from "./components/Pages/LogOut";
 import {LogIn} from "./components/Pages/LogIn";
 import {Register} from "./components/Pages/Register";
+import NavBar from "./components/NavBar/NavBar";
 
 const App = () => {
     return (
