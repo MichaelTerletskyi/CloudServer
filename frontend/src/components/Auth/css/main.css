@@ -191,7 +191,7 @@ iframe {
 
 .limiter {
     background: linear-gradient(#00dbde, #fc00ff);
-    background: -webkit-linear-gradient(right, #00dbde, #fc00ff);
+    background: -webkit-linear-gradient(right,  #00dbde, #fc00ff, #00dbde);
     width: 100%;
     margin: 0 auto;
 }
@@ -474,7 +474,7 @@ iframe {
 
 .login100-social-item:hover {
     color: #fff;
-    background-color: #333333;
+    background-color: black;
 }
 
 @media (max-width: 576px) {
@@ -482,4 +482,10 @@ iframe {
         padding-left: 15px;
         padding-right: 15px;
     }
-} 
+}
+
+.alert-msg {
+    background: white;
+    font-family: "Quicksand", sans-serif;
+    color: red;
+}
