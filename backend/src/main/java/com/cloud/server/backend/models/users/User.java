@@ -32,16 +32,16 @@ public class User implements Serializable {
     private Long id;
 
     @NotBlank
-    @Size(max = 16)
+    @Size(min = 2, max = 32)
     private String username;
 
     @NotBlank
-    @Size(max = 128)
+    @Size(min = 3, max = 254)
     @Email
     private String email;
 
     @NotBlank
-    @Size(max = 32)
+    @Size(min = 8, max = 32)
     private String password;
 
     @JsonIgnore

@@ -31,7 +31,7 @@ export const Home = () => {
                             <p className="mbr-text mbr-white mbr-fonts-style display-7">Principe of work</p>
 
                             {/*<div className="mbr-section-btn align-center">*/}
-                            {/*    <a className="btn btn-primary display-4" href="https://mobiri.se/">Learn More</a>*/}
+                            {/*    <a className="btn btn-primary display-4" href="/">Learn More</a>*/}
                             {/*</div>*/}
 
                             <div className="row justify-content-center">
