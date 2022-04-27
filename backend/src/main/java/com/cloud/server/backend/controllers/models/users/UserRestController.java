@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Create 12/27/2021
@@ -27,13 +28,29 @@ public class UserRestController {
 
     @GetMapping("/get/all/users")
     public ResponseEntity<List<User>> getAllUsers() {
-        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
+        List<User> users = userService.getAll()
+                .stream()
+                .filter(user -> !user.isAdmin())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/get/all/admins")
+    public ResponseEntity<List<User>> getAllAdmins() {
+        List<User> admins = userService.getAll()
+                .stream()
+                .filter(User::isAdmin)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(admins);
     }
 
     @GetMapping("/get/user/by/id={id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        if (!userService.isExistById(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         User user = userService.getById(id);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/delete/user/by/id={id}")
@@ -42,6 +59,6 @@ public class UserRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         userService.deleteById(id);
-        return new ResponseEntity<>(id, HttpStatus.OK);
+        return ResponseEntity.ok(id);
     }
 }

@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -28,8 +29,11 @@ import java.util.Set;
 
 @Component
 @Entity
-@Table(name = "FILES")
-public class File implements Serializable, AutoCloseable {
+@Table(name = "FILES",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "original_file_name"),
+        })
+public class File implements Serializable {
     private static final long serialVersionUID = 6786256300350384940L;
 
     @Id
@@ -126,7 +130,6 @@ public class File implements Serializable, AutoCloseable {
         this.originalFilename = originalFilename;
     }
 
-
     @JsonGetter
     public LocalDateTime getDateOfUpload() {
         return dateOfUpload;
@@ -164,13 +167,27 @@ public class File implements Serializable, AutoCloseable {
     }
 
     @JsonGetter
-    public BigInteger getSizeInBytes() {
+    public BigInteger sizeInBytes() {
         return BigInteger.valueOf(this.bytes.length);
     }
 
     @JsonGetter
-    public String getDisplaySize() {
-        return FileUtils.byteCountToDisplaySize(getSizeInBytes());
+    public String displaySize() {
+        return FileUtils.byteCountToDisplaySize(sizeInBytes());
+    }
+
+    @JsonGetter
+    public Set<String> logicalTags() {
+        Set<String> logicalTagsSet = new HashSet<>();
+        if (Objects.nonNull(getFileTags())) {
+            getFileTags().forEach(fileTag -> {
+                if ("Windows XP Keywords".equals(fileTag.getTagName())) {
+                    String[] split = fileTag.getDescription().split(";");
+                    logicalTagsSet.addAll(Arrays.asList(split));
+                }
+            });
+        }
+        return logicalTagsSet;
     }
 
     @Override
@@ -195,7 +212,14 @@ public class File implements Serializable, AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
-
+    public String toString() {
+        return "File{" +
+                "id='" + id + '\'' +
+                "contentType='" + contentType + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", originalFilename='" + originalFilename + '\'' +
+                ", dateOfUpload=" + dateOfUpload +
+                ", dateOfLastUpdate=" + dateOfLastUpdate +
+                '}';
     }
 }

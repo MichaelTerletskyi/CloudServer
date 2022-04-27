@@ -1,13 +1,16 @@
 package com.cloud.server.backend.models.users;
 
 import com.cloud.server.backend.enums.ERole;
-import com.cloud.server.backend.exceptions.RoleNotFoundException;
 import com.cloud.server.backend.models.files.File;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.jsonwebtoken.lang.Collections;
 import net.sf.oval.constraint.Email;
+import net.sf.oval.constraint.Length;
 import net.sf.oval.constraint.NotBlank;
 import net.sf.oval.constraint.Size;
+import net.sf.oval.guard.Guarded;
+import net.sf.oval.guard.PostValidateThis;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -16,6 +19,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Guarded(checkInvariants = false)
 @Component
 @Entity
 @Table(name = "USERS",
@@ -32,16 +36,22 @@ public class User implements Serializable {
     private Long id;
 
     @NotBlank
-    @Size(max = 16)
+    @Size(min = 2, max = 32)
+    @Length(min = 2, max = 32)
+    @Column(length = 32)
     private String username;
 
     @NotBlank
-    @Size(max = 128)
     @Email
+    @Size(min = 3, max = 254)
+    @Length(min = 3, max = 254)
+    @Column(length = 254)
     private String email;
 
     @NotBlank
-    @Size(max = 32)
+    @Size(min = 8, max = 60)
+    @Length(min = 8, max = 60)
+    @Column(length = 60)
     private String password;
 
     @JsonIgnore
@@ -59,7 +69,10 @@ public class User implements Serializable {
 
     }
 
-    public User(String username, String email, String password) {
+    @PostValidateThis
+    public User(@NotBlank @Size(min = 2, max = 32) @Length(min = 2, max = 32) String username,
+                @NotBlank @Email @Size(min = 3, max = 254) @Length(min = 3, max = 254) String email,
+                @NotBlank @Size(min = 8, max = 60) @Length(min = 8, max = 60) String password) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -123,6 +136,15 @@ public class User implements Serializable {
     @JsonIgnore
     public boolean isAdmin() {
         return this.getRoles().stream().allMatch(role -> role.getName() == ERole.ROLE_ADMIN);
+    }
+
+    @JsonGetter
+    public Set<String> logicalTagsOfAllUserFiles() {
+        Set<String> logicalTagsSet = new HashSet<>();
+        if (Objects.nonNull(getFiles()) && Collections.isEmpty(logicalTagsSet)) {
+            getFiles().forEach(file -> logicalTagsSet.addAll(file.logicalTags()));
+        }
+        return logicalTagsSet;
     }
 
     @Override

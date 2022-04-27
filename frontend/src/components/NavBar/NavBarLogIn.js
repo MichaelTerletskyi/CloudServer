@@ -17,7 +17,7 @@ export const NavBarLogIn = () => {
                 className="nav-links"
                 onClick={handleClick}
             >
-                Log In
+                Login
             </NavLink>
         </li>
     );
