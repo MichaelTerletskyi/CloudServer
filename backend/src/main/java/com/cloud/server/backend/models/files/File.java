@@ -210,4 +210,16 @@ public class File implements Serializable {
         result = 31 * result + Arrays.hashCode(bytes);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "File{" +
+                "id='" + id + '\'' +
+                "contentType='" + contentType + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", originalFilename='" + originalFilename + '\'' +
+                ", dateOfUpload=" + dateOfUpload +
+                ", dateOfLastUpdate=" + dateOfLastUpdate +
+                '}';
+    }
 }

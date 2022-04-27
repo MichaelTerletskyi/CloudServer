@@ -1,9 +1,5 @@
 package com.cloud.server.backend;
 
-import com.cloud.server.backend.enums.ERole;
-import com.cloud.server.backend.models.users.Role;
-import com.cloud.server.backend.repository.users.RoleRepository;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.MessageSource;

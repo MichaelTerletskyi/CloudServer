@@ -12,8 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @Create 4/15/2022
@@ -35,46 +35,31 @@ public class FileRestController {
 
     @GetMapping("/get/file/by/id={id}")
     public ResponseEntity<File> getFileById(@PathVariable Long id) {
-        try {
-            File file = fileService.getById(id);
-            return new ResponseEntity<>(file, HttpStatus.OK);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        if (!fileService.isExistById(id)) {
+            new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        File file = fileService.getById(id);
+        return new ResponseEntity<>(file, HttpStatus.OK);
     }
 
     @GetMapping("/get/all/files/by/user/id={id}")
     public ResponseEntity<Set<File>> getAllFiles(@PathVariable Long id) {
-        try {
-            User user = userService.getById(id);
-            if (!user.isAdmin()) {
-                Set<File> allFilesByUserId = fileService.getAllByUserId(id);
-                return new ResponseEntity<>(allFilesByUserId, HttpStatus.OK);
-            }
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
+        if (!userService.isExistById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        User user = userService.getById(id);
+        if (user.isAdmin()) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        Set<File> allFilesByUserId = fileService.getAllByUserId(id);
+        return new ResponseEntity<>(allFilesByUserId, HttpStatus.OK);
     }
 
     @PostMapping("/save/files/user/id={id}")
-    public ResponseEntity<Set<File>> uploadFiles(@RequestParam(name = "file") MultipartFile[] files, @PathVariable Long id) {
-        Set<File> fileSet = new HashSet<>();
-        try {
-            User user = userService.getById(id);
-            if (!user.isAdmin()) {
-                for (MultipartFile file : files) {
-                    fileSet.add(fileService.saveWithUserId(file, id));
-                    return new ResponseEntity<>(fileSet, HttpStatus.OK);
-                }
-            }
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+    public ResponseEntity<Set<File>> uploadFiles(@RequestParam(name = "file") MultipartFile[] files, @PathVariable Long id)
+            throws ExecutionException, InterruptedException {
+        return fileService.uploadFilesToDatabase(files, id);
     }
 
     @DeleteMapping("/delete/file/by/id={id}")
