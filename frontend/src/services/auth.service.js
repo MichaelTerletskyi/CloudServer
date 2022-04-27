@@ -20,7 +20,7 @@ const login = (username, password) => {
         })
         .then((response) => {
             if (response.data.accessToken) {
-                fetchFiles(response.data.id);
+                // fetchFiles(response.data.id);
                 localStorage.setItem("user", JSON.stringify(response.data));
             }
             return response.data;

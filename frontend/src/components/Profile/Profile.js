@@ -23,6 +23,7 @@ export const Profile = () => {
                 <br/>
                 <a>Profile Page of {JSON.stringify(user)}</a>
                 <br/>
+                <br/>
             </div>
             </body>
         </>
