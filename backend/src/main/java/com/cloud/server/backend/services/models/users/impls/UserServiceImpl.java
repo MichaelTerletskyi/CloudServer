@@ -6,6 +6,7 @@ import com.cloud.server.backend.repository.users.UserRepository;
 import com.cloud.server.backend.services.models.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
@@ -36,11 +37,13 @@ public class UserServiceImpl extends UserService {
     }
 
     @Override
+    @Transactional
     public User save(User user) {
         return userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public User update(User user) {
         return save(user);
     }

@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -57,11 +58,13 @@ public class FileServiceImpl extends FileService<File> {
     }
 
     @Override
+    @Transactional
     public File save(File file) {
         return fileRepository.save(file);
     }
 
     @Override
+    @Transactional
     public File update(File file) {
         return fileRepository.save(file);
     }
@@ -92,6 +95,7 @@ public class FileServiceImpl extends FileService<File> {
     }
 
     @Override
+    @Transactional
     public File saveWithUserId(MultipartFile file, Long id) {
         File fileTemp = new File(file);
         try {
@@ -113,6 +117,7 @@ public class FileServiceImpl extends FileService<File> {
         return fileTemp;
     }
 
+    @Transactional
     public ResponseEntity<Set<File>> uploadFilesToDatabase(MultipartFile[] files, Long userId)
             throws ExecutionException, InterruptedException {
         if (!userService.isExistById(userId)) {

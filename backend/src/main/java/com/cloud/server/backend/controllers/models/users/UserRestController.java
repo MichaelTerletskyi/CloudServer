@@ -46,6 +46,9 @@ public class UserRestController {
 
     @GetMapping("/get/user/by/id={id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        if (!userService.isExistById(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         User user = userService.getById(id);
         return ResponseEntity.ok(user);
     }
