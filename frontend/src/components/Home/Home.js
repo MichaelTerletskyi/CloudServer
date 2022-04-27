@@ -26,8 +26,7 @@ export const Home = () => {
                 <div className="container">
                     <div className="media-container">
                         <div className="col-md-12 align-center">
-                            <h1 className="mbr-section-title mbr-white mbr-bold mbr-fonts-style mb-3 display-1">Cloud
-                                Server</h1>
+                            <h1 className="mbr-section-title mbr-white mbr-bold mbr-fonts-style mb-3 display-1">Cloud Server</h1>
                             <p className="mbr-text mbr-white mbr-fonts-style display-7">Principe of work</p>
 
                             {/*<div className="mbr-section-btn align-center">*/}

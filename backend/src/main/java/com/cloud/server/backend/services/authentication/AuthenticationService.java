@@ -11,8 +11,12 @@ import com.cloud.server.backend.repository.users.RoleRepository;
 import com.cloud.server.backend.repository.users.UserRepository;
 import com.cloud.server.backend.security.jwt.JwtUtils;
 import com.cloud.server.backend.security.services.UserDetailsImpl;
+import com.cloud.server.backend.services.validation.SignupRequestValidationResolver;
+import net.sf.oval.ConstraintViolation;
+import net.sf.oval.Validator;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -81,11 +85,9 @@ public class AuthenticationService {
         User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
         String role = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
-
-        roles.add(roleRepository
-                .findByName(role.equalsIgnoreCase(ERole.ROLE_ADMIN.toString()) ? ERole.ROLE_ADMIN : ERole.ROLE_USER)
-                .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND_MSG)));
-
+        Role currentRole = roleRepository.findByName(role.equalsIgnoreCase(ERole.ROLE_ADMIN.toString())
+                ? ERole.ROLE_ADMIN : ERole.ROLE_USER).orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND_MSG));
+        roles.add(currentRole);
         user.setRoles(roles);
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse(USER_REGISTERED_SUCCESSFULLY));
@@ -96,6 +98,9 @@ public class AuthenticationService {
             return ResponseEntity.badRequest().body(new MessageResponse(USERNAME_IS_ALREADY_TAKEN));
         if (userRepository.existsByEmail(signUpRequest.getEmail()))
             return ResponseEntity.badRequest().body(new MessageResponse(EMAIL_IS_ALREADY_IN_USE));
+        SignupRequestValidationResolver signupRequestValidationResolver = new SignupRequestValidationResolver(signUpRequest);
+        if (!signupRequestValidationResolver.isValid())
+            return ResponseEntity.badRequest().body(new MessageResponse(signupRequestValidationResolver.toString()));
         return null;
     }
 }

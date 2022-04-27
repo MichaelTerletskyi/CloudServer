@@ -336,7 +336,7 @@ iframe {
     width: 100%;
     display: block;
     position: relative;
-    z-index: 1;
+    /*z-index: 1;*/
     border-radius: 25px;
     overflow: hidden;
     margin: 0 auto;
@@ -484,8 +484,20 @@ iframe {
     }
 }
 
-.alert-msg {
+.login-alert-msg {
     background: white;
     font-family: "Quicksand", sans-serif;
     color: red;
+}
+
+.register-alert-msg {
+    background: white;
+    font-family: "Quicksand", sans-serif;
+    color: red;
+}
+
+.register-success-msg {
+    background: white;
+    font-family: "Quicksand", sans-serif;
+    color: limegreen;
 }
