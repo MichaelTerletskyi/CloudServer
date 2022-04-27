@@ -9,7 +9,7 @@ import java.util.concurrent.Callable;
 /**
  * @Create 4/27/2022
  * @Author Michael Terletskyi
- * @Implements of {@link Callable} class.
+ * @Implements of {@link Callable} interface.
  */
 
 public class MultipartFilesProcessor implements Callable<File> {

@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -38,11 +38,13 @@ import java.util.concurrent.Future;
 
 @Service
 public class FileServiceImpl extends FileService<File> {
+    private final TransactionTemplate template;
     private final FileRepository fileRepository;
     private final UserService userService;
 
     @Autowired
-    public FileServiceImpl(FileRepository fileRepository, UserService userService) {
+    public FileServiceImpl(TransactionTemplate template, FileRepository fileRepository, UserService userService) {
+        this.template = template;
         this.fileRepository = fileRepository;
         this.userService = userService;
     }
@@ -58,13 +60,11 @@ public class FileServiceImpl extends FileService<File> {
     }
 
     @Override
-    @Transactional
     public File save(File file) {
         return fileRepository.save(file);
     }
 
     @Override
-    @Transactional
     public File update(File file) {
         return fileRepository.save(file);
     }
@@ -95,35 +95,36 @@ public class FileServiceImpl extends FileService<File> {
     }
 
     @Override
-    @Transactional
     public File saveWithUserId(MultipartFile file, Long id) {
-        File fileTemp = new File(file);
-        try {
-            if (!userService.isExistById(id)) {
-                throw new UserNotFoundException();
-            }
-            User user = userService.getById(id);
-            Set<FileTag> fileTags = FilesUtils.drewTagsAdapter(ImageMetadataReader.readMetadata(file.getInputStream()));
-
-            fileTemp.setUser(user);
-            fileTemp.setFileTags(fileTags);
-            save(fileTemp);
-
-            fileTags.forEach(fileTag -> fileTag.setFile(fileTemp));
-            save(fileTemp);
-        } catch (IOException | ImageProcessingException e) {
-            e.printStackTrace();
+        if (!userService.isExistById(id)) {
+            throw new UserNotFoundException();
         }
+
+        File fileTemp = new File(file);
+        User user = userService.getById(id);
+        template.execute(status -> {
+            try {
+                Set<FileTag> fileTags = FilesUtils.drewTagsAdapter(ImageMetadataReader.readMetadata(file.getInputStream()));
+
+                fileTemp.setUser(user);
+                fileTemp.setFileTags(fileTags);
+                save(fileTemp);
+
+                fileTags.forEach(fileTag -> fileTag.setFile(fileTemp));
+                save(fileTemp);
+            } catch (IOException | ImageProcessingException e) {
+                e.printStackTrace();
+            }
+            return fileTemp;
+        });
         return fileTemp;
     }
 
-    @Transactional
     public ResponseEntity<Set<File>> uploadFilesToDatabase(MultipartFile[] files, Long userId)
             throws ExecutionException, InterruptedException {
         if (!userService.isExistById(userId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
         User user = userService.getById(userId);
         if (user.isAdmin()) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
@@ -132,7 +133,6 @@ public class FileServiceImpl extends FileService<File> {
         Set<File> fileSet = new HashSet<>();
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         List<Future<File>> futureList = new ArrayList<>();
-
         for (MultipartFile f : files) {
             futureList.add(executor.submit(new MultipartFilesProcessor(f, userId, this)));
         }
@@ -141,6 +141,6 @@ public class FileServiceImpl extends FileService<File> {
             fileSet.add(file.get());
         }
         executor.shutdown();
-        return new ResponseEntity<>(fileSet, HttpStatus.OK);
+        return new ResponseEntity<>(fileSet, HttpStatus.CREATED);
     }
 }

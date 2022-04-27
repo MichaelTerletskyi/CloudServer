@@ -3,6 +3,7 @@ import "./navbar-menu/css/style.css"
 import {NavBarLogOut} from "././NavBarLogOut";
 import {NavBarLogIn} from "./NavBarLogIn";
 import {NavBarRegister} from "./NavBarRegister";
+import {NavBarProfile} from "./NavBarProfile";
 
 function NavBar() {
     const [isLoggedIn] = useState(localStorage.hasOwnProperty("user"));
@@ -36,6 +37,7 @@ function NavBar() {
                                             </>
                                         ) : (
                                             <>
+                                                <NavBarProfile/>
                                                 <NavBarLogOut/>
                                             </>
                                         )

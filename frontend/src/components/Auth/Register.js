@@ -142,7 +142,7 @@ export const Register = () => {
                             </div>
 
 
-                            <div className="validate-input">
+                            <div className="validate-input ">
                                 <span className="label-input100">Role</span>
                                 <Select
                                     options={roleOptions}

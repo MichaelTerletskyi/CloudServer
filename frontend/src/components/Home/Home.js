@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 
 import "./assets/web/assets/mobirise-icons2/mobirise2.css";
 import "./assets/bootstrap/css/bootstrap.min.css";
@@ -10,8 +10,6 @@ import "./assets/mobirise/css/mbr-additional.css"
 import background from "./assets/video/videoplayback.webm"
 
 export const Home = () => {
-    const [user] = useState(localStorage.getItem("user"));
-
     return (
         <>
             <body className="home-body">
