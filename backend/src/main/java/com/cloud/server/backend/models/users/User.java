@@ -5,6 +5,8 @@ import com.cloud.server.backend.models.files.File;
 import com.cloud.server.backend.services.models.files.AtomicBigInteger;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.maxmind.geoip.Location;
+import com.maxmind.geoip.LookupService;
 import io.jsonwebtoken.lang.Collections;
 import net.sf.oval.constraint.Email;
 import net.sf.oval.constraint.Length;
@@ -16,8 +18,12 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -180,8 +186,23 @@ public class User implements Serializable {
     }
 
     @JsonGetter
-    public String currentLocation() {
-        return "";
+    public Location location() throws IOException {
+        String databasePath = "C:\\Users\\User\\IdeaProjects\\CloudServer\\backend\\src\\main\\resources\\static\\GeoLiteCity.dat";
+        java.io.File file = new java.io.File(databasePath);
+        LookupService lookupService = new LookupService(file, LookupService.GEOIP_MEMORY_CACHE | LookupService.GEOIP_CHECK_CACHE);
+        return lookupService.getLocation(ipAddress());
+    }
+
+    @JsonGetter
+    public String ipAddress() throws IOException {
+        String asking = "http://checkip.amazonaws.com/";
+        URL url = new URL(asking);
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()))) {
+            return br.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "IP is not recognized";
     }
 
     @Override
