@@ -2,6 +2,7 @@ package com.cloud.server.backend.models.users;
 
 import com.cloud.server.backend.enums.ERole;
 import com.cloud.server.backend.models.files.File;
+import com.cloud.server.backend.services.models.files.AtomicBigInteger;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.jsonwebtoken.lang.Collections;
@@ -11,13 +12,21 @@ import net.sf.oval.constraint.NotBlank;
 import net.sf.oval.constraint.Size;
 import net.sf.oval.guard.Guarded;
 import net.sf.oval.guard.PostValidateThis;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+/**
+ * @Create 4/29/2021
+ * @Author Michael Terletskyi
+ * @Implements of {@link Serializable} interface.
+ */
 
 @Guarded(checkInvariants = false)
 @Component
@@ -145,6 +154,34 @@ public class User implements Serializable {
             getFiles().forEach(file -> logicalTagsSet.addAll(file.logicalTags()));
         }
         return logicalTagsSet;
+    }
+
+    @JsonGetter
+    public BigInteger sizeOfAllUserFilesInBytes() {
+        BigInteger sizeOfFiles = BigInteger.ZERO;
+        AtomicBigInteger atomicBigInteger = new AtomicBigInteger(sizeOfFiles);
+        getFiles().forEach(file -> atomicBigInteger.incrementAndGet(file.sizeInBytes()));
+        return atomicBigInteger.get();
+    }
+
+    @JsonGetter
+    public String displaySizeOfAllUserFilesInBytes() {
+        return FileUtils.byteCountToDisplaySize(sizeOfAllUserFilesInBytes());
+    }
+
+    @JsonGetter
+    public BigInteger memoryUsageRemaining() {
+        return BigInteger.valueOf(FileUtils.ONE_GB).subtract(sizeOfAllUserFilesInBytes());
+    }
+
+    @JsonGetter
+    public String displayMemoryUsageRemaining() {
+        return FileUtils.byteCountToDisplaySize(memoryUsageRemaining());
+    }
+
+    @JsonGetter
+    public String currentLocation() {
+        return "";
     }
 
     @Override

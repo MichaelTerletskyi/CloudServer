@@ -11,6 +11,7 @@ export const Profile = () => {
     const [availableMemory] = useState(1024);
     const [ratioOfUsedToAvailableMemory] = useState((usedMemory / availableMemory * 100));
     const [amountOfFiles] = useState(14);
+    const [memoryUsageRemaining] = useState(availableMemory - usedMemory);
     const [userLocation] = useState("Odessa, Ukraine");
 
     const progressBarColor = (ratioOfUsedToAvailableMemory) => {
@@ -70,6 +71,19 @@ export const Profile = () => {
                                                 Files
                                             </h6>
                                             <span className="text-secondary">{amountOfFiles}</span>
+                                        </li>
+
+                                        <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                            <h6 className="mb-0">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                                                     className="feather feather-globe me-2 icon-inline">
+                                                    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+                                                </svg>
+                                                Memory Remaining
+                                            </h6>
+                                            <span className="text-secondary">{memoryUsageRemaining}</span>
                                         </li>
 
                                     </ul>
