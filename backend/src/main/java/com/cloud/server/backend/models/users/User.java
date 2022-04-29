@@ -177,7 +177,12 @@ public class User implements Serializable {
 
     @JsonGetter
     public BigInteger memoryUsageRemaining() {
-        return BigInteger.valueOf(FileUtils.ONE_GB).subtract(sizeOfAllUserFilesInBytes());
+        return maxUsageMemory().subtract(sizeOfAllUserFilesInBytes());
+    }
+
+    @JsonGetter
+    public BigInteger maxUsageMemory() {
+        return BigInteger.valueOf(FileUtils.ONE_GB);
     }
 
     @JsonGetter
