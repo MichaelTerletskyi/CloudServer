@@ -191,19 +191,25 @@ public class User implements Serializable {
     }
 
     @JsonGetter
-    public Location location() throws IOException {
+    public Location location() {
         String databasePath = "C:\\Users\\User\\IdeaProjects\\CloudServer\\backend\\src\\main\\resources\\static\\GeoLiteCity.dat";
         java.io.File file = new java.io.File(databasePath);
-        LookupService lookupService = new LookupService(file, LookupService.GEOIP_MEMORY_CACHE | LookupService.GEOIP_CHECK_CACHE);
-        return lookupService.getLocation(ipAddress());
+        try {
+            LookupService lookupService = new LookupService(file, LookupService.GEOIP_MEMORY_CACHE | LookupService.GEOIP_CHECK_CACHE);
+            return lookupService.getLocation(ipAddress());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @JsonGetter
-    public String ipAddress() throws IOException {
-        String asking = "http://checkip.amazonaws.com/";
-        URL url = new URL(asking);
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()))) {
-            return br.readLine();
+    public String ipAddress() {
+        try {
+            URL url = new URL("http://checkip.amazonaws.com/");
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()))) {
+                return br.readLine();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
