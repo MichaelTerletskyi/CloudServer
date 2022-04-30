@@ -185,8 +185,24 @@ public class User implements Serializable {
     }
 
     @JsonGetter
+    @SuppressWarnings("unchecked")
     public BigInteger maxUsageMemory() {
-        return BigInteger.valueOf(FileUtils.ONE_GB);
+        ClassPathResource classPathResource = new ClassPathResource("static/maxMemory.json", this.getClass().getClassLoader());
+        AtomicReference<String> atomicReferenceUrl = new AtomicReference<>();
+        try {
+            URL classPathResourceURL = classPathResource.getURL();
+            String path = classPathResourceURL.getPath();
+            JSONParser parser = new JSONParser();
+            JSONArray arr = (JSONArray) parser.parse(new FileReader(path));
+
+            arr.forEach(url -> {
+                String link = ((JSONObject) url).get("bytesUsageLimit").toString();
+                atomicReferenceUrl.set(link);
+            });
+        } catch (IOException | JSONException | ParseException e) {
+            e.printStackTrace();
+        }
+        return new BigInteger(atomicReferenceUrl.get());
     }
 
     @JsonGetter
@@ -212,7 +228,7 @@ public class User implements Serializable {
     @SuppressWarnings("unchecked")
     public String ipAddress() {
         try {
-            ClassPathResource classPathResource = new ClassPathResource("static/urls.json", this.getClass().getClassLoader());
+            ClassPathResource classPathResource = new ClassPathResource("static/checkIpAws.json", this.getClass().getClassLoader());
             URL classPathResourceURL = classPathResource.getURL();
             String path = classPathResourceURL.getPath();
 
@@ -253,11 +269,6 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return String.format("User{id=%d, username=%s, email=%s, password=%s}", this.id, this.username, this.email, this.password);
     }
 }
