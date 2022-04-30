@@ -15,18 +15,22 @@ import net.sf.oval.constraint.Size;
 import net.sf.oval.guard.Guarded;
 import net.sf.oval.guard.PostValidateThis;
 import org.apache.commons.io.FileUtils;
+import org.json.JSONException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Serializable;
+import java.io.*;
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @Create 4/29/2021
@@ -192,9 +196,10 @@ public class User implements Serializable {
 
     @JsonGetter
     public Location location() {
-        String databasePath = "C:\\Users\\User\\IdeaProjects\\CloudServer\\backend\\src\\main\\resources\\static\\GeoLiteCity.dat";
-        java.io.File file = new java.io.File(databasePath);
         try {
+            ClassPathResource classPathResource = new ClassPathResource("static/GeoLiteCity.dat", this.getClass().getClassLoader());
+            URL url = classPathResource.getURL();
+            java.io.File file = new java.io.File(url.getPath());
             LookupService lookupService = new LookupService(file, LookupService.GEOIP_MEMORY_CACHE | LookupService.GEOIP_CHECK_CACHE);
             return lookupService.getLocation(ipAddress());
         } catch (IOException e) {
@@ -204,17 +209,31 @@ public class User implements Serializable {
     }
 
     @JsonGetter
+    @SuppressWarnings("unchecked")
     public String ipAddress() {
         try {
-            URL url = new URL("http://checkip.amazonaws.com/");
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()))) {
+            ClassPathResource classPathResource = new ClassPathResource("static/urls.json", this.getClass().getClassLoader());
+            URL classPathResourceURL = classPathResource.getURL();
+            String path = classPathResourceURL.getPath();
+
+            JSONParser parser = new JSONParser();
+            JSONArray arr = (JSONArray) parser.parse(new FileReader(path));
+            AtomicReference<String> atomicReferenceUrl = new AtomicReference<>();
+            arr.forEach(url -> {
+                String link = ((JSONObject) url).get("url").toString();
+                atomicReferenceUrl.set(link);
+            });
+
+            URL ipUrl = new URL(atomicReferenceUrl.get());
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(ipUrl.openStream()))) {
                 return br.readLine();
             }
-        } catch (IOException e) {
+        } catch (IOException | JSONException | ParseException e) {
             e.printStackTrace();
         }
         return "IP is not recognized";
     }
+
 
     @Override
     public boolean equals(Object o) {
