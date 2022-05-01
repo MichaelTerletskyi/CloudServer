@@ -26,8 +26,8 @@ public class FileServiceUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static String getValueFromJSONFile(String relativePath, String field) {
-        ClassPathResource classPathResource = new ClassPathResource(relativePath);
+    public static String getValueFromJSONFile(String field) {
+        ClassPathResource classPathResource = new ClassPathResource("static/systemConfig.json");
         AtomicReference<String> atomicReference = new AtomicReference<>();
         try {
             URL classPathResourceURL = classPathResource.getURL();

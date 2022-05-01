@@ -1,4 +1,4 @@
-import React, {useState, useRef, Component} from "react";
+import React, {useState, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Select from 'react-select'
 
@@ -75,6 +75,13 @@ export const Register = () => {
                 });
         }
     };
+
+    if (successful) {
+        setTimeout(function () {
+            window.location.reload();
+            window.location.href = '/login';
+        }, 3000);
+    }
 
     return (
         <>
@@ -160,7 +167,8 @@ export const Register = () => {
                                 </div>
                             </div>
 
-                            <div role="register-alert" className={successful ? "register-success-msg" : "register-alert-msg"}>
+                            <div role="register-alert"
+                                 className={successful ? "register-success-msg" : "register-alert-msg"}>
                                 <a>&nbsp;{message}</a>
                             </div>
 

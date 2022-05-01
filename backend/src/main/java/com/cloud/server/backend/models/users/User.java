@@ -49,6 +49,7 @@ import java.util.Set;
 public class User implements Serializable {
     private static final long serialVersionUID = -7704786855879035969L;
 
+
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -182,7 +183,8 @@ public class User implements Serializable {
 
     @JsonGetter
     public BigInteger maxUsageMemory() {
-        return new BigInteger(FileServiceUtils.getValueFromJSONFile("static/maxMemory.json", "bytesUsageLimit"));
+        String bytesUsageLimit = FileServiceUtils.getValueFromJSONFile("bytesUsageLimit");
+        return new BigInteger(bytesUsageLimit);
     }
 
     @JsonGetter
@@ -206,7 +208,7 @@ public class User implements Serializable {
 
     @JsonGetter
     public String ipAddress() {
-        String ipAskUrl = FileServiceUtils.getValueFromJSONFile("static/checkIpAws.json", "url");
+        String ipAskUrl = FileServiceUtils.getValueFromJSONFile("ipAskUrl");
         String ip = StringUtils.EMPTY;
         try {
             URL ipUrl = new URL(ipAskUrl);
@@ -217,6 +219,11 @@ public class User implements Serializable {
             e.printStackTrace();
         }
         return StringUtils.defaultIfBlank(ip, "IP is not recognized");
+    }
+
+    @JsonGetter
+    public String computerName() {
+        return System.getenv().get("COMPUTERNAME");
     }
 
     @Override
