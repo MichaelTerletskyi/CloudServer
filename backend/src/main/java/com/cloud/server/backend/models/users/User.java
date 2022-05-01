@@ -3,6 +3,7 @@ package com.cloud.server.backend.models.users;
 import com.cloud.server.backend.enums.ERole;
 import com.cloud.server.backend.models.files.File;
 import com.cloud.server.backend.services.models.files.AtomicBigInteger;
+import com.cloud.server.backend.services.models.files.FileServiceUtils;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.maxmind.geoip.Location;
@@ -15,22 +16,21 @@ import net.sf.oval.constraint.Size;
 import net.sf.oval.guard.Guarded;
 import net.sf.oval.guard.PostValidateThis;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @Create 4/29/2021
@@ -99,10 +99,6 @@ public class User implements Serializable {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -185,24 +181,8 @@ public class User implements Serializable {
     }
 
     @JsonGetter
-    @SuppressWarnings("unchecked")
     public BigInteger maxUsageMemory() {
-        ClassPathResource classPathResource = new ClassPathResource("static/maxMemory.json", this.getClass().getClassLoader());
-        AtomicReference<String> atomicReferenceUrl = new AtomicReference<>();
-        try {
-            URL classPathResourceURL = classPathResource.getURL();
-            String path = classPathResourceURL.getPath();
-            JSONParser parser = new JSONParser();
-            JSONArray arr = (JSONArray) parser.parse(new FileReader(path));
-
-            arr.forEach(url -> {
-                String link = ((JSONObject) url).get("bytesUsageLimit").toString();
-                atomicReferenceUrl.set(link);
-            });
-        } catch (IOException | JSONException | ParseException e) {
-            e.printStackTrace();
-        }
-        return new BigInteger(atomicReferenceUrl.get());
+        return new BigInteger(FileServiceUtils.getValueFromJSONFile("static/maxMemory.json", "bytesUsageLimit"));
     }
 
     @JsonGetter
@@ -225,31 +205,19 @@ public class User implements Serializable {
     }
 
     @JsonGetter
-    @SuppressWarnings("unchecked")
     public String ipAddress() {
+        String ipAskUrl = FileServiceUtils.getValueFromJSONFile("static/checkIpAws.json", "url");
+        String ip = StringUtils.EMPTY;
         try {
-            ClassPathResource classPathResource = new ClassPathResource("static/checkIpAws.json", this.getClass().getClassLoader());
-            URL classPathResourceURL = classPathResource.getURL();
-            String path = classPathResourceURL.getPath();
-
-            JSONParser parser = new JSONParser();
-            JSONArray arr = (JSONArray) parser.parse(new FileReader(path));
-            AtomicReference<String> atomicReferenceUrl = new AtomicReference<>();
-            arr.forEach(url -> {
-                String link = ((JSONObject) url).get("url").toString();
-                atomicReferenceUrl.set(link);
-            });
-
-            URL ipUrl = new URL(atomicReferenceUrl.get());
+            URL ipUrl = new URL(ipAskUrl);
             try (BufferedReader br = new BufferedReader(new InputStreamReader(ipUrl.openStream()))) {
-                return br.readLine();
+                ip = br.readLine();
             }
-        } catch (IOException | JSONException | ParseException e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-        return "IP is not recognized";
+        return StringUtils.defaultIfBlank(ip, "IP is not recognized");
     }
-
 
     @Override
     public boolean equals(Object o) {

@@ -14,6 +14,7 @@ export const Profile = () => {
     const [userDisplaySizeOfAllUserFilesInBytes] = useState(JSON.parse(user).user.displaySizeOfAllUserFilesInBytes);
     const [userDisplayMemoryUsageRemaining] = useState(JSON.parse(user).user.displayMemoryUsageRemaining);
     const [userLocationCountryName] = useState(JSON.parse(user).user.location.countryName);
+    const [userLocationCity] = useState(JSON.parse(user).user.location.city);
     const [userIp] = useState(JSON.parse(user).user.ipAddress);
 
     const progressBarColor = (ratioOfUsedToAvailableMemory) => {
@@ -47,7 +48,7 @@ export const Profile = () => {
                                                      className="feather feather-globe me-2 icon-inline">
                                                     <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
                                                 </svg>
-                                                {userLocationCountryName}
+                                                {userLocationCity}, {userLocationCountryName}
                                             </p>
                                             <button className="btn btn-outline-dark">Upload Profile Icon</button>
                                         </div>
