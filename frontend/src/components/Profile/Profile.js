@@ -5,6 +5,7 @@ import defaultUserIcon from "./assets/default user icon.png";
 
 export const Profile = () => {
     const [user] = useState(localStorage.getItem("user"));
+    const [ipDetails] = useState(sessionStorage.getItem("ipDetails"));
 
     const [usedMemory] = useState(JSON.parse(user).user.sizeOfAllUserFilesInBytes);
     const [maxUsageMemory] = useState(JSON.parse(user).user.maxUsageMemory);
@@ -13,9 +14,6 @@ export const Profile = () => {
 
     const [userDisplaySizeOfAllUserFilesInBytes] = useState(JSON.parse(user).user.displaySizeOfAllUserFilesInBytes);
     const [userDisplayMemoryUsageRemaining] = useState(JSON.parse(user).user.displayMemoryUsageRemaining);
-    const [userLocationCountryName] = useState(JSON.parse(user).user.location.countryName);
-    const [userLocationCity] = useState(JSON.parse(user).user.location.city);
-    const [userIp] = useState(JSON.parse(user).user.ipAddress);
 
     const progressBarColor = (ratioOfUsedToAvailableMemory) => {
         if (ratioOfUsedToAvailableMemory < 33) return "progress-bar bg-success";
@@ -48,7 +46,7 @@ export const Profile = () => {
                                                      className="feather feather-globe me-2 icon-inline">
                                                     <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
                                                 </svg>
-                                                {userLocationCity}, {userLocationCountryName}
+                                               City TODO, Country TODO
                                             </p>
                                             <button className="btn btn-outline-dark">Upload Profile Icon</button>
                                         </div>
@@ -109,7 +107,7 @@ export const Profile = () => {
                                                 </svg>
                                                 IP
                                             </h6>
-                                            <span className="text-secondary">{userIp}</span>
+                                            <span className="text-secondary">IP TODO</span>
                                         </li>
 
                                     </ul>
@@ -171,6 +169,8 @@ export const Profile = () => {
                             </div>
 
                             <p>{JSON.stringify(JSON.parse(user).user)}</p>
+                            <p>___</p>
+                            <p>{JSON.stringify(JSON.parse(ipDetails))}</p>
 
                         </div>
                     </div>

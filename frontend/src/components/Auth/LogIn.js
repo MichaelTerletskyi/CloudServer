@@ -16,6 +16,7 @@ import "./vendor/select2/select2.min.css";
 import "./vendor/daterangepicker/daterangepicker.css";
 import "./css/util.css";
 import "./css/main.css";
+import axios from "axios";
 
 export const LogIn = (props) => {
     const form = useRef();
@@ -41,16 +42,21 @@ export const LogIn = (props) => {
         setPassword(password);
     };
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         setLoading(true);
         form.current.validateAll();
         if (checkBtn.current.context._errors.length === 0) {
             dispatch(login(username, password))
                 .then(() => {
-                    setSuccessful(true);
-                    props.history.push("/profile");
-                    window.location.reload();
+                    axios.get('https://ipapi.co/json/').then((res) => {
+                        alert(JSON.stringify(res.data));
+                        sessionStorage.setItem("ipDetails", JSON.stringify(res.data));
+
+                        setSuccessful(true);
+                        props.history.push("/profile");
+                        window.location.reload();
+                    });
                 })
                 .catch(() => {
                     setLoading(false);
@@ -60,7 +66,7 @@ export const LogIn = (props) => {
         }
     };
 
-    if (isLoggedIn) {
+    if (isLoggedIn && successful) {
         return <Redirect to="/profile"/>;
     }
 
@@ -118,7 +124,8 @@ export const LogIn = (props) => {
                             <div className="container-login100-form-btn">
                                 <div className="wrap-login100-form-btn">
                                     <div className="login100-form-bgbtn"/>
-                                    <button type="submit" className="login100-form-btn" disabled={loading}>Sign in</button>
+                                    <button type="submit" className="login100-form-btn" disabled={loading}>Sign in
+                                    </button>
                                 </div>
                             </div>
 

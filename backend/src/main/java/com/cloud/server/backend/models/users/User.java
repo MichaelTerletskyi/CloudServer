@@ -193,13 +193,13 @@ public class User implements Serializable {
     }
 
     @JsonGetter
-    public Location location() {
+    public Location serverLocation() {
         try {
             ClassPathResource classPathResource = new ClassPathResource("static/GeoLiteCity.dat", this.getClass().getClassLoader());
             URL url = classPathResource.getURL();
             java.io.File file = new java.io.File(url.getPath());
             LookupService lookupService = new LookupService(file, LookupService.GEOIP_MEMORY_CACHE | LookupService.GEOIP_CHECK_CACHE);
-            return lookupService.getLocation(ipAddress());
+            return lookupService.getLocation(serverIpAddress());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -207,7 +207,7 @@ public class User implements Serializable {
     }
 
     @JsonGetter
-    public String ipAddress() {
+    public String serverIpAddress() {
         String ipAskUrl = FileServiceUtils.getValueFromJSONFile("ipAskUrl");
         String ip = StringUtils.EMPTY;
         try {
@@ -222,7 +222,7 @@ public class User implements Serializable {
     }
 
     @JsonGetter
-    public String computerName() {
+    public String serverComputerName() {
         return System.getenv().get("COMPUTERNAME");
     }
 
