@@ -17,6 +17,7 @@ import "./vendor/select2/select2.min.css";
 import "./vendor/daterangepicker/daterangepicker.css";
 import "./css/util.css";
 import "./css/main.css";
+import "./style.css"
 
 const roleOptions = [
     {value: 'ROLE_USER', label: 'User'},
@@ -85,6 +86,10 @@ export const Register = () => {
 
     return (
         <>
+            <div className="bg-register"/>
+            <div className="bg-register bg2"/>
+            <div className="bg-register bg3"/>
+
             <div className="limiter">
                 <div className="container-login100">
                     <div className="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">

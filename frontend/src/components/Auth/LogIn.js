@@ -16,6 +16,7 @@ import "./vendor/select2/select2.min.css";
 import "./vendor/daterangepicker/daterangepicker.css";
 import "./css/util.css";
 import "./css/main.css";
+import "./style.css"
 import axios from "axios";
 
 export const LogIn = (props) => {
@@ -50,9 +51,7 @@ export const LogIn = (props) => {
             dispatch(login(username, password))
                 .then(() => {
                     axios.get('https://ipapi.co/json/').then((res) => {
-                        alert(JSON.stringify(res.data));
                         sessionStorage.setItem("ipDetails", JSON.stringify(res.data));
-
                         setSuccessful(true);
                         props.history.push("/profile");
                         window.location.reload();
@@ -72,6 +71,13 @@ export const LogIn = (props) => {
 
     return (
         <>
+            <div className="bg-login"/>
+            <div className="bg-login bg2"/>
+            <div className="bg-login bg3"/>
+            {/*<div className="content">*/}
+            {/*    <h1>Sliding Diagonals Background Effect</h1>*/}
+            {/*</div>*/}
+
             <div className="limiter">
                 <div className="container-login100">
                     <div className="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">

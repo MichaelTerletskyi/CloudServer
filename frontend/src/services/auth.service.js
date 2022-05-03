@@ -20,8 +20,7 @@ const login = (username, password) => {
         })
         .then((response) => {
             if (response.data.accessToken) {
-                // fetchFiles(response.data.id);
-                localStorage.setItem("user", JSON.stringify(response.data));
+                sessionStorage.setItem("user", JSON.stringify(response.data));
             }
             return response.data;
         });
@@ -32,13 +31,13 @@ const fetchFiles = (id) => {
     axios.get(DATA_API_URL + "/get/all/files/by/user/id=" + id)
         .then((response) => {
             response.data.forEach(file => {
-                localStorage.setItem(JSON.parse(JSON.stringify(file)).originalFilename, JSON.stringify(file));
+                sessionStorage.setItem(JSON.parse(JSON.stringify(file)).originalFilename, JSON.stringify(file));
             });
         });
 };
 
 const logout = () => {
-    localStorage.clear();
+    sessionStorage.clear();
 };
 
 export default {

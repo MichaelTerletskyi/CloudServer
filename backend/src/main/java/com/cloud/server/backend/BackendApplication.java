@@ -4,6 +4,7 @@ import com.cloud.server.backend.enums.ERole;
 import com.cloud.server.backend.models.users.Role;
 import com.cloud.server.backend.repository.users.RoleRepository;
 import com.cloud.server.backend.services.models.files.FileServiceUtils;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -58,7 +60,7 @@ public class BackendApplication {
         };
     }
 
-     // First Start
+    // First Start
 //    @Bean
 //    CommandLineRunner commandLineRunner(RoleRepository roleRepository) {
 //        return args -> {
@@ -68,6 +70,11 @@ public class BackendApplication {
 //                String username = env.getProperty("spring.datasource.username");
 //                String password = env.getProperty("spring.datasource.password");
 //                String bytesUsageLimit = FileServiceUtils.getValueFromJSONFile("bytesUsageLimit");
+//
+//                if (new BigInteger(bytesUsageLimit).compareTo(BigInteger.valueOf(FileUtils.ONE_GB)) > 0) {
+//                    System.out.println("Bytes usage limit to big, 1GB max");
+//                    System.exit(1);
+//                }
 //
 //                roleRepository.save(new Role(ERole.ROLE_USER));
 //                roleRepository.save(new Role(ERole.ROLE_ADMIN));

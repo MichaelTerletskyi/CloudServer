@@ -6,7 +6,7 @@ import {NavBarRegister} from "./NavBarRegister";
 import {NavBarProfile} from "./NavBarProfile";
 
 function NavBar() {
-    const [isLoggedIn] = useState(localStorage.hasOwnProperty("user"));
+    const [isLoggedIn] = useState(sessionStorage.hasOwnProperty("user"));
 
     return (
         <>
@@ -16,7 +16,9 @@ function NavBar() {
 
                         <div className="col-3">
                             <div className="site-logo">
-                                <a href="/" className="font-weight-bold">Cloud Server</a>
+                                <a href="/" className="font-weight-bold">
+                                    <h6 id="cloud-server-logo-background">Cloud Server</h6>
+                                </a>
                             </div>
                         </div>
 
