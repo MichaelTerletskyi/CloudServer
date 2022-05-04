@@ -172,7 +172,7 @@ public class User implements Serializable {
     }
 
     @JsonGetter
-    public String displaySizeOfAllUserFilesInBytes() {
+    public String displaySizeOfAllUserFiles() {
         return FileUtils.byteCountToDisplaySize(sizeOfAllUserFilesInBytes());
     }
 
@@ -190,6 +190,11 @@ public class User implements Serializable {
     @JsonGetter
     public String displayMemoryUsageRemaining() {
         return FileUtils.byteCountToDisplaySize(memoryUsageRemaining());
+    }
+
+    @JsonGetter
+    public String displayMaxUsageMemory() {
+        return FileUtils.byteCountToDisplaySize(maxUsageMemory());
     }
 
     @JsonGetter
