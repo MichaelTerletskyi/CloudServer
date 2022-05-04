@@ -16,6 +16,8 @@ import "./vendor/select2/select2.min.css";
 import "./vendor/daterangepicker/daterangepicker.css";
 import "./css/util.css";
 import "./css/main.css";
+import "./style.css"
+import axios from "axios";
 
 export const LogIn = (props) => {
     const form = useRef();
@@ -41,16 +43,19 @@ export const LogIn = (props) => {
         setPassword(password);
     };
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         setLoading(true);
         form.current.validateAll();
         if (checkBtn.current.context._errors.length === 0) {
             dispatch(login(username, password))
                 .then(() => {
-                    setSuccessful(true);
-                    props.history.push("/profile");
-                    window.location.reload();
+                    axios.get('https://ipapi.co/json/').then((res) => {
+                        sessionStorage.setItem("ipDetails", JSON.stringify(res.data));
+                        setSuccessful(true);
+                        props.history.push("/profile");
+                        window.location.reload();
+                    });
                 })
                 .catch(() => {
                     setLoading(false);
@@ -60,12 +65,19 @@ export const LogIn = (props) => {
         }
     };
 
-    if (isLoggedIn) {
+    if (isLoggedIn && successful) {
         return <Redirect to="/profile"/>;
     }
 
     return (
         <>
+            <div className="bg-login"/>
+            <div className="bg-login bg2"/>
+            <div className="bg-login bg3"/>
+            {/*<div className="content">*/}
+            {/*    <h1>Sliding Diagonals Background Effect</h1>*/}
+            {/*</div>*/}
+
             <div className="limiter">
                 <div className="container-login100">
                     <div className="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
@@ -118,7 +130,8 @@ export const LogIn = (props) => {
                             <div className="container-login100-form-btn">
                                 <div className="wrap-login100-form-btn">
                                     <div className="login100-form-bgbtn"/>
-                                    <button type="submit" className="login100-form-btn" disabled={loading}>Sign in</button>
+                                    <button type="submit" className="login100-form-btn" disabled={loading}>Sign in
+                                    </button>
                                 </div>
                             </div>
 

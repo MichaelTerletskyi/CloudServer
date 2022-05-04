@@ -1,5 +1,7 @@
 package com.cloud.server.backend.payload.response;
 
+import com.cloud.server.backend.models.users.User;
+
 import java.util.List;
 
 /**
@@ -14,13 +16,15 @@ public class JwtResponse {
     private String username;
     private String email;
     private List<String> roles;
+    private User user;
 
-    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles) {
+    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, User user) {
         this.token = accessToken;
         this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
+        this.user = user;
     }
 
     public String getAccessToken() {
@@ -65,5 +69,13 @@ public class JwtResponse {
 
     public List<String> getRoles() {
         return roles;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

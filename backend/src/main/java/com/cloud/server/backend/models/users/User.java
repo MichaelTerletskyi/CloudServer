@@ -2,8 +2,12 @@ package com.cloud.server.backend.models.users;
 
 import com.cloud.server.backend.enums.ERole;
 import com.cloud.server.backend.models.files.File;
+import com.cloud.server.backend.services.models.files.AtomicBigInteger;
+import com.cloud.server.backend.services.models.files.FileServiceUtils;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.maxmind.geoip.Location;
+import com.maxmind.geoip.LookupService;
 import io.jsonwebtoken.lang.Collections;
 import net.sf.oval.constraint.Email;
 import net.sf.oval.constraint.Length;
@@ -11,13 +15,28 @@ import net.sf.oval.constraint.NotBlank;
 import net.sf.oval.constraint.Size;
 import net.sf.oval.guard.Guarded;
 import net.sf.oval.guard.PostValidateThis;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+/**
+ * @Create 4/29/2021
+ * @Author Michael Terletskyi
+ * @Implements of {@link Serializable} interface.
+ */
 
 @Guarded(checkInvariants = false)
 @Component
@@ -29,6 +48,7 @@ import java.util.Set;
         })
 public class User implements Serializable {
     private static final long serialVersionUID = -7704786855879035969L;
+
 
     @Id
     @Column(name = "user_id")
@@ -80,10 +100,6 @@ public class User implements Serializable {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -147,6 +163,74 @@ public class User implements Serializable {
         return logicalTagsSet;
     }
 
+    @JsonGetter
+    public BigInteger sizeOfAllUserFilesInBytes() {
+        BigInteger sizeOfFiles = BigInteger.ZERO;
+        AtomicBigInteger atomicBigInteger = new AtomicBigInteger(sizeOfFiles);
+        getFiles().forEach(file -> atomicBigInteger.incrementAndGet(file.sizeInBytes()));
+        return atomicBigInteger.get();
+    }
+
+    @JsonGetter
+    public String displaySizeOfAllUserFiles() {
+        return FileUtils.byteCountToDisplaySize(sizeOfAllUserFilesInBytes());
+    }
+
+    @JsonGetter
+    public BigInteger memoryUsageRemaining() {
+        return maxUsageMemory().subtract(sizeOfAllUserFilesInBytes());
+    }
+
+    @JsonGetter
+    public BigInteger maxUsageMemory() {
+        String bytesUsageLimit = FileServiceUtils.getValueFromJSONFile("bytesUsageLimit");
+        return new BigInteger(bytesUsageLimit);
+    }
+
+    @JsonGetter
+    public String displayMemoryUsageRemaining() {
+        return FileUtils.byteCountToDisplaySize(memoryUsageRemaining());
+    }
+
+    @JsonGetter
+    public String displayMaxUsageMemory() {
+        return FileUtils.byteCountToDisplaySize(maxUsageMemory());
+    }
+
+    @JsonGetter
+    public Location serverLocation() {
+        try {
+            ClassPathResource classPathResource = new ClassPathResource("static/GeoLiteCity.dat", this.getClass().getClassLoader());
+            URL url = classPathResource.getURL();
+            java.io.File file = new java.io.File(url.getPath());
+            LookupService lookupService = new LookupService(file, LookupService.GEOIP_MEMORY_CACHE | LookupService.GEOIP_CHECK_CACHE);
+            return lookupService.getLocation(serverIpAddress());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @JsonGetter
+    public String serverIpAddress() {
+        String ipAskUrl = FileServiceUtils.getValueFromJSONFile("ipAskUrl");
+        String ip = StringUtils.EMPTY;
+        try {
+            URL ipUrl = new URL(ipAskUrl);
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(ipUrl.openStream()))) {
+                ip = br.readLine();
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return StringUtils.defaultIfBlank(ip, "IP is not recognized");
+    }
+
+    @JsonGetter
+    public String serverComputerName() {
+        return System.getenv().get("COMPUTERNAME");
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -165,11 +249,6 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return String.format("User{id=%d, username=%s, email=%s, password=%s}", this.id, this.username, this.email, this.password);
     }
 }

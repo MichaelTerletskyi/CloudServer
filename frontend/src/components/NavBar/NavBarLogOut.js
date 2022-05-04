@@ -6,7 +6,7 @@ export const NavBarLogOut = () => {
 
     const handleClick = () => {
         setClick(!click);
-        localStorage.clear();
+        sessionStorage.clear();
     };
 
     return (

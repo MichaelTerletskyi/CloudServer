@@ -3,24 +3,28 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@googlemaps/react-wrapper": "latest",
+    "@iconify/react": "^3.2.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "bootstrap": "^4.0.0-alpha.6",
+    "google-maps-react": "^2.0.6",
     "history": "latest",
     "react": "^17.0.2",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^17.0.2",
+    "react-google-maps": "^9.4.5",
     "react-scripts": "4.0.3",
-    "react-validation": "^3.0.7",
     "react-select": "^5.2.2",
+    "react-social-icons": "^5.13.0",
+    "react-validation": "^3.0.7",
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
     "validator": "^13.7.0",
     "web-vitals": "^1.1.2",
-    "react-social-icons": "^5.13.0",
-    "font-awesome": "lastest"
+    "node-sass": "^6.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -47,7 +51,9 @@
     ]
   },
   "devDependencies": {
+    "@iconify/icons-mdi": "^1.2.9",
     "axios": "^0.24.0",
+    "google-map-react": "^2.1.10",
     "react-redux": "^7.2.6",
     "react-router-dom": "5.2.0"
   }

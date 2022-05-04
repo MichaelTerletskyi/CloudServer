@@ -1,4 +1,4 @@
-import React, {useState, useRef, Component} from "react";
+import React, {useState, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Select from 'react-select'
 
@@ -17,6 +17,7 @@ import "./vendor/select2/select2.min.css";
 import "./vendor/daterangepicker/daterangepicker.css";
 import "./css/util.css";
 import "./css/main.css";
+import "./style.css"
 
 const roleOptions = [
     {value: 'ROLE_USER', label: 'User'},
@@ -76,8 +77,19 @@ export const Register = () => {
         }
     };
 
+    if (successful) {
+        setTimeout(function () {
+            window.location.reload();
+            window.location.href = '/login';
+        }, 3000);
+    }
+
     return (
         <>
+            <div className="bg-register"/>
+            <div className="bg-register bg2"/>
+            <div className="bg-register bg3"/>
+
             <div className="limiter">
                 <div className="container-login100">
                     <div className="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
@@ -160,7 +172,8 @@ export const Register = () => {
                                 </div>
                             </div>
 
-                            <div role="register-alert" className={successful ? "register-success-msg" : "register-alert-msg"}>
+                            <div role="register-alert"
+                                 className={successful ? "register-success-msg" : "register-alert-msg"}>
                                 <a>&nbsp;{message}</a>
                             </div>
 

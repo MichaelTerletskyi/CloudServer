@@ -102,19 +102,21 @@ public class FileServiceImpl extends FileService<File> {
 
         File fileTemp = new File(file);
         User user = userService.getById(id);
+
+        Set<FileTag> fileTags = new HashSet<>();
+        try {
+            fileTags.addAll(FilesUtils.drewTagsAdapter(ImageMetadataReader.readMetadata(file.getInputStream())));
+        } catch (IOException | ImageProcessingException e) {
+            e.printStackTrace();
+        }
+
         template.execute(status -> {
-            try {
-                Set<FileTag> fileTags = FilesUtils.drewTagsAdapter(ImageMetadataReader.readMetadata(file.getInputStream()));
+            fileTemp.setUser(user);
+            fileTemp.setFileTags(fileTags);
+            save(fileTemp);
 
-                fileTemp.setUser(user);
-                fileTemp.setFileTags(fileTags);
-                save(fileTemp);
-
-                fileTags.forEach(fileTag -> fileTag.setFile(fileTemp));
-                save(fileTemp);
-            } catch (IOException | ImageProcessingException e) {
-                e.printStackTrace();
-            }
+            fileTags.forEach(fileTag -> fileTag.setFile(fileTemp));
+            save(fileTemp);
             return fileTemp;
         });
         return fileTemp;
