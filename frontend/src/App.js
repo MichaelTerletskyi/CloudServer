@@ -9,6 +9,7 @@ import {LogIn} from "./components/Auth/LogIn";
 import {Register} from "./components/Auth/Register";
 import {Profile} from "./components/Profile/Profile";
 import {LogOut} from "./components/Auth/LogOut";
+import {Files} from "./components/Files/Files";
 
 const App = () => {
     return (
@@ -21,6 +22,7 @@ const App = () => {
                         <Route exact path="/login" component={LogIn}/>
                         <Route exact path="/register" component={Register}/>
                         <Route exact path="/profile" component={Profile}/>
+                        <Route exact path="/files" component={Files}/>
                         <Route path="/logout" component={LogOut}/>
                     </Switch>
                 </div>

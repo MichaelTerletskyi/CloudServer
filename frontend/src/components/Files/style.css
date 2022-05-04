@@ -1,0 +1,14 @@
+#dtBasicExample_filter label {
+    position: relative;
+}
+
+#dtBasicExample_filter input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+}
+
+.dataTables_info {
+    display: none;
+}

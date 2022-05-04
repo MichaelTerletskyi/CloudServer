@@ -1,7 +1,5 @@
 package com.cloud.server.backend.controllers.models.files;
 
-import com.cloud.server.backend.exceptions.FileNotFoundException;
-import com.cloud.server.backend.exceptions.UserNotFoundException;
 import com.cloud.server.backend.models.files.File;
 import com.cloud.server.backend.models.users.User;
 import com.cloud.server.backend.services.models.files.impls.FileServiceImpl;

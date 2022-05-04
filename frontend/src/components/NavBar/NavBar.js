@@ -4,6 +4,7 @@ import {NavBarLogOut} from "././NavBarLogOut";
 import {NavBarLogIn} from "./NavBarLogIn";
 import {NavBarRegister} from "./NavBarRegister";
 import {NavBarProfile} from "./NavBarProfile";
+import {NavBarFiles} from "./NavBarFiles";
 
 function NavBar() {
     const [isLoggedIn] = useState(sessionStorage.hasOwnProperty("user"));
@@ -40,6 +41,7 @@ function NavBar() {
                                         ) : (
                                             <>
                                                 <NavBarProfile/>
+                                                <NavBarFiles/>
                                                 <NavBarLogOut/>
                                             </>
                                         )

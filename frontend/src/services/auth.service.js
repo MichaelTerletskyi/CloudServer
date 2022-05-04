@@ -1,5 +1,4 @@
 import axios from "axios";
-
 const AUTH_API_URL = "http://localhost:8080/rest/api/auth";
 const DATA_API_URL = "http://localhost:8080/rest/api/data";
 
@@ -21,18 +20,17 @@ const login = (username, password) => {
         .then((response) => {
             if (response.data.accessToken) {
                 sessionStorage.setItem("user", JSON.stringify(response.data));
+                fetchUserFiles(JSON.parse(sessionStorage.getItem("user")).id);
             }
             return response.data;
         });
 };
 
-// https://learn.javascript.ru/localstorage // localStorage.hasOwnProperty(key)
-const fetchFiles = (id) => {
-    axios.get(DATA_API_URL + "/get/all/files/by/user/id=" + id)
+const fetchUserFiles = (id) => {
+    axios
+        .get(DATA_API_URL + "/get/all/files/by/user/id=" + id)
         .then((response) => {
-            response.data.forEach(file => {
-                sessionStorage.setItem(JSON.parse(JSON.stringify(file)).originalFilename, JSON.stringify(file));
-            });
+            sessionStorage.setItem("user_files", JSON.stringify(response.data));
         });
 };
 

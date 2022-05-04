@@ -14,7 +14,7 @@ export const Profile = () => {
     const [displayMemoryUsageRemaining] = useState(JSON.parse(user).user.displayMemoryUsageRemaining);
     const [displayMaxUsageMemory] = useState(JSON.parse(user).user.displayMaxUsageMemory);
     const [displayMemoryLeft] = useState(100 - ratioOfUsedToAvailableMemory);
-    
+
     const [ip] = useState(JSON.parse(ipDetails).ip);
     const [version] = useState(JSON.parse(ipDetails).version);
     const [city] = useState(JSON.parse(ipDetails).city);
@@ -32,6 +32,8 @@ export const Profile = () => {
     const [org] = useState(JSON.parse(ipDetails).org);
     const [asn] = useState(JSON.parse(ipDetails).asn);
 
+    const [username] = useState(JSON.parse(user).user.username);
+
     const displayRatioOfUsedToAvailableMemory = (ration) => ration + '%';
     const progressBarColor = (ration) => {
         if (ration < 33) return '#00f008';
@@ -47,7 +49,6 @@ export const Profile = () => {
                 <div className="app-header">
 
                 </div>
-
                 <div className="app-content">
                     <div className="app-sidebar">
                         <a href="/profile" className="app-sidebar-link active">
@@ -63,7 +64,7 @@ export const Profile = () => {
                     <div className="projects-section">
                         <div className="projects-section-header">
                             <p>Files</p>
-                            <p className="time"> </p>
+                            <p className="time">Files of {username}</p>
                         </div>
                         <div className="projects-section-line">
                             <div className="projects-status">
@@ -123,14 +124,17 @@ export const Profile = () => {
                                     </div>
                                 </div>
                                 <div className="project-box-content-header">
-                                    <p className="box-content-header">TEST 3</p>
-                                    <p className="box-content-subheader">Prototyping</p>
+                                    <p className="box-content-header">Memory Usage</p>
+                                    {/*<p className="box-content-subheader">stats</p>*/}
                                 </div>
                                 <div className="box-progress-wrapper">
-                                    <p className="box-progress-header">Progress</p>
+                                    <p className="box-progress-header">statistics</p>
                                     <div className="box-progress-bar">
                                             <span className="box-progress"
-                                                  style={{width: displayRatioOfUsedToAvailableMemory(ratioOfUsedToAvailableMemory), backgroundColor: progressBarColor(ratioOfUsedToAvailableMemory)}}/>
+                                                  style={{
+                                                      width: displayRatioOfUsedToAvailableMemory(ratioOfUsedToAvailableMemory),
+                                                      backgroundColor: progressBarColor(ratioOfUsedToAvailableMemory)
+                                                  }}/>
                                     </div>
                                     <p className="box-progress-percentage">{displayRatioOfUsedToAvailableMemory(ratioOfUsedToAvailableMemory)} </p>
                                 </div>
@@ -144,22 +148,10 @@ export const Profile = () => {
                                 </div>
                             </div>
                         </div>
+                        <br/>
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             <div className="app-container">
                 <div className="app-header-2">
@@ -181,7 +173,7 @@ export const Profile = () => {
                     <div className="projects-section">
                         <div className="projects-section-header">
                             <p>Location</p>
-                            <p className="time">Based on your browser</p>
+                            <p className="time">Location data of {username}</p>
                         </div>
                         <div className="projects-section-line">
                             <div className="projects-status">
@@ -397,14 +389,13 @@ export const Profile = () => {
 
                                         </div>
                                         <div className="days-left" style={{color: '#ffffff'}}>
-                                            Languages data
+                                            asn and org
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
+                        <br/>
                     </div>
                 </div>
             </div>
