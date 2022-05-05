@@ -1,6 +1,6 @@
 import axios from "axios";
 import {USER, USER_FILES} from "../consts/StorageEntities"
-import {AUTH_API_URL, DATA_API_URL} from "../consts/DatabaseAPIUrls";
+import {AUTH_API_URL, DATA_API_URL} from "../consts/APIUrls";
 
 
 const register = (username, email, password, role) => {
