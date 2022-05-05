@@ -1,5 +1,6 @@
 import {NavLink} from "react-router-dom";
 import React, {useState} from "react";
+import {LOGIN} from "../../consts/RoutePathes";
 
 export const NavBarLogIn = () => {
     const [click, setClick] = useState(false);
@@ -12,7 +13,7 @@ export const NavBarLogIn = () => {
         <li className="nav-item">
             <NavLink
                 exact
-                to="/login"
+                to={LOGIN}
                 activeClassName="active"
                 className="nav-links"
                 onClick={handleClick}

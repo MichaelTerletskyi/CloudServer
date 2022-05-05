@@ -18,6 +18,7 @@ import "./vendor/daterangepicker/daterangepicker.css";
 import "./css/util.css";
 import "./css/main.css";
 import "./style.css"
+import {LOGIN} from "../../consts/RoutePathes";
 
 const roleOptions = [
     {value: 'ROLE_USER', label: 'User'},
@@ -178,7 +179,7 @@ export const Register = () => {
                             </div>
 
                             <p className="forgot-password text-right">
-                                Already registered <a href="/login">log in?</a>
+                                Already registered <a href={LOGIN}>log in?</a>
                             </p>
 
 

@@ -1,5 +1,6 @@
 import {NavLink} from "react-router-dom";
 import React, {useState} from "react";
+import {FILES} from "../../consts/RoutePathes";
 
 export const NavBarFiles = () => {
     const [click, setClick] = useState(false);
@@ -12,7 +13,7 @@ export const NavBarFiles = () => {
         <li className="nav-item">
             <NavLink
                 exact
-                to="/files"
+                to={FILES}
                 activeClassName="active"
                 className="nav-links"
                 onClick={handleClick}

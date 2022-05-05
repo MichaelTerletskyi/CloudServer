@@ -1,5 +1,6 @@
 import {NavLink} from "react-router-dom";
 import React, {useState} from "react";
+import {LOGOUT} from "../../actions/authTypes";
 
 export const NavBarLogOut = () => {
     const [click, setClick] = useState(false);
@@ -13,7 +14,7 @@ export const NavBarLogOut = () => {
         <li className="nav-item">
             <NavLink
                 exact
-                to="/logout"
+                to={LOGOUT}
                 activeClassName="active"
                 className="nav-links"
                 onClick={handleClick}

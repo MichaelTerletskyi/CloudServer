@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import "./styles.scss";
 import {IP_DETAILS, USER} from "../../consts/StorageEntities";
+import {PROFILE} from "../../consts/RoutePathes";
 
 export const Profile = () => {
     const [user] = useState(sessionStorage.getItem(USER));
@@ -52,7 +53,7 @@ export const Profile = () => {
                 </div>
                 <div className="app-content">
                     <div className="app-sidebar">
-                        <a href="/profile" className="app-sidebar-link active">
+                        <a href={PROFILE} className="app-sidebar-link active">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                  fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
                                  strokeWidth="2" className="feather feather-pie-chart" viewBox="0 0 24 24">
@@ -161,7 +162,7 @@ export const Profile = () => {
 
                 <div className="app-content">
                     <div className="app-sidebar">
-                        <a href="/profile" className="app-sidebar-link active">
+                        <a href={PROFILE} className="app-sidebar-link active">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                  fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
                                  strokeLinejoin="round" className="feather feather-home">
