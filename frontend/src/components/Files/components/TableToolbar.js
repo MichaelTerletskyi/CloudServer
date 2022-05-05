@@ -63,19 +63,11 @@ const TableToolbar = props => {
             )}
 
             {numSelected > 0 ? (
-                (<Tooltip title="Delete">
+                <Tooltip title="Delete">
                     <IconButton aria-label="delete" onClick={deleteUserHandler}>
                         <DeleteIcon/>
                     </IconButton>
-                </Tooltip>)
-
-                &&
-
-                (<Tooltip title="Download">
-                    <IconButton aria-label="download" onClick={deleteUserHandler}>
-                        <DeleteIcon/>
-                    </IconButton>
-                </Tooltip>)
+                </Tooltip>
             ) : (
                 <GlobalFilter
                     preGlobalFilteredRows={preGlobalFilteredRows}
