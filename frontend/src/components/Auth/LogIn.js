@@ -18,6 +18,7 @@ import "./css/util.css";
 import "./css/main.css";
 import "./style.css"
 import axios from "axios";
+import {IP_DETAILS} from "../../consts/StorageEntities";
 
 export const LogIn = (props) => {
     const form = useRef();
@@ -51,7 +52,7 @@ export const LogIn = (props) => {
             dispatch(login(username, password))
                 .then(() => {
                     axios.get('https://ipapi.co/json/').then((res) => {
-                        sessionStorage.setItem("ipDetails", JSON.stringify(res.data));
+                        sessionStorage.setItem(IP_DETAILS, JSON.stringify(res.data));
                         setSuccessful(true);
                         props.history.push("/profile");
                         window.location.reload();

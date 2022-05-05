@@ -55,7 +55,7 @@ const GlobalFilter = ({preGlobalFilteredRows, globalFilter, setGlobalFilter,}) =
             <InputBase
                 value={globalFilter || ''}
                 onChange={e => {
-                    setGlobalFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
+                    setGlobalFilter(e.target.value || undefined)
                 }}
                 placeholder={`${count} records...`}
                 classes={{

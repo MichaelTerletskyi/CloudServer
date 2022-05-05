@@ -5,9 +5,10 @@ import {NavBarLogIn} from "./NavBarLogIn";
 import {NavBarRegister} from "./NavBarRegister";
 import {NavBarProfile} from "./NavBarProfile";
 import {NavBarFiles} from "./NavBarFiles";
+import {USER} from "../../consts/StorageEntities";
 
 function NavBar() {
-    const [isLoggedIn] = useState(sessionStorage.hasOwnProperty("user"));
+    const [isLoggedIn] = useState(sessionStorage.hasOwnProperty(USER));
 
     return (
         <>

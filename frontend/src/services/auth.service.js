@@ -1,6 +1,7 @@
 import axios from "axios";
-const AUTH_API_URL = "http://localhost:8080/rest/api/auth";
-const DATA_API_URL = "http://localhost:8080/rest/api/data";
+import {USER, USER_FILES} from "../consts/StorageEntities"
+import {AUTH_API_URL, DATA_API_URL} from "../consts/DatabaseAPIUrls";
+
 
 const register = (username, email, password, role) => {
     return axios.post(AUTH_API_URL + "/signup", {
@@ -19,8 +20,8 @@ const login = (username, password) => {
         })
         .then((response) => {
             if (response.data.accessToken) {
-                sessionStorage.setItem("user", JSON.stringify(response.data));
-                fetchUserFiles(JSON.parse(sessionStorage.getItem("user")).id);
+                sessionStorage.setItem(USER, JSON.stringify(response.data));
+                fetchUserFiles(JSON.parse(sessionStorage.getItem(USER)).id);
             }
             return response.data;
         });
@@ -30,7 +31,7 @@ const fetchUserFiles = (id) => {
     axios
         .get(DATA_API_URL + "/get/all/files/by/user/id=" + id)
         .then((response) => {
-            sessionStorage.setItem("user_files", JSON.stringify(response.data));
+            sessionStorage.setItem(USER_FILES, JSON.stringify(response.data));
         });
 };
 

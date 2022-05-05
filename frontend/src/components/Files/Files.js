@@ -1,44 +1,40 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
 import EnhancedTable from './components/EnhancedTable'
-import makeData from './makeData'
 
-import "./style.css";
-import "./styles.scss";
+import {USER_FILES} from "../../consts/StorageEntities";
 
 export const Files = () => {
+    const [files] = useState(sessionStorage.getItem(USER_FILES));
+
     const columns = React.useMemo(
         () => [
             {
-                Header: 'First Name',
-                accessor: 'firstName',
+                Header: 'Original File Name',
+                accessor: 'originalFilename',
             },
             {
-                Header: 'Last Name',
-                accessor: 'lastName',
+                Header: 'Content Type',
+                accessor: 'contentType',
             },
             {
-                Header: 'Age',
-                accessor: 'age',
+                Header: 'Size',
+                accessor: 'displaySize',
             },
             {
-                Header: 'Visits',
-                accessor: 'visits',
+                Header: 'Date Of Upload',
+                accessor: 'dateOfUpload',
             },
             {
-                Header: 'Status',
-                accessor: 'status',
-            },
-            {
-                Header: 'Profile Progress',
-                accessor: 'progress',
+                Header: 'File Name',
+                accessor: 'fileName',
             },
         ],
         []
     );
 
-    const [data, setData] = React.useState(React.useMemo(() => makeData(20), []));
+    const [data, setData] = React.useState(JSON.parse(files));
     const [skipPageReset, setSkipPageReset] = React.useState(false);
 
     const updateMyData = (rowIndex, columnId, value) => {
@@ -61,6 +57,7 @@ export const Files = () => {
             <br/>
             <br/>
             <br/>
+            <a>{sessionStorage.length}</a>
 
             <CssBaseline/>
             <EnhancedTable

@@ -1,9 +1,10 @@
 import React, {useState} from "react";
 import "./styles.scss";
+import {IP_DETAILS, USER} from "../../consts/StorageEntities";
 
 export const Profile = () => {
-    const [user] = useState(sessionStorage.getItem("user"));
-    const [ipDetails] = useState(sessionStorage.getItem("ipDetails"));
+    const [user] = useState(sessionStorage.getItem(USER));
+    const [ipDetails] = useState(sessionStorage.getItem(IP_DETAILS));
 
     const [usedMemory] = useState(JSON.parse(user).user.sizeOfAllUserFilesInBytes);
     const [maxUsageMemory] = useState(JSON.parse(user).user.maxUsageMemory);

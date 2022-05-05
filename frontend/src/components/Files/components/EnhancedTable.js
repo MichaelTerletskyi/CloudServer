@@ -148,7 +148,6 @@ const EnhancedTable = ({columns, data, setData, updateMyData, skipPageReset}) =>
             data,
             Object.keys(selectedRowIds).map(x => parseInt(x, 10))
         );
-        alert(JSON.stringify(selectedRowIds));
         setData(newData)
     };
 
