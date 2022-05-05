@@ -1,66 +1,60 @@
-import React, {useState} from "react";
-import {MDBDataTable} from 'mdbreact';
+import React from 'react'
+
+import CssBaseline from '@material-ui/core/CssBaseline'
+import EnhancedTable from './components/EnhancedTable'
+import makeData from './makeData'
 
 import "./style.css";
 import "./styles.scss";
 
 export const Files = () => {
-    const [userFiles] = useState(sessionStorage.getItem("user_files"));
-    const [userFilesParse] = useState(JSON.parse(userFiles));
-
-    function getFilesData() {
-        let arr = [];
-        userFilesParse.forEach(file => {
-            arr.push(
-                {
-                    originalFilename: file.originalFilename,
-                    contentType: file.contentType,
-                    fileName: file.fileName,
-                    dateOfUpload: file.dateOfUpload,
-                    displaySize: file.displaySize
-                }
-            )
-        });
-        return arr;
-    }
-
-    const data = {
-        columns: [
+    const columns = React.useMemo(
+        () => [
             {
-                label: 'Original File Name',
-                field: 'originalFilename',
-                sort: 'asc',
-                width: 350,
+                Header: 'First Name',
+                accessor: 'firstName',
             },
             {
-                label: 'Content Type',
-                field: 'contentType',
-                sort: 'asc',
-                width: 270
+                Header: 'Last Name',
+                accessor: 'lastName',
             },
             {
-                label: 'File Name',
-                field: 'fileName',
-                sort: 'asc',
-                width: 270
+                Header: 'Age',
+                accessor: 'age',
             },
             {
-                label: 'Date Of Upload',
-                field: 'dateOfUpload',
-                sort: 'asc',
-                width: 270
+                Header: 'Visits',
+                accessor: 'visits',
             },
             {
-                label: 'Size',
-                field: 'displaySize',
-                sort: 'asc',
-                width: 270
+                Header: 'Status',
+                accessor: 'status',
             },
-
+            {
+                Header: 'Profile Progress',
+                accessor: 'progress',
+            },
         ],
-        rows: getFilesData()
-    };
+        []
+    );
 
+    const [data, setData] = React.useState(React.useMemo(() => makeData(20), []));
+    const [skipPageReset, setSkipPageReset] = React.useState(false);
+
+    const updateMyData = (rowIndex, columnId, value) => {
+        setSkipPageReset(true);
+        setData(old =>
+            old.map((row, index) => {
+                if (index === rowIndex) {
+                    return {
+                        ...old[rowIndex],
+                        [columnId]: value,
+                    }
+                }
+                return row
+            })
+        )
+    };
 
     return (
         <div>
@@ -68,15 +62,14 @@ export const Files = () => {
             <br/>
             <br/>
 
-            <MDBDataTable
-                striped
-                bordered
-                small
+            <CssBaseline/>
+            <EnhancedTable
+                columns={columns}
                 data={data}
-                btn
-                onPageChange={}
+                setData={setData}
+                updateMyData={updateMyData}
+                skipPageReset={skipPageReset}
             />
-
         </div>
     )
 };
