@@ -51,6 +51,8 @@ public class FileRestController {
         }
 
         Set<File> allFilesByUserId = fileService.getAllByUserId(id);
+        // TODO Work with this later
+        allFilesByUserId.forEach(file -> file.setBytes(null));
         return new ResponseEntity<>(allFilesByUserId, HttpStatus.OK);
     }
 
