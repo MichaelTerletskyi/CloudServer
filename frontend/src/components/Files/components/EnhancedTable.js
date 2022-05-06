@@ -1,4 +1,5 @@
 import React, {forwardRef, useEffect, useRef, useState} from 'react'
+import fileDownload from 'js-file-download';
 import axios from "axios";
 
 import Checkbox from '@material-ui/core/Checkbox'
@@ -22,7 +23,7 @@ import {
     useTable,
 } from 'react-table'
 import {IP_DETAILS, USER} from "../../../consts/StorageEntities";
-import {DATA_API_URL} from "../../../consts/APIUrls";
+import {DATA_API_URL, DELETE_FILE_BY_ID_URL, GET_FILE_BY_ID_URL} from "../../../consts/APIUrls";
 
 const IndeterminateCheckbox = forwardRef(
     ({indeterminate, ...rest}, ref) => {
@@ -149,7 +150,7 @@ const EnhancedTable = ({columns, data, setData, updateMyData, skipPageReset}) =>
                 let removedKey = array[i].originalFilename;
                 if (removedKey !== USER && removedKey !== IP_DETAILS) {
                     let removedId = array[i].id;
-                    axios.delete(DATA_API_URL + "/delete/file/by/id=" + removedId)
+                    axios.delete(DATA_API_URL + DELETE_FILE_BY_ID_URL + removedId)
                         .then((response) => {
                             // TODO work with response
                             if (response.data) {
@@ -182,9 +183,38 @@ const EnhancedTable = ({columns, data, setData, updateMyData, skipPageReset}) =>
     };
 
     const downloadFileHandler = event => {
-       // TODO
-        alert("downloadFileHandler");
+        let indexs = Object.keys(selectedRowIds).map(x => parseInt(x, 10));
+        for (let i = 0; i < data.length; i++) {
+            if (containsIndex(i, indexs)) {
+                let fileId = data[i].id;
+                let filename = data[i].originalFilename;
+                let contentType = data[i].contentType;
+                downloadFileFromServer(fileId, filename, contentType);
+            }
+        }
     };
+
+    function downloadFileFromServer(fileId, fileName, contentType) {
+        axios.get(DATA_API_URL + GET_FILE_BY_ID_URL + fileId)
+            .then((response) => {
+                let url = 'data:' + contentType + ';base64,' + response.data.bytes;
+                fileBytesProcess(url, fileName, contentType)
+                    .then(function (file) {
+                        fileDownload(file, fileName);
+                    });
+            });
+    }
+
+    function fileBytesProcess(url, filename, mimeType) {
+        return (
+            fetch(url)
+                .then(function (res) {
+                    return res.arrayBuffer();})
+                .then(function (buf) {
+                    return new File([buf], filename, {type: mimeType});
+                })
+        );
+    }
 
     return (
         <TableContainer>

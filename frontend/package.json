@@ -14,6 +14,7 @@
     "clsx": "latest",
     "google-maps-react": "^2.0.6",
     "history": "latest",
+    "js-file-download": "^0.4.12",
     "mdbreact": "^5.2.0",
     "namor": "latest",
     "node-sass": "^6.0.0",
