@@ -34,8 +34,8 @@ const TableToolbar = props => {
     const classes = useToolbarStyles();
     const {
         numSelected,
-        addUserHandler,
-        deleteUserHandler,
+        addFileHandler,
+        deleteFileHandler,
         preGlobalFilteredRows,
         setGlobalFilter,
         globalFilter,
@@ -56,13 +56,13 @@ const TableToolbar = props => {
                 </Typography>
             ) : (
                 <Typography className={classes.title} variant="h6" id="tableTitle">
-                    Users
+                    Files
                 </Typography>
             )}
 
             {numSelected > 0 ? (
                 <Tooltip title="Delete">
-                    <IconButton aria-label="delete" onClick={deleteUserHandler}>
+                    <IconButton aria-label="delete" onClick={deleteFileHandler}>
                         <DeleteIcon/>
                     </IconButton>
                 </Tooltip>
@@ -79,8 +79,8 @@ const TableToolbar = props => {
 
 TableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
-    addUserHandler: PropTypes.func.isRequired,
-    deleteUserHandler: PropTypes.func.isRequired,
+    addFileHandler: PropTypes.func.isRequired,
+    deleteFileHandler: PropTypes.func.isRequired,
     setGlobalFilter: PropTypes.func.isRequired,
     preGlobalFilteredRows: PropTypes.array.isRequired,
     globalFilter: PropTypes.string.isRequired,

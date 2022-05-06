@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {forwardRef, useEffect, useRef, useState} from 'react'
+import axios from "axios";
 
 import Checkbox from '@material-ui/core/Checkbox'
 import MaUTable from '@material-ui/core/Table'
@@ -20,10 +21,12 @@ import {
     useSortBy,
     useTable,
 } from 'react-table'
+import {IP_DETAILS, USER} from "../../../consts/StorageEntities";
+import {DATA_API_URL} from "../../../consts/APIUrls";
 
-const IndeterminateCheckbox = React.forwardRef(
+const IndeterminateCheckbox = forwardRef(
     ({indeterminate, ...rest}, ref) => {
-        const defaultRef = React.useRef();
+        const defaultRef = useRef();
         const resolvedRef = ref || defaultRef;
 
         React.useEffect(() => {
@@ -46,7 +49,7 @@ const inputStyle = {
 };
 
 const EditableCell = ({value: initialValue, row: {index}, column: {id}, updateMyData,}) => {
-    const [value, setValue] = React.useState(initialValue);
+    const [value, setValue] = useState(initialValue);
 
     const onChange = e => {
         setValue(e.target.value)
@@ -56,7 +59,7 @@ const EditableCell = ({value: initialValue, row: {index}, column: {id}, updateMy
         updateMyData(index, id, value)
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         setValue(initialValue)
     }, [initialValue]);
 
@@ -140,10 +143,38 @@ const EnhancedTable = ({columns, data, setData, updateMyData, skipPageReset}) =>
         setPageSize(Number(event.target.value))
     };
 
-    const removeByIndexs = (array, indexs) =>
-        array.filter((_, i) => !indexs.includes(i));
+    const removeByIndexs = (array, indexs) => {
+        let arr = [];
+        for (let i = 0; i < array.length; i++) {
+            if (containsIndex(i, indexs)) {
+                let removedKey = array[i].originalFilename;
+                if (removedKey !== USER && removedKey !== IP_DETAILS) {
+                    let removedId = array[i].id;
+                    axios.delete(DATA_API_URL + "/delete/file/by/id=" + removedId)
+                        .then((response) => {
+                            // TODO work with response
+                            if (response.data) {
+                                sessionStorage.removeItem(removedKey);
+                            }
+                        });
+                }
+            } else {
+                arr.push(array[i]);
+            }
+        }
+        return arr;
+    };
 
-    const deleteUserHandler = event => {
+    function containsIndex(i, indexs) {
+        for (let j = 0; j < indexs.length; j++) {
+            if (i == indexs[j]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    const deleteFileHandler = event => {
         const newData = removeByIndexs(
             data,
             Object.keys(selectedRowIds).map(x => parseInt(x, 10))
@@ -151,8 +182,9 @@ const EnhancedTable = ({columns, data, setData, updateMyData, skipPageReset}) =>
         setData(newData)
     };
 
-    const addUserHandler = user => {
-        const newData = data.concat([user]);
+    const addFileHandler = file => {
+        alert("addFileHandler");
+        const newData = data.concat([file]);
         setData(newData)
     };
 
@@ -160,8 +192,8 @@ const EnhancedTable = ({columns, data, setData, updateMyData, skipPageReset}) =>
         <TableContainer>
             <TableToolbar
                 numSelected={Object.keys(selectedRowIds).length}
-                deleteUserHandler={deleteUserHandler}
-                addUserHandler={addUserHandler}
+                deleteFileHandler={deleteFileHandler}
+                addFileHandler={addFileHandler}
                 preGlobalFilteredRows={preGlobalFilteredRows}
                 setGlobalFilter={setGlobalFilter}
                 globalFilter={globalFilter}
@@ -180,7 +212,6 @@ const EnhancedTable = ({columns, data, setData, updateMyData, skipPageReset}) =>
                                     {column.id !== 'selection' ? (
                                         <TableSortLabel
                                             active={column.isSorted}
-                                            // react-table has a unsorted state which is not treated here
                                             direction={column.isSortedDesc ? 'desc' : 'asc'}
                                         />
                                     ) : null}
@@ -210,12 +241,7 @@ const EnhancedTable = ({columns, data, setData, updateMyData, skipPageReset}) =>
                     <TableRow>
                         <TablePagination
                             rowsPerPageOptions={[
-                                5,
-                                10,
-                                25,
-                                50,
-                                100,
-                                {label: 'All', value: data.length},
+                                5, 10, 25, 50, 100, {label: 'All', value: data.length},
                             ]}
                             colSpan={3}
                             count={data.length}

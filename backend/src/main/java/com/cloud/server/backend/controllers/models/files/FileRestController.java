@@ -63,11 +63,13 @@ public class FileRestController {
     }
 
     @DeleteMapping("/delete/file/by/id={id}")
-    public ResponseEntity<Long> deleteFile(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteFile(@PathVariable Long id) {
         if (!fileService.isExistById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         fileService.deleteById(id);
-        return new ResponseEntity<>(id, HttpStatus.OK);
+
+        // TODO Work with delete mapping response
+        return new ResponseEntity<>(!fileService.isExistById(id), HttpStatus.OK);
     }
 }

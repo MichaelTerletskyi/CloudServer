@@ -1,6 +1,6 @@
 import {NavLink} from "react-router-dom";
 import React, {useState} from "react";
-import {LOGOUT} from "../../actions/authTypes";
+import {HOME, LOGOUT} from "../../consts/RoutePathes";
 
 export const NavBarLogOut = () => {
     const [click, setClick] = useState(false);
@@ -8,6 +8,8 @@ export const NavBarLogOut = () => {
     const handleClick = () => {
         setClick(!click);
         sessionStorage.clear();
+        window.location.reload();
+        window.location.href = HOME;
     };
 
     return (

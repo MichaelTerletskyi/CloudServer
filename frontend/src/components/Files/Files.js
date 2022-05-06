@@ -1,12 +1,24 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
 import EnhancedTable from './components/EnhancedTable'
 
-import {USER_FILES} from "../../consts/StorageEntities";
+import {IP_DETAILS, USER} from "../../consts/StorageEntities";
 
 export const Files = () => {
-    const [files] = useState(sessionStorage.getItem(USER_FILES));
+    const [data, setData] = useState([]);
+    const [skipPageReset, setSkipPageReset] = useState(false);
+
+    useEffect(() => {
+        let arr = [];
+        for (let i = 0; i < sessionStorage.length; i++) {
+            let key = sessionStorage.key(i);
+            if (key !== USER && key !== IP_DETAILS) {
+                arr.push(sessionStorage.getItem(key));
+            }
+        }
+        setData(JSON.parse("[" + arr + "]"));
+    }, []);
 
     const columns = React.useMemo(
         () => [
@@ -34,10 +46,9 @@ export const Files = () => {
         []
     );
 
-    const [data, setData] = React.useState(JSON.parse(files));
-    const [skipPageReset, setSkipPageReset] = React.useState(false);
 
     const updateMyData = (rowIndex, columnId, value) => {
+        alert("updateMyData");
         setSkipPageReset(true);
         setData(old =>
             old.map((row, index) => {
@@ -57,7 +68,6 @@ export const Files = () => {
             <br/>
             <br/>
             <br/>
-            <a>{sessionStorage.length}</a>
 
             <CssBaseline/>
             <EnhancedTable

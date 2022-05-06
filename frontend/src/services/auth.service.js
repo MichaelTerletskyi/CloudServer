@@ -1,5 +1,5 @@
 import axios from "axios";
-import {USER, USER_FILES} from "../consts/StorageEntities"
+import {USER} from "../consts/StorageEntities"
 import {AUTH_API_URL, DATA_API_URL} from "../consts/APIUrls";
 
 
@@ -31,7 +31,9 @@ const fetchUserFiles = (id) => {
     axios
         .get(DATA_API_URL + "/get/all/files/by/user/id=" + id)
         .then((response) => {
-            sessionStorage.setItem(USER_FILES, JSON.stringify(response.data));
+            response.data.forEach(file => {
+                sessionStorage.setItem(JSON.parse(JSON.stringify(file)).originalFilename, JSON.stringify(file));
+            });
         });
 };
 
