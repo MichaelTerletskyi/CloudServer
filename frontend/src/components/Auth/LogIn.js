@@ -18,6 +18,9 @@ import "./css/util.css";
 import "./css/main.css";
 import "./style.css"
 import axios from "axios";
+import {IP_DETAILS} from "../../consts/StorageEntities";
+import {PROFILE, REGISTER} from "../../consts/RoutePathes";
+import {IP_ASK_URL} from "../../consts/APIUrls";
 
 export const LogIn = (props) => {
     const form = useRef();
@@ -50,10 +53,10 @@ export const LogIn = (props) => {
         if (checkBtn.current.context._errors.length === 0) {
             dispatch(login(username, password))
                 .then(() => {
-                    axios.get('https://ipapi.co/json/').then((res) => {
-                        sessionStorage.setItem("ipDetails", JSON.stringify(res.data));
+                    axios.get(IP_ASK_URL).then((res) => {
+                        sessionStorage.setItem(IP_DETAILS, JSON.stringify(res.data));
                         setSuccessful(true);
-                        props.history.push("/profile");
+                        props.history.push(PROFILE);
                         window.location.reload();
                     });
                 })
@@ -66,7 +69,7 @@ export const LogIn = (props) => {
     };
 
     if (isLoggedIn && successful) {
-        return <Redirect to="/profile"/>;
+        return <Redirect to={PROFILE}/>;
     }
 
     return (
@@ -161,7 +164,7 @@ export const LogIn = (props) => {
 
                             <div className="flex-col-c p-t-25">
                                 <span className="txt1 p-b-17">Or Sign Up Using</span>
-                                <a href={"/register"} className="txt2">Sign Up</a>
+                                <a href={REGISTER} className="txt2">Sign Up</a>
                             </div>
 
                         </Form>

@@ -54,6 +54,9 @@ public class File implements Serializable {
     @Column(name = "original_file_name")
     private String originalFilename;
 
+    @Column(name = "size_in_bytes")
+    private BigInteger sizeInBytes;
+
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime dateOfUpload;
@@ -78,6 +81,7 @@ public class File implements Serializable {
             this.contentType = file.getContentType();
             this.fileName = file.getName();
             this.originalFilename = file.getOriginalFilename();
+            this.sizeInBytes = new BigInteger(String.format("%d", file.getBytes().length));
             this.dateOfUpload = LocalDateTime.now();
             this.dateOfLastUpdate = LocalDateTime.now();
         } catch (IOException e) {
@@ -168,7 +172,7 @@ public class File implements Serializable {
 
     @JsonGetter
     public BigInteger sizeInBytes() {
-        return BigInteger.valueOf(this.bytes.length);
+        return this.sizeInBytes;
     }
 
     @JsonGetter

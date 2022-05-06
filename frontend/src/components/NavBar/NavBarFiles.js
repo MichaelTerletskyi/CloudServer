@@ -1,8 +1,8 @@
 import {NavLink} from "react-router-dom";
 import React, {useState} from "react";
-import {LOGIN} from "../../consts/RoutePathes";
+import {FILES} from "../../consts/RoutePathes";
 
-export const NavBarLogIn = () => {
+export const NavBarFiles = () => {
     const [click, setClick] = useState(false);
 
     const handleClick = () => {
@@ -13,12 +13,12 @@ export const NavBarLogIn = () => {
         <li className="nav-item">
             <NavLink
                 exact
-                to={LOGIN}
+                to={FILES}
                 activeClassName="active"
                 className="nav-links"
                 onClick={handleClick}
             >
-                Login
+                Files
             </NavLink>
         </li>
     );

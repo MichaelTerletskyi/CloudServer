@@ -9,6 +9,8 @@ import {LogIn} from "./components/Auth/LogIn";
 import {Register} from "./components/Auth/Register";
 import {Profile} from "./components/Profile/Profile";
 import {LogOut} from "./components/Auth/LogOut";
+import {Files} from "./components/Files/Files";
+import {FILES, HOME, LOGIN, PROFILE, REGISTER, LOGOUT} from "./consts/RoutePathes";
 
 const App = () => {
     return (
@@ -17,11 +19,12 @@ const App = () => {
                 <NavBar/>
                 <div className="pages">
                     <Switch>
-                        <Route exact path="/" component={Home}/>
-                        <Route exact path="/login" component={LogIn}/>
-                        <Route exact path="/register" component={Register}/>
-                        <Route exact path="/profile" component={Profile}/>
-                        <Route path="/logout" component={LogOut}/>
+                        <Route exact path={HOME} component={Home}/>
+                        <Route exact path={LOGIN} component={LogIn}/>
+                        <Route exact path={REGISTER} component={Register}/>
+                        <Route exact path={PROFILE} component={Profile}/>
+                        <Route exact path={FILES} component={Files}/>
+                        <Route path={LOGOUT} component={LogOut}/>
                     </Switch>
                 </div>
             </Router>

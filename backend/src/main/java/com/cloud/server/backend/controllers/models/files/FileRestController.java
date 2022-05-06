@@ -1,7 +1,5 @@
 package com.cloud.server.backend.controllers.models.files;
 
-import com.cloud.server.backend.exceptions.FileNotFoundException;
-import com.cloud.server.backend.exceptions.UserNotFoundException;
 import com.cloud.server.backend.models.files.File;
 import com.cloud.server.backend.models.users.User;
 import com.cloud.server.backend.services.models.files.impls.FileServiceImpl;
@@ -53,6 +51,8 @@ public class FileRestController {
         }
 
         Set<File> allFilesByUserId = fileService.getAllByUserId(id);
+        // TODO Work with this later
+        allFilesByUserId.forEach(file -> file.setBytes(null));
         return new ResponseEntity<>(allFilesByUserId, HttpStatus.OK);
     }
 
@@ -63,11 +63,13 @@ public class FileRestController {
     }
 
     @DeleteMapping("/delete/file/by/id={id}")
-    public ResponseEntity<Long> deleteFile(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteFile(@PathVariable Long id) {
         if (!fileService.isExistById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         fileService.deleteById(id);
-        return new ResponseEntity<>(id, HttpStatus.OK);
+
+        // TODO Work with delete mapping response
+        return new ResponseEntity<>(!fileService.isExistById(id), HttpStatus.OK);
     }
 }
