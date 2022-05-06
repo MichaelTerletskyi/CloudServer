@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
 import EnhancedTable from './components/EnhancedTable'
@@ -20,7 +20,7 @@ export const Files = () => {
         setData(JSON.parse("[" + arr + "]"));
     }, []);
 
-    const columns = React.useMemo(
+    const columns = useMemo(
         () => [
             {
                 Header: 'Original File Name',
@@ -46,9 +46,7 @@ export const Files = () => {
         []
     );
 
-
     const updateMyData = (rowIndex, columnId, value) => {
-        alert("updateMyData");
         setSkipPageReset(true);
         setData(old =>
             old.map((row, index) => {

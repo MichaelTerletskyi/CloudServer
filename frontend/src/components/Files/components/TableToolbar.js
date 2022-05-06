@@ -2,9 +2,10 @@ import React from 'react'
 
 import clsx from 'clsx'
 import DeleteIcon from '@material-ui/icons/Delete'
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload'
 import GlobalFilter from './GlobalFilter'
 import IconButton from '@material-ui/core/IconButton'
-import {lighten, makeStyles} from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -18,12 +19,12 @@ const useToolbarStyles = makeStyles(theme => ({
     highlight:
         theme.palette.type === 'light'
             ? {
-                color: theme.palette.secondary.main,
-                backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+                color: 'black',
+                backgroundColor: 'mediumspringgreen'
             }
             : {
-                color: theme.palette.text.primary,
-                backgroundColor: theme.palette.secondary.dark,
+                color: 'black',
+                backgroundColor: 'yellow'
             },
     title: {
         flex: '1 1 100%',
@@ -34,7 +35,7 @@ const TableToolbar = props => {
     const classes = useToolbarStyles();
     const {
         numSelected,
-        addFileHandler,
+        downloadFileHandler,
         deleteFileHandler,
         preGlobalFilteredRows,
         setGlobalFilter,
@@ -52,20 +53,28 @@ const TableToolbar = props => {
                     color="inherit"
                     variant="subtitle1"
                 >
-                    {numSelected} selected
+                    {numSelected} {numSelected === 1 ? "file" : "files"} selected
                 </Typography>
             ) : (
                 <Typography className={classes.title} variant="h6" id="tableTitle">
-                    Files
+
                 </Typography>
             )}
 
             {numSelected > 0 ? (
-                <Tooltip title="Delete">
-                    <IconButton aria-label="delete" onClick={deleteFileHandler}>
-                        <DeleteIcon/>
-                    </IconButton>
-                </Tooltip>
+                <>
+                    <Tooltip title="Download">
+                        <IconButton aria-label="update" onClick={downloadFileHandler}>
+                            <CloudDownloadIcon/>
+                        </IconButton>
+                    </Tooltip>
+
+                    <Tooltip title="Delete">
+                        <IconButton aria-label="delete" onClick={deleteFileHandler}>
+                            <DeleteIcon/>
+                        </IconButton>
+                    </Tooltip>
+                </>
             ) : (
                 <GlobalFilter
                     preGlobalFilteredRows={preGlobalFilteredRows}
@@ -79,7 +88,7 @@ const TableToolbar = props => {
 
 TableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
-    addFileHandler: PropTypes.func.isRequired,
+    downloadFileHandler: PropTypes.func.isRequired,
     deleteFileHandler: PropTypes.func.isRequired,
     setGlobalFilter: PropTypes.func.isRequired,
     preGlobalFilteredRows: PropTypes.array.isRequired,

@@ -29,9 +29,10 @@ const IndeterminateCheckbox = forwardRef(
         const defaultRef = useRef();
         const resolvedRef = ref || defaultRef;
 
-        React.useEffect(() => {
-            resolvedRef.current.indeterminate = indeterminate
+        useEffect(() => {
+            resolvedRef.current.indeterminate = indeterminate;
         }, [resolvedRef, indeterminate]);
+
 
         return (
             <>
@@ -122,8 +123,6 @@ const EnhancedTable = ({columns, data, setData, updateMyData, skipPageReset}) =>
                             <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
                         </div>
                     ),
-                    // The cell can use the individual row's getToggleRowSelectedProps method
-                    // to the render a checkbox
                     Cell: ({row}) => (
                         <div>
                             <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
@@ -182,18 +181,17 @@ const EnhancedTable = ({columns, data, setData, updateMyData, skipPageReset}) =>
         setData(newData)
     };
 
-    const addFileHandler = file => {
-        alert("addFileHandler");
-        const newData = data.concat([file]);
-        setData(newData)
+    const downloadFileHandler = event => {
+       // TODO
+        alert("downloadFileHandler");
     };
 
     return (
         <TableContainer>
             <TableToolbar
                 numSelected={Object.keys(selectedRowIds).length}
+                downloadFileHandler={downloadFileHandler}
                 deleteFileHandler={deleteFileHandler}
-                addFileHandler={addFileHandler}
                 preGlobalFilteredRows={preGlobalFilteredRows}
                 setGlobalFilter={setGlobalFilter}
                 globalFilter={globalFilter}
