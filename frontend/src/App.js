@@ -10,7 +10,8 @@ import {Register} from "./components/Auth/Register";
 import {Profile} from "./components/Profile/Profile";
 import {LogOut} from "./components/Auth/LogOut";
 import {Files} from "./components/Files/Files";
-import {FILES, HOME, LOGIN, PROFILE, REGISTER, LOGOUT} from "./consts/RoutePathes";
+import {Upload} from "./components/Upload/Upload";
+import {FILES, HOME, LOGIN, PROFILE, REGISTER, LOGOUT, UPLOAD} from "./consts/RoutePathes";
 
 const App = () => {
     return (
@@ -19,11 +20,13 @@ const App = () => {
                 <NavBar/>
                 <div className="pages">
                     <Switch>
+                        {/*TODO ADD Access Denied Page*/}
                         <Route exact path={HOME} component={Home}/>
                         <Route exact path={LOGIN} component={LogIn}/>
                         <Route exact path={REGISTER} component={Register}/>
                         <Route exact path={PROFILE} component={Profile}/>
                         <Route exact path={FILES} component={Files}/>
+                        <Route exact path={UPLOAD} component={Upload}/>
                         <Route path={LOGOUT} component={LogOut}/>
                     </Switch>
                 </div>

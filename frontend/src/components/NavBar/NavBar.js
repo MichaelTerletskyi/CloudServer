@@ -5,6 +5,7 @@ import {NavBarLogIn} from "./NavBarLogIn";
 import {NavBarRegister} from "./NavBarRegister";
 import {NavBarProfile} from "./NavBarProfile";
 import {NavBarFiles} from "./NavBarFiles";
+import {NavBarUpload} from "./NavBarUpload";
 import {USER} from "../../consts/StorageEntities";
 
 function NavBar() {
@@ -43,6 +44,7 @@ function NavBar() {
                                             <>
                                                 <NavBarProfile/>
                                                 <NavBarFiles/>
+                                                <NavBarUpload/>
                                                 <NavBarLogOut/>
                                             </>
                                         )
@@ -50,6 +52,7 @@ function NavBar() {
                                 </ul>
                             </nav>
                         </div>
+
                     </div>
                 </div>
             </header>
