@@ -6,29 +6,45 @@ import axios from "axios";
 export const Upload = () => {
     const [user] = useState(sessionStorage.getItem(USER));
     const [userId] = useState(JSON.parse(user).id);
-    const [file, setFile] = useState();
+    const [files, setFiles] = useState([]);
     const [success, setSuccess] = useState(false);
 
     function handleChange(event) {
-        setFile(event.target.files[0])
+        setFiles(event.target.files)
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
-        const url = DATA_API_URL + SAVE_FILES_BY_USER_ID + userId;
         const formData = new FormData();
-        formData.append('file', file);
-        formData.append('fileName', file.name);
+        const url = DATA_API_URL + SAVE_FILES_BY_USER_ID + userId;
         const config = {
             headers: {
                 'content-type': 'multipart/form-data',
             },
         };
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append('file', files[i]);
+            formData.append('fileName', files[i].name);
+        }
+
         // TODO Work with msg response
-        axios.post(url, formData, config).then((response) => {
+        axios
+            .post(url, formData, config)
+            .then((response) => {
+                alert(JSON.stringify(response.data));
+                response.data.forEach(file => {
+                    sessionStorage.setItem(JSON.parse(JSON.stringify(file)).originalFilename, JSON.stringify(file));
+                });
             setSuccess(true);
         });
+    }
 
+    if(success) {
+        setSuccess(false);
+        setTimeout(function () {
+            window.location.reload();
+        }, 3000);
     }
 
     return (
@@ -39,7 +55,7 @@ export const Upload = () => {
                 <br/>
                 <br/>
                 <h1>Upload File</h1>
-                <input type="file" onChange={handleChange}/>
+                <input type="file" onChange={handleChange} multiple/>
                 <br/>
                 <button type="submit">Upload</button>
 
