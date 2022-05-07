@@ -7,7 +7,7 @@ import "./assets/bootstrap/css/bootstrap-reboot.min.css";
 import "./assets/theme/css/style.css"
 import "./assets/mobirise/css/mbr-additional.css"
 
-import background from "./assets/video/videoplayback.webm"
+import background from "./assets/video/videoplayback2.mp4"
 
 export const Home = () => {
     return (
