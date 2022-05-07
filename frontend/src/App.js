@@ -21,7 +21,6 @@ const App = () => {
                 <NavBar/>
                 <div className="pages">
                     <Switch>
-                        {/*TODO ADD Access Denied Page*/}
                         <Route exact path={HOME} component={Home}/>
                         <Route exact path={LOGIN} component={LogIn}/>
                         <Route exact path={REGISTER} component={Register}/>

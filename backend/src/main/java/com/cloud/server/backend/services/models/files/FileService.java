@@ -16,4 +16,5 @@ import java.util.Set;
 public abstract class FileService<T> extends BasicCrudService<T> {
     public abstract Set<T> getAllByUserId(Long id);
     public abstract T saveWithUserId(MultipartFile file, Long id);
+
 }

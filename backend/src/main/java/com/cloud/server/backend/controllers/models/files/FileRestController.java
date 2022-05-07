@@ -1,6 +1,7 @@
 package com.cloud.server.backend.controllers.models.files;
 
 import com.cloud.server.backend.models.files.File;
+import com.cloud.server.backend.models.files.FileDTO;
 import com.cloud.server.backend.models.users.User;
 import com.cloud.server.backend.services.models.files.impls.FileServiceImpl;
 import com.cloud.server.backend.services.models.users.impls.UserServiceImpl;
@@ -41,7 +42,7 @@ public class FileRestController {
     }
 
     @GetMapping("/get/all/files/by/user/id={id}")
-    public ResponseEntity<Set<File>> getAllFiles(@PathVariable Long id) {
+    public ResponseEntity<Set<File>> getAllFilesByUserId(@PathVariable Long id) {
         if (!userService.isExistById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -49,11 +50,19 @@ public class FileRestController {
         if (user.isAdmin()) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
+        return new ResponseEntity<>(fileService.getAllByUserId(id), HttpStatus.OK);
+    }
 
-        Set<File> allFilesByUserId = fileService.getAllByUserId(id);
-        // TODO Work with this later
-        allFilesByUserId.forEach(file -> file.setBytes(null));
-        return new ResponseEntity<>(allFilesByUserId, HttpStatus.OK);
+    @GetMapping("/get/all/files/metadata/by/user/id={id}")
+    public ResponseEntity<Set<FileDTO>> getAllFilesMetadataByUserId(@PathVariable Long id) {
+        if (!userService.isExistById(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        User user = userService.getById(id);
+        if (user.isAdmin()) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        return new ResponseEntity<>(fileService.getAllFilesMetadataByUserId(id), HttpStatus.OK);
     }
 
     @PostMapping("/save/files/user/id={id}")
@@ -68,8 +77,6 @@ public class FileRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         fileService.deleteById(id);
-
-        // TODO Work with delete mapping response
         return new ResponseEntity<>(!fileService.isExistById(id), HttpStatus.OK);
     }
 }

@@ -78,7 +78,7 @@ public class File implements Serializable {
             this.contentType = file.getContentType();
             this.fileName = file.getName();
             this.originalFilename = file.getOriginalFilename();
-            this.sizeInBytes = new BigInteger(String.format("%d", file.getBytes().length));
+            this.sizeInBytes = new BigInteger(String.valueOf(file.getBytes().length));
             this.dateOfUpload = LocalDateTime.now();
             this.dateOfLastUpdate = LocalDateTime.now();
         } catch (IOException e) {
