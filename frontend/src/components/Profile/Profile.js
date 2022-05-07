@@ -203,7 +203,7 @@ export const Profile = () => {
 
                         <div className="project-boxes jsGridView">
                             <div className="project-box-wrapper">
-                                <div className="project-box" style={{backgroundColor: "#ff942e"}}>
+                                <div className="project-box" style={{backgroundColor: "#ffc462"}}>
                                     <div className="project-box-header">
 
                                     </div>
@@ -228,7 +228,7 @@ export const Profile = () => {
                             </div>
 
                             <div className="project-box-wrapper">
-                                <div className="project-box" style={{backgroundColor: "#ffa7fb"}}>
+                                <div className="project-box" style={{backgroundColor: "#c6ff00"}}>
                                     <div className="project-box-header">
 
                                     </div>
@@ -253,7 +253,7 @@ export const Profile = () => {
                             </div>
 
                             <div className="project-box-wrapper">
-                                <div className="project-box" style={{backgroundColor: "#00f0ee"}}>
+                                <div className="project-box" style={{backgroundColor: "#ff7463"}}>
                                     <div className="project-box-header">
 
                                     </div>
@@ -303,7 +303,7 @@ export const Profile = () => {
                             </div>
 
                             <div className="project-box-wrapper">
-                                <div className="project-box" style={{backgroundColor: "#c6ff00"}}>
+                                <div className="project-box" style={{backgroundColor: "#ffa7fb"}}>
                                     <div className="project-box-header">
 
                                     </div>
@@ -379,7 +379,7 @@ export const Profile = () => {
                             </div>
 
                             <div className="project-box-wrapper">
-                                <div className="project-box" style={{backgroundColor: "#ff7463"}}>
+                                <div className="project-box" style={{backgroundColor: "#00f0ee"}}>
                                     <div className="project-box-header">
 
                                     </div>
