@@ -18,7 +18,8 @@ import "./vendor/daterangepicker/daterangepicker.css";
 import "./css/util.css";
 import "./css/main.css";
 import "./style.css"
-import {LOGIN} from "../../consts/RoutePathes";
+import {ACCESS_DENIED, LOGIN} from "../../consts/RoutePathes";
+import {ADMIN, USER} from "../../consts/StorageEntities";
 
 const roleOptions = [
     {value: 'ROLE_USER', label: 'User'},
@@ -26,6 +27,12 @@ const roleOptions = [
 ];
 
 export const Register = () => {
+    const [isLoggedAsUser] = useState(sessionStorage.hasOwnProperty(USER));
+    const [isLoggedAsAdmin] = useState(sessionStorage.hasOwnProperty(ADMIN));
+
+    if(isLoggedAsUser || isLoggedAsAdmin) {
+        window.location.href = ACCESS_DENIED;
+    }
     const form = useRef();
     const checkBtn = useRef();
 
@@ -81,7 +88,7 @@ export const Register = () => {
     if (successful) {
         setTimeout(function () {
             window.location.reload();
-            window.location.href = '/login';
+            window.location.href = LOGIN;
         }, 3000);
     }
 
