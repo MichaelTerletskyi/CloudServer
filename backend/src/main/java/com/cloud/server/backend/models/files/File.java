@@ -29,10 +29,7 @@ import java.util.Set;
 
 @Component
 @Entity
-@Table(name = "FILES",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "original_file_name"),
-        })
+@Table(name = "FILES")
 public class File implements Serializable {
     private static final long serialVersionUID = 6786256300350384940L;
 

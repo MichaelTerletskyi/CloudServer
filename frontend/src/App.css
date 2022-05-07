@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand:400,500,700');
 @import url('http://fonts.cdnfonts.com/css/common-pixel');
-
+/*@font-face {*/
+/*    src: url('https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2');*/
+/*    font-family: 'Compressa VF';*/
+/*    font-style: normal;*/
+/*}*/
 label {
     display: block;
     margin-top: 10px;
@@ -44,5 +48,5 @@ body {
 }
 
 .App-link {
-    color: #09d3ac;
+    color: mediumspringgreen;
 }
