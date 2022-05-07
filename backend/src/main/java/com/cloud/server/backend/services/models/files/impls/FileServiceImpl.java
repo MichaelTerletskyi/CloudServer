@@ -3,6 +3,7 @@ package com.cloud.server.backend.services.models.files.impls;
 import com.cloud.server.backend.exceptions.FileNotFoundException;
 import com.cloud.server.backend.exceptions.UserNotFoundException;
 import com.cloud.server.backend.models.files.File;
+import com.cloud.server.backend.models.files.FileDTO;
 import com.cloud.server.backend.models.files.FileTag;
 import com.cloud.server.backend.models.users.User;
 import com.cloud.server.backend.repository.files.FileRepository;
@@ -14,6 +15,7 @@ import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,10 +23,10 @@ import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.math.BigInteger;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,12 +40,14 @@ import java.util.concurrent.Future;
 
 @Service
 public class FileServiceImpl extends FileService<File> {
+    private final Environment env;
     private final TransactionTemplate template;
     private final FileRepository fileRepository;
     private final UserService userService;
 
     @Autowired
-    public FileServiceImpl(TransactionTemplate template, FileRepository fileRepository, UserService userService) {
+    public FileServiceImpl(Environment env, TransactionTemplate template, FileRepository fileRepository, UserService userService) {
+        this.env = env;
         this.template = template;
         this.fileRepository = fileRepository;
         this.userService = userService;
@@ -92,6 +96,41 @@ public class FileServiceImpl extends FileService<File> {
     @Override
     public Set<File> getAllByUserId(Long id) {
         return fileRepository.findAllByUserId(id);
+    }
+
+    public Set<FileDTO> getAllFilesMetadataByUserId(Long id) {
+        Set<FileDTO> files = new LinkedHashSet<>();
+        try {
+            String driverClassName = env.getProperty("spring.datasource.driver-class-name");
+            String datasourceUrl = env.getProperty("spring.datasource.url");
+            String username = env.getProperty("spring.datasource.username");
+            String password = env.getProperty("spring.datasource.password");
+
+            Class.forName(driverClassName);
+            try (Connection connection = DriverManager.getConnection(datasourceUrl, username, password)) {
+                String query = "SELECT file_id, content_type, file_name, original_file_name, size_in_bytes, date_of_upload, date_of_last_update, user_id FROM files WHERE user_id = ?";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    preparedStatement.setLong(1, id);
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    while (resultSet.next()) {
+                        long fileId = resultSet.getLong("file_id");
+                        String contentType = resultSet.getString("content_type");
+                        String fileName = resultSet.getString("file_name");
+                        String originalFilename = resultSet.getString("original_file_name");
+                        String strSize = resultSet.getString("size_in_bytes");
+                        BigInteger sizeInBytes = new BigInteger(strSize.substring(0, strSize.length() - 3));
+                        LocalDateTime dateOfUpload = resultSet.getTimestamp(6).toLocalDateTime();
+                        LocalDateTime dateOfLastUpdate = resultSet.getTimestamp(7).toLocalDateTime();
+
+                        FileDTO file = new FileDTO(fileId, contentType, fileName, originalFilename, sizeInBytes, dateOfUpload, dateOfLastUpdate);
+                        files.add(file);
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return files;
     }
 
     @Override

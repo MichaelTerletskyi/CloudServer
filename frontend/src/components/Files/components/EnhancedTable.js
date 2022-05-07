@@ -152,7 +152,6 @@ const EnhancedTable = ({columns, data, setData, updateMyData, skipPageReset}) =>
                     let removedId = array[i].id;
                     axios.delete(DATA_API_URL + DELETE_FILE_BY_ID_URL + removedId)
                         .then((response) => {
-                            // TODO work with response
                             if (response.data) {
                                 sessionStorage.removeItem(removedKey);
                             }

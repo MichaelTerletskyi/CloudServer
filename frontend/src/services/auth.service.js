@@ -1,10 +1,10 @@
 import axios from "axios";
 import {USER} from "../consts/StorageEntities"
-import {AUTH_API_URL, DATA_API_URL} from "../consts/APIUrls";
+import {AUTH_API_URL, DATA_API_URL, GET_ALL_FILES_METADATA_BY_USER_ID, SIGNIN, SIGNUP} from "../consts/APIUrls";
 
 
 const register = (username, email, password, role) => {
-    return axios.post(AUTH_API_URL + "/signup", {
+    return axios.post(AUTH_API_URL + SIGNUP, {
         username,
         email,
         password,
@@ -14,7 +14,7 @@ const register = (username, email, password, role) => {
 
 const login = (username, password) => {
     return axios
-        .post(AUTH_API_URL + "/signin", {
+        .post(AUTH_API_URL + SIGNIN, {
             username,
             password,
         })
@@ -29,7 +29,7 @@ const login = (username, password) => {
 
 const fetchUserFiles = (id) => {
     axios
-        .get(DATA_API_URL + "/get/all/files/by/user/id=" + id)
+        .get(DATA_API_URL + GET_ALL_FILES_METADATA_BY_USER_ID + id)
         .then((response) => {
             response.data.forEach(file => {
                 sessionStorage.setItem(JSON.parse(JSON.stringify(file)).originalFilename, JSON.stringify(file));
