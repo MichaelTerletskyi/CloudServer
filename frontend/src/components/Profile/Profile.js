@@ -111,7 +111,7 @@ export const Profile = () => {
                         <div className="project-box-wrapper">
                             <div className="project-box" style={{backgroundColor: 'cyan'}}>
                                 <div className="project-box-header">
-                                    <span>December 10, 2020</span>
+                                    <span>Percentage</span>
                                     <div className="more-wrapper">
                                         <button className="project-btn-more">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

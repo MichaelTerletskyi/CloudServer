@@ -49,7 +49,7 @@ a:focus {
 
 a:hover {
     text-decoration: none;
-    color: #a64bf4;
+    color: mediumspringgreen;
 }
 
 
@@ -313,11 +313,11 @@ iframe {
 }
 
 .input100:focus + .focus-input100::after {
-    color: #a64bf4;
+    color: mediumspringgreen;
 }
 
 .has-val.input100 + .focus-input100::after {
-    color: #a64bf4;
+    color: mediumspringgreen;
 }
 
 .container-login100-form-btn {
