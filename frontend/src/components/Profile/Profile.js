@@ -1,9 +1,15 @@
 import React, {useState} from "react";
 import "./styles.scss";
 import {IP_DETAILS, USER} from "../../consts/StorageEntities";
-import {PROFILE} from "../../consts/RoutePathes";
+import {ACCESS_DENIED, PROFILE} from "../../consts/RoutePathes";
 
 export const Profile = () => {
+    const [isLoggedIn] = useState(sessionStorage.hasOwnProperty(USER));
+
+    if (!isLoggedIn) {
+        window.location.href = ACCESS_DENIED;
+    }
+
     const [user] = useState(sessionStorage.getItem(USER));
     const [ipDetails] = useState(sessionStorage.getItem(IP_DETAILS));
 

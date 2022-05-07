@@ -11,7 +11,8 @@ import {Profile} from "./components/Profile/Profile";
 import {LogOut} from "./components/Auth/LogOut";
 import {Files} from "./components/Files/Files";
 import {Upload} from "./components/Upload/Upload";
-import {FILES, HOME, LOGIN, PROFILE, REGISTER, LOGOUT, UPLOAD} from "./consts/RoutePathes";
+import {AccessDenied} from "./components/AccessDenied/AccessDenied";
+import {FILES, HOME, LOGIN, PROFILE, REGISTER, LOGOUT, UPLOAD, ACCESS_DENIED} from "./consts/RoutePathes";
 
 const App = () => {
     return (
@@ -27,6 +28,7 @@ const App = () => {
                         <Route exact path={PROFILE} component={Profile}/>
                         <Route exact path={FILES} component={Files}/>
                         <Route exact path={UPLOAD} component={Upload}/>
+                        <Route exact path={ACCESS_DENIED} component={AccessDenied}/>
                         <Route path={LOGOUT} component={LogOut}/>
                     </Switch>
                 </div>

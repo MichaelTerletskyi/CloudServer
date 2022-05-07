@@ -4,8 +4,15 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import EnhancedTable from './components/EnhancedTable'
 
 import {IP_DETAILS, USER} from "../../consts/StorageEntities";
+import {ACCESS_DENIED} from "../../consts/RoutePathes";
 
 export const Files = () => {
+    const [isLoggedIn] = useState(sessionStorage.hasOwnProperty(USER));
+
+    if (!isLoggedIn) {
+        window.location.href = ACCESS_DENIED;
+    }
+
     const [data, setData] = useState([]);
     const [skipPageReset, setSkipPageReset] = useState(false);
 

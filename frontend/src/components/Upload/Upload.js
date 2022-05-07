@@ -4,8 +4,15 @@ import {DATA_API_URL, SAVE_FILES_BY_USER_ID} from "../../consts/APIUrls";
 import axios from "axios";
 import "./style.scss";
 import "./styless.css";
+import {ACCESS_DENIED} from "../../consts/RoutePathes";
 
 export const Upload = () => {
+    const [isLoggedIn] = useState(sessionStorage.hasOwnProperty(USER));
+
+    if (!isLoggedIn) {
+        window.location.href = ACCESS_DENIED;
+    }
+
     const [user] = useState(sessionStorage.getItem(USER));
     const [userId] = useState(JSON.parse(user).id);
     const [files, setFiles] = useState([]);
