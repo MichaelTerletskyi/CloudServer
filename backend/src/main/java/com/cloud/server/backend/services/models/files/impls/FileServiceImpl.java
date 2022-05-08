@@ -161,7 +161,7 @@ public class FileServiceImpl extends FileService<File> {
         return fileTemp;
     }
 
-    public ResponseEntity<Set<File>> uploadFilesToDatabase(MultipartFile[] files, Long userId)
+    public ResponseEntity<Set<FileDTO>> uploadFilesToDatabase(MultipartFile[] files, Long userId)
             throws ExecutionException, InterruptedException {
         if (!userService.isExistById(userId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -182,6 +182,9 @@ public class FileServiceImpl extends FileService<File> {
             fileSet.add(file.get());
         }
         executor.shutdown();
-        return new ResponseEntity<>(fileSet, HttpStatus.CREATED);
+
+        Set<FileDTO> fileDTOSet = new LinkedHashSet<>();
+        fileSet.forEach(file -> fileDTOSet.add(FileDTO.makeDTO(file)));
+        return new ResponseEntity<>(fileDTOSet, HttpStatus.CREATED);
     }
 }

@@ -66,7 +66,7 @@ public class FileRestController {
     }
 
     @PostMapping("/save/files/user/id={id}")
-    public ResponseEntity<Set<File>> uploadFiles(@RequestParam(name = "file") MultipartFile[] files, @PathVariable Long id)
+    public ResponseEntity<Set<FileDTO>> uploadFiles(@RequestParam(name = "file") MultipartFile[] files, @PathVariable Long id)
             throws ExecutionException, InterruptedException {
         return fileService.uploadFilesToDatabase(files, id);
     }

@@ -23,8 +23,20 @@ Frontend
  
 
 ## 📰 Pages
-![Header Image](src/main/resources/screens/TestTaskDescription.jpg)
-
+# Home page
+![Header Image](screenshots/Home%20page.png)
+# Register page
+![Header Image](screenshots/Register%20page.png)
+# Login page
+![Header Image](screenshots/Login%20page.png)
+# Profile page
+![Header Image](screenshots/Profile%20page.png)
+# Files page
+![Header Image](screenshots/Files%20page.png)
+# Upload page
+![Header Image](screenshots/Upload%20page.png)
+# Access Denied page
+![Header Image](screenshots/Access%20Denied%20page.png)
 
 ## 📈 GitHub Stats 
 

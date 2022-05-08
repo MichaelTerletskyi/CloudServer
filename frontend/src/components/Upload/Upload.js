@@ -41,6 +41,7 @@ export const Upload = () => {
             .post(url, formData, config)
             .then((response) => {
                 response.data.forEach(file => {
+                    alert(JSON.stringify(file));
                     sessionStorage.setItem(JSON.parse(JSON.stringify(file)).originalFilename, JSON.stringify(file));
                 });
                 setSuccess(true);
@@ -76,7 +77,7 @@ export const Upload = () => {
 
                             <div className="form-group inputDnD">
                                 <label className="sr-only">File Upload</label>
-                                <input type="file" className="form-control-file text-danger font-weight-bold"
+                                <input type="file" className="form-control-file text-success font-weight-bold"
                                        id="inputFile"
                                     // accept="image/*"
                                        onChange={handleChange}

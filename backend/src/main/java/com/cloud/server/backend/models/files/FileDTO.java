@@ -1,9 +1,11 @@
 package com.cloud.server.backend.models.files;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import org.apache.commons.io.FileUtils;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -65,5 +67,15 @@ public class FileDTO {
 
     public LocalDateTime getDateOfLastUpdate() {
         return dateOfLastUpdate;
+    }
+
+    @JsonGetter
+    public String displaySize() {
+        return FileUtils.byteCountToDisplaySize(sizeInBytes);
+    }
+
+    public static FileDTO makeDTO(File file) {
+        return new FileDTO(file.getId(), file.getContentType(), file.getFileName(),
+                file.getOriginalFilename(), file.sizeInBytes(), file.getDateOfUpload(), file.getDateOfLastUpdate());
     }
 }

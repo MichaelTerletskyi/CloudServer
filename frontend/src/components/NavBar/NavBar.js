@@ -6,10 +6,12 @@ import {NavBarRegister} from "./NavBarRegister";
 import {NavBarProfile} from "./NavBarProfile";
 import {NavBarFiles} from "./NavBarFiles";
 import {NavBarUpload} from "./NavBarUpload";
-import {USER} from "../../consts/StorageEntities";
+import {NavBarAdminPage} from "./NavBarAdminPage";
+import {ADMIN, USER} from "../../consts/StorageEntities";
 
 function NavBar() {
-    const [isLoggedIn] = useState(sessionStorage.hasOwnProperty(USER));
+    const [isLoggedAsUser] = useState(sessionStorage.hasOwnProperty(USER));
+    const [isLoggedAsAdmin] = useState(sessionStorage.hasOwnProperty(ADMIN));
 
     return (
         <>
@@ -35,19 +37,46 @@ function NavBar() {
                             <nav className="site-navigation text-right ml-auto d-none d-lg-block" role="navigation">
                                 <ul className="site-menu main-menu js-clone-nav ml-auto">
                                     {
-                                        !isLoggedIn ? (
+                                        (!isLoggedAsAdmin && !isLoggedAsUser) ? (
                                             <>
-                                                <NavBarLogIn/>
-                                                <NavBarRegister/>
+                                                <>
+                                                    <NavBarLogIn/>
+                                                    <NavBarRegister/>
+                                                </>
                                             </>
                                         ) : (
+                                            <>
+
+                                            </>
+                                        )
+                                    }
+                                    {
+                                        isLoggedAsUser ? (
                                             <>
                                                 <NavBarProfile/>
                                                 <NavBarFiles/>
                                                 <NavBarUpload/>
                                                 <NavBarLogOut/>
+
+                                            </>
+                                        ) : (
+                                            <>
+
                                             </>
                                         )
+                                    }
+                                    {
+                                        isLoggedAsAdmin ? (
+                                            <>
+                                                <NavBarAdminPage/>
+                                                <NavBarLogOut/>
+                                            </>
+                                        ) : (
+                                            <>
+
+                                            </>
+                                        )
+
                                     }
                                 </ul>
                             </nav>

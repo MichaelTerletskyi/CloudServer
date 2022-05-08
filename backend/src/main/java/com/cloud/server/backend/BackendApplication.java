@@ -60,7 +60,7 @@ public class BackendApplication {
         };
     }
 
-    // First Start
+//    First Start
 //    @Bean
 //    CommandLineRunner commandLineRunner(RoleRepository roleRepository) {
 //        return args -> {

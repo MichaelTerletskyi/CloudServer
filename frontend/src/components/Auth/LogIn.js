@@ -17,12 +17,17 @@ import "./vendor/daterangepicker/daterangepicker.css";
 import "./css/util.css";
 import "./css/main.css";
 import "./style.css"
-import axios from "axios";
-import {IP_DETAILS} from "../../consts/StorageEntities";
-import {PROFILE, REGISTER} from "../../consts/RoutePathes";
-import {IP_ASK_URL} from "../../consts/APIUrls";
+import {ADMIN, USER} from "../../consts/StorageEntities";
+import {ACCESS_DENIED, HOME, REGISTER} from "../../consts/RoutePathes";
 
 export const LogIn = (props) => {
+    const [isLoggedAsUser] = useState(sessionStorage.hasOwnProperty(USER));
+    const [isLoggedAsAdmin] = useState(sessionStorage.hasOwnProperty(ADMIN));
+
+    if(isLoggedAsUser || isLoggedAsAdmin) {
+        window.location.href = ACCESS_DENIED;
+    }
+
     const form = useRef();
     const checkBtn = useRef();
 
@@ -53,12 +58,9 @@ export const LogIn = (props) => {
         if (checkBtn.current.context._errors.length === 0) {
             dispatch(login(username, password))
                 .then(() => {
-                    axios.get(IP_ASK_URL).then((res) => {
-                        sessionStorage.setItem(IP_DETAILS, JSON.stringify(res.data));
-                        setSuccessful(true);
-                        props.history.push(PROFILE);
-                        window.location.reload();
-                    });
+                    setSuccessful(true);
+                    props.history.push(HOME);
+                    window.location.reload();
                 })
                 .catch(() => {
                     setLoading(false);
@@ -69,7 +71,7 @@ export const LogIn = (props) => {
     };
 
     if (isLoggedIn && successful) {
-        return <Redirect to={PROFILE}/>;
+        return <Redirect to={HOME}/>;
     }
 
     return (
