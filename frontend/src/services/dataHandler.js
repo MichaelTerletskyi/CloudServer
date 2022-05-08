@@ -32,6 +32,7 @@ async function fetchUserFiles(id) {
 
 async function fetchIpDetails() {
     axios.get(IP_ASK_URL).then((res) => {
+        alert(JSON.stringify(res.data));
         sessionStorage.setItem(IP_DETAILS, JSON.stringify(res.data));
     });
 }

@@ -41,6 +41,7 @@ export const Upload = () => {
             .post(url, formData, config)
             .then((response) => {
                 response.data.forEach(file => {
+                    alert(JSON.stringify(file));
                     sessionStorage.setItem(JSON.parse(JSON.stringify(file)).originalFilename, JSON.stringify(file));
                 });
                 setSuccess(true);
