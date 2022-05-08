@@ -1,5 +1,4 @@
 import React, {useState, useRef} from "react";
-import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect} from 'react-router-dom';
 import {login} from "../../actions/auth";
@@ -18,9 +17,8 @@ import "./vendor/daterangepicker/daterangepicker.css";
 import "./css/util.css";
 import "./css/main.css";
 import "./style.css"
-import {ADMIN, IP_DETAILS, USER} from "../../consts/StorageEntities";
+import {ADMIN, USER} from "../../consts/StorageEntities";
 import {ACCESS_DENIED, HOME, REGISTER} from "../../consts/RoutePathes";
-import {IP_ASK_URL} from "../../consts/APIUrls";
 
 export const LogIn = (props) => {
     const [isLoggedAsUser] = useState(sessionStorage.hasOwnProperty(USER));
@@ -60,12 +58,9 @@ export const LogIn = (props) => {
         if (checkBtn.current.context._errors.length === 0) {
             dispatch(login(username, password))
                 .then(() => {
-                    axios.get(IP_ASK_URL).then((res) => {
-                        sessionStorage.setItem(IP_DETAILS, JSON.stringify(res.data));
-                        setSuccessful(true);
-                        props.history.push(HOME);
-                        window.location.reload();
-                    });
+                    setSuccessful(true);
+                    props.history.push(HOME);
+                    window.location.reload();
                 })
                 .catch(() => {
                     setLoading(false);

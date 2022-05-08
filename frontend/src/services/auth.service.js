@@ -1,6 +1,6 @@
 import axios from "axios";
 import {AUTH_API_URL, SIGNIN, SIGNUP} from "../consts/APIUrls";
-import {roleHandler} from "./dataHandler";
+import {userDataHandler} from "./dataHandler";
 
 
 const register = (username, email, password, role) => {
@@ -20,7 +20,7 @@ const login = (username, password) => {
         })
         .then((response) => {
             if (response.data.accessToken) {
-                roleHandler(response.data);
+                userDataHandler(response.data);
             }
             return response.data;
         });

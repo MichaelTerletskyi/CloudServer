@@ -76,7 +76,7 @@ export const Upload = () => {
 
                             <div className="form-group inputDnD">
                                 <label className="sr-only">File Upload</label>
-                                <input type="file" className="form-control-file text-danger font-weight-bold"
+                                <input type="file" className="form-control-file text-success font-weight-bold"
                                        id="inputFile"
                                     // accept="image/*"
                                        onChange={handleChange}
