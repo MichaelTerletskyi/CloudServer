@@ -1,8 +1,7 @@
 package com.cloud.server.backend.security.services;
 
-import com.cloud.server.backend.exceptions.UserNotFoundException;
 import com.cloud.server.backend.models.users.User;
-import com.cloud.server.backend.repository.users.UserRepository;
+import com.cloud.server.backend.services.models.users.impls.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,18 +16,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserRepository userRepository;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserDetailsServiceImpl(UserServiceImpl userService) {
+        this.userService = userService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository
-                .findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(String.format("User with username %s has not been found", username)));
+        User user = userService.findByUsername(username);
         return UserDetailsImpl.build(user);
     }
 }
