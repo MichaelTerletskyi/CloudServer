@@ -88,6 +88,10 @@ public class UserDetailsImpl implements UserDetails, Serializable {
         return true;
     }
 
+    public List<String> roles() {
+        return this.authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
