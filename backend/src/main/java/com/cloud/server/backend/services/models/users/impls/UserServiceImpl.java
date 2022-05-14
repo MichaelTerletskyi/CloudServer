@@ -66,17 +66,17 @@ public class UserServiceImpl extends UserService {
     }
 
     @Override
-    protected User findByUsername(String username) {
+    public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
-    protected boolean existsByUsername(String username) {
+    public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
 
     @Override
-    protected boolean existsByEmail(String email) {
+    public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
 }

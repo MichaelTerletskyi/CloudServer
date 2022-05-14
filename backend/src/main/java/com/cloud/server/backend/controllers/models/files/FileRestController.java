@@ -8,6 +8,7 @@ import com.cloud.server.backend.services.models.users.impls.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,6 +34,7 @@ public class FileRestController {
     }
 
     @GetMapping("/get/file/by/id={id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<File> getFileById(@PathVariable Long id) {
         if (!fileService.isExistById(id)) {
             new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -42,6 +44,7 @@ public class FileRestController {
     }
 
     @GetMapping("/get/all/files/by/user/id={id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Set<File>> getAllFilesByUserId(@PathVariable Long id) {
         if (!userService.isExistById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -54,6 +57,7 @@ public class FileRestController {
     }
 
     @GetMapping("/get/all/files/metadata/by/user/id={id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Set<FileDTO>> getAllFilesMetadataByUserId(@PathVariable Long id) {
         if (!userService.isExistById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -66,12 +70,14 @@ public class FileRestController {
     }
 
     @PostMapping("/save/files/user/id={id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Set<FileDTO>> uploadFiles(@RequestParam(name = "file") MultipartFile[] files, @PathVariable Long id)
             throws ExecutionException, InterruptedException {
         return fileService.uploadFilesToDatabase(files, id);
     }
 
     @DeleteMapping("/delete/file/by/id={id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Boolean> deleteFile(@PathVariable Long id) {
         if (!fileService.isExistById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
