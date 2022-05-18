@@ -11,10 +11,6 @@ import java.util.Set;
 import java.util.StringJoiner;
 
 public class SignupRequestValidationResolver {
-    private static final String USERNAME_LENGTH_MSG = "Username should contain from 2 to 32 characters";
-    private static final String EMAIL_LENGTH_MSG = "Email should contain from 3 to 254 characters";
-    private static final String EMAIL_INVALID_MSG = "E-mail address is not a valid";
-    private static final String PASSWORD_LENGTH_MSG = "Username should contain from 8 to 32 characters";
     private Set<String> violationMessages = new HashSet<>();
     private boolean isValid;
 
@@ -26,23 +22,12 @@ public class SignupRequestValidationResolver {
             for (ConstraintViolation constraintViolation : errors) {
                 String msg = constraintViolation.getMessage();
                 if (StringUtils.isNotBlank(msg)) {
-                    addViolationMessages(msg);
+                    this.violationMessages.add(msg);
                 }
             }
         }
     }
-
-    private void addViolationMessages(String msg) {
-        if (msg.contains("username does not have between"))
-            this.violationMessages.add(USERNAME_LENGTH_MSG);
-        if (msg.contains("email does not have between"))
-            this.violationMessages.add(EMAIL_LENGTH_MSG);
-        if (msg.contains("email is not a valid e-mail address"))
-            this.violationMessages.add(EMAIL_INVALID_MSG);
-        if (msg.contains("password does not have between"))
-            this.violationMessages.add(PASSWORD_LENGTH_MSG);
-    }
-
+    
     public boolean isValid() {
         return this.isValid;
     }
