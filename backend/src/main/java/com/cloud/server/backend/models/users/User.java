@@ -9,10 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.maxmind.geoip.Location;
 import com.maxmind.geoip.LookupService;
 import io.jsonwebtoken.lang.Collections;
-import net.sf.oval.constraint.Email;
-import net.sf.oval.constraint.Length;
-import net.sf.oval.constraint.NotBlank;
-import net.sf.oval.constraint.Size;
+import net.sf.oval.constraint.*;
 import net.sf.oval.guard.Guarded;
 import net.sf.oval.guard.PostValidateThis;
 import org.apache.commons.io.FileUtils;
@@ -49,29 +46,32 @@ import java.util.Set;
 public class User implements Serializable {
     private static final long serialVersionUID = -7704786855879035969L;
 
-
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(min = 2, max = 32)
-    @Length(min = 2, max = 32)
-    @Column(length = 32)
+
+    @NotNull(message = "Username cannot be null")
+    @NotBlank(message = "Username cannot be blank")
+    @MinLength(value = 2, message = "Username min length is 2")
+    @MaxLength(value = 32, message = "Username max length is 32")
+    @Column(name = "username", length = 32)
     private String username;
 
-    @NotBlank
-    @Email
-    @Size(min = 3, max = 254)
-    @Length(min = 3, max = 254)
-    @Column(length = 254)
+    @NotNull(message = "Email cannot be null")
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Invalid email")
+    @MinLength(value = 3, message = "Email min length is 3")
+    @MaxLength(value = 254, message = "Email max length is 254")
+    @Column(name = "email", length = 254)
     private String email;
 
-    @NotBlank
-    @Size(min = 8, max = 60)
-    @Length(min = 8, max = 60)
-    @Column(length = 60)
+    @NotNull(message = "Password cannot be null")
+    @NotBlank(message = "Password cannot be blank")
+    @MinLength(value = 8, message = "Password min length is 8")
+    @MaxLength(value = 60, message = "Password max length is 60")
+    @Column(name = "password", length = 254)
     private String password;
 
     @JsonIgnore
@@ -88,14 +88,23 @@ public class User implements Serializable {
     public User() {
 
     }
-
     @PostValidateThis
-    public User(@NotBlank @Size(min = 2, max = 32) @Length(min = 2, max = 32) String username,
-                @NotBlank @Email @Size(min = 3, max = 254) @Length(min = 3, max = 254) String email,
-                @NotBlank @Size(min = 8, max = 60) @Length(min = 8, max = 60) String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
+    public User(@NotNull(message = "Username cannot be null")
+                @NotBlank(message = "Username cannot be blank")
+                @MinLength(value = 2, message = "Username min length is 2")
+                @MaxLength(value = 32, message = "Username max length is 32") String username,
+                @NotNull(message = "Email cannot be null")
+                @NotBlank(message = "Email cannot be blank")
+                @Email(message = "Invalid email")
+                @MinLength(value = 3, message = "Email min length is 3")
+                @MaxLength(value = 254, message = "Email max length is 254") String email,
+                @NotNull(message = "Password cannot be null")
+                @NotBlank(message = "Password cannot be blank")
+                @MinLength(value = 8, message = "Password min length is 8")
+                @MaxLength(value = 60, message = "Password max length is 60") String password) {
+        this.username = StringUtils.strip(username);
+        this.email = StringUtils.strip(email);
+        this.password = StringUtils.strip(password);
     }
 
     public Long getId() {
