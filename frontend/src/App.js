@@ -3,15 +3,15 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
-import NavBar from "./components/NavBar/NavBar";
-import {Home} from "./components/Home/Home";
-import {LogIn} from "./components/Auth/LogIn";
-import {Register} from "./components/Auth/Register";
-import {Profile} from "./components/Profile/Profile";
-import {LogOut} from "./components/Auth/LogOut";
-import {Files} from "./components/Files/Files";
-import {Upload} from "./components/Upload/Upload";
-import {AccessDenied} from "./components/AccessDenied/AccessDenied";
+import NavBar from "./components/NavBarPage/NavBar";
+import {Home} from "./components/HomePage/Home";
+import {LogIn} from "./components/AuthPages/LogIn";
+import {Register} from "./components/AuthPages/Register";
+import {Profile} from "./components/ProfilePage/Profile";
+import {LogOut} from "./components/AuthPages/LogOut";
+import {Files} from "./components/FilesPage/Files";
+import {Upload} from "./components/UploadPage/Upload";
+import {AccessDenied} from "./components/AccessDeniedPage/AccessDenied";
 import {AdminPage} from "./components/AdminPage/AdminPage";
 import {FILES, HOME, LOGIN, PROFILE, REGISTER, LOGOUT, UPLOAD, ACCESS_DENIED, ADMIN_PAGE} from "./consts/RoutePathes";
 
