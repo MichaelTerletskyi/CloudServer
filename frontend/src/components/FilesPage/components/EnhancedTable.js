@@ -22,7 +22,7 @@ import {
     useSortBy,
     useTable,
 } from 'react-table'
-import {IP_DETAILS, USER} from "../../../consts/StorageEntities";
+import {USER} from "../../../consts/StorageEntities";
 import {DATA_API_URL, DELETE_FILE_BY_ID_URL, GET_FILE_BY_ID_URL} from "../../../consts/APIUrls";
 
 const IndeterminateCheckbox = forwardRef(
@@ -148,7 +148,7 @@ const EnhancedTable = ({columns, data, setData, updateMyData, skipPageReset}) =>
         for (let i = 0; i < array.length; i++) {
             if (containsIndex(i, indexs)) {
                 let removedKey = array[i].originalFilename;
-                if (removedKey !== USER && removedKey !== IP_DETAILS) {
+                if (removedKey !== USER) {
                     let removedId = array[i].id;
                     axios.delete(DATA_API_URL + DELETE_FILE_BY_ID_URL + removedId)
                         .then((response) => {

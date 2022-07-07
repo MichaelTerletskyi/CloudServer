@@ -3,7 +3,7 @@ import React, {useEffect, useMemo, useState} from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import EnhancedTable from './components/EnhancedTable'
 
-import {IP_DETAILS, USER} from "../../consts/StorageEntities";
+import {USER} from "../../consts/StorageEntities";
 import {ACCESS_DENIED} from "../../consts/RoutePathes";
 
 export const Files = () => {
@@ -20,7 +20,7 @@ export const Files = () => {
         let arr = [];
         for (let i = 0; i < sessionStorage.length; i++) {
             let key = sessionStorage.key(i);
-            if (key !== USER && key !== IP_DETAILS) {
+            if (key !== USER) {
                 arr.push(sessionStorage.getItem(key));
             }
         }
