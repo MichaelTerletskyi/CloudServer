@@ -2,7 +2,6 @@ package com.cloud.server.backend.controllers.auth;
 
 import com.cloud.server.backend.payload.request.LoginRequest;
 import com.cloud.server.backend.payload.request.SignupRequest;
-import com.cloud.server.backend.payload.response.MessageResponse;
 import com.cloud.server.backend.services.authentication.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +29,7 @@ public class AuthRestController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<MessageResponse> registerUser(@RequestBody SignupRequest signUpRequest) {
-        return authenticationService.registerUser(signUpRequest);
+    public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {
+        return ResponseEntity.ok(authenticationService.registerUser(signUpRequest));
     }
 }

@@ -161,8 +161,7 @@ public class FileServiceImpl extends FileService<File> {
         return fileTemp;
     }
 
-    public ResponseEntity<Set<FileDTO>> uploadFilesToDatabase(MultipartFile[] files, Long userId)
-            throws ExecutionException, InterruptedException {
+    public ResponseEntity<Set<FileDTO>> uploadFilesToDatabase(MultipartFile[] files, Long userId) {
         if (!userService.isExistById(userId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -172,19 +171,26 @@ public class FileServiceImpl extends FileService<File> {
         }
 
         Set<File> fileSet = new HashSet<>();
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        List<Future<File>> futureList = new ArrayList<>();
-        for (MultipartFile f : files) {
-            futureList.add(executor.submit(new MultipartFilesProcessor(f, userId, this)));
-        }
-
-        for (Future<File> file : futureList) {
-            fileSet.add(file.get());
-        }
-        executor.shutdown();
-
         Set<FileDTO> fileDTOSet = new LinkedHashSet<>();
-        fileSet.forEach(file -> fileDTOSet.add(FileDTO.makeDTO(file)));
+
+        template.execute(status -> {
+            ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+            List<Future<File>> futureList = new ArrayList<>();
+            for (MultipartFile f : files) {
+                futureList.add(executor.submit(new MultipartFilesProcessor(f, userId, this)));
+            }
+
+            for (Future<File> file : futureList) {
+                try {
+                    fileSet.add(file.get());
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+            executor.shutdown();
+            fileSet.forEach(file -> fileDTOSet.add(FileDTO.makeDTO(file)));
+            return fileDTOSet;
+        });
         return new ResponseEntity<>(fileDTOSet, HttpStatus.CREATED);
     }
 }

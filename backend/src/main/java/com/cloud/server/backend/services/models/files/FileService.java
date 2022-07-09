@@ -13,7 +13,7 @@ import java.util.Set;
  */
 
 @Service
-public abstract class FileService<T> extends BasicCrudService<T> {
+public abstract class FileService<T> implements BasicCrudService<T> {
     public abstract Set<T> getAllByUserId(Long id);
     public abstract T saveWithUserId(MultipartFile file, Long id);
 

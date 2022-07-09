@@ -4,7 +4,7 @@ import com.cloud.server.backend.models.files.File;
 import com.cloud.server.backend.models.files.FileDTO;
 import com.cloud.server.backend.models.users.User;
 import com.cloud.server.backend.services.models.files.impls.FileServiceImpl;
-import com.cloud.server.backend.services.models.users.impls.UserServiceImpl;
+import com.cloud.server.backend.services.models.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +25,10 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/rest/api/data")
 public class FileRestController {
     private final FileServiceImpl fileService;
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @Autowired
-    public FileRestController(FileServiceImpl fileService, UserServiceImpl userService) {
+    public FileRestController(FileServiceImpl fileService, UserService userService) {
         this.fileService = fileService;
         this.userService = userService;
     }
@@ -71,8 +71,7 @@ public class FileRestController {
 
     @PostMapping("/save/files/user/id={id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Set<FileDTO>> uploadFiles(@RequestParam(name = "file") MultipartFile[] files, @PathVariable Long id)
-            throws ExecutionException, InterruptedException {
+    public ResponseEntity<Set<FileDTO>> uploadFiles(@RequestParam(name = "file") MultipartFile[] files, @PathVariable Long id) {
         return fileService.uploadFilesToDatabase(files, id);
     }
 
