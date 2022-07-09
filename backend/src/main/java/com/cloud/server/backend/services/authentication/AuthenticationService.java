@@ -5,6 +5,7 @@ import com.cloud.server.backend.models.users.User;
 import com.cloud.server.backend.payload.request.LoginRequest;
 import com.cloud.server.backend.payload.request.SignupRequest;
 import com.cloud.server.backend.payload.response.JwtResponse;
+import com.cloud.server.backend.payload.response.LoginResponse;
 import com.cloud.server.backend.payload.response.MessageResponse;
 import com.cloud.server.backend.security.jwt.JwtUtils;
 import com.cloud.server.backend.security.services.UserDetailsImpl;
@@ -16,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,9 @@ public class AuthenticationService {
     private static final String EMAIL_IS_ALREADY_IN_USE = "Email is already in use";
     private static final String USERNAME_IS_ALREADY_TAKEN = "Username is already exist with this username";
     private static final String USER_REGISTERED_SUCCESSFULLY = "User registered successfully";
+    private static final String LOGIN_SUCCESS_MSG = "Login Success";
+    private static final String LOGIN_FAILED_USER_NOT_EXIST_MSG = "User with username '%s' does't exist";
+    private static final String REGISTER_SUCCESS_MSG = "User '%s' registered successfully!";
     private final TransactionTemplate template;
     private final AuthenticationManager authenticationManager;
     private final UserServiceImpl userService;
@@ -54,19 +58,26 @@ public class AuthenticationService {
         this.jwtUtils = jwtUtils;
     }
 
-    public ResponseEntity<JwtResponse> authenticateUser(LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-        );
+    public LoginResponse authenticateUser(LoginRequest loginRequest) {
+        if(!userService.existsByUsername(loginRequest.getUsername())) {
+            return new LoginResponse(null, String.format(LOGIN_FAILED_USER_NOT_EXIST_MSG, loginRequest.getUsername()));
+        }
 
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                loginRequest.getUsername(), loginRequest.getPassword());
+        Authentication authentication = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        User user = userService.getById(userDetails.getId());
+        UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+        JwtResponse build = JwtResponse.builder()
+                .setToken(jwt)
+                .setId(user.getId())
+                .setUsername(user.getUsername())
+                .setEmail(user.getEmail())
+                .setRoles(user.roles())
+                .build();
 
-        JwtResponse body = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(),
-                userDetails.roles(), user);
-        return ResponseEntity.ok(body);
+        return new LoginResponse(build, LOGIN_SUCCESS_MSG);
     }
 
     public ResponseEntity<MessageResponse> registerUser(SignupRequest signUpRequest) {

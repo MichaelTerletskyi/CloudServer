@@ -2,7 +2,6 @@ package com.cloud.server.backend.controllers.auth;
 
 import com.cloud.server.backend.payload.request.LoginRequest;
 import com.cloud.server.backend.payload.request.SignupRequest;
-import com.cloud.server.backend.payload.response.JwtResponse;
 import com.cloud.server.backend.payload.response.MessageResponse;
 import com.cloud.server.backend.services.authentication.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +25,8 @@ public class AuthRestController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<JwtResponse> authenticateUser(@RequestBody LoginRequest loginRequest) {
-        return authenticationService.authenticateUser(loginRequest);
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(authenticationService.authenticateUser(loginRequest));
     }
 
     @PostMapping("/signup")
