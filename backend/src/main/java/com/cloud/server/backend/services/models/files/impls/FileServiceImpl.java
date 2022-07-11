@@ -3,7 +3,7 @@ package com.cloud.server.backend.services.models.files.impls;
 import com.cloud.server.backend.exceptions.FileNotFoundException;
 import com.cloud.server.backend.exceptions.UserNotFoundException;
 import com.cloud.server.backend.models.files.File;
-import com.cloud.server.backend.models.files.FileDTO;
+import com.cloud.server.backend.models.files.FileDto;
 import com.cloud.server.backend.models.files.FileTag;
 import com.cloud.server.backend.models.users.User;
 import com.cloud.server.backend.repository.files.FileRepository;
@@ -98,8 +98,8 @@ public class FileServiceImpl extends FileService<File> {
         return fileRepository.findAllByUserId(id);
     }
 
-    public Set<FileDTO> getAllFilesMetadataByUserId(Long id) {
-        Set<FileDTO> files = new LinkedHashSet<>();
+    public Set<FileDto> getAllFilesMetadataByUserId(Long id) {
+        Set<FileDto> files = new LinkedHashSet<>();
         try {
             String driverClassName = env.getProperty("spring.datasource.driver-class-name");
             String datasourceUrl = env.getProperty("spring.datasource.url");
@@ -122,7 +122,7 @@ public class FileServiceImpl extends FileService<File> {
                         LocalDateTime dateOfUpload = resultSet.getTimestamp(6).toLocalDateTime();
                         LocalDateTime dateOfLastUpdate = resultSet.getTimestamp(7).toLocalDateTime();
 
-                        FileDTO file = new FileDTO(fileId, contentType, fileName, originalFilename, sizeInBytes, dateOfUpload, dateOfLastUpdate);
+                        FileDto file = new FileDto(fileId, contentType, fileName, originalFilename, sizeInBytes, dateOfUpload, dateOfLastUpdate);
                         files.add(file);
                     }
                 }
@@ -161,7 +161,7 @@ public class FileServiceImpl extends FileService<File> {
         return fileTemp;
     }
 
-    public ResponseEntity<Set<FileDTO>> uploadFilesToDatabase(MultipartFile[] files, Long userId) {
+    public ResponseEntity<Set<FileDto>> uploadFilesToDatabase(MultipartFile[] files, Long userId) {
         if (!userService.isExistById(userId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -171,7 +171,7 @@ public class FileServiceImpl extends FileService<File> {
         }
 
         Set<File> fileSet = new HashSet<>();
-        Set<FileDTO> fileDTOSet = new LinkedHashSet<>();
+        Set<FileDto> fileDtoSet = new LinkedHashSet<>();
 
         template.execute(status -> {
             ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
@@ -188,9 +188,9 @@ public class FileServiceImpl extends FileService<File> {
                 }
             }
             executor.shutdown();
-            fileSet.forEach(file -> fileDTOSet.add(FileDTO.makeDTO(file)));
-            return fileDTOSet;
+            fileSet.forEach(file -> fileDtoSet.add(FileDto.makeDTO(file)));
+            return fileDtoSet;
         });
-        return new ResponseEntity<>(fileDTOSet, HttpStatus.CREATED);
+        return new ResponseEntity<>(fileDtoSet, HttpStatus.CREATED);
     }
 }

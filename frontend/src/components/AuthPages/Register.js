@@ -193,21 +193,21 @@ export const Register = () => {
                             <CheckButton style={{display: "none"}} ref={checkBtn}/>
 
 
-                            <div className="txt1 text-center p-t-25 p-b-20">
-                                <span>Or Sign Up Using</span>
-                            </div>
+                            {/*<div className="txt1 text-center p-t-25 p-b-20">*/}
+                            {/*    <span>Or Sign Up Using</span>*/}
+                            {/*</div>*/}
 
-                            <div className="flex-c-m">
-                                <a href="#" className="login100-social-item bg1">
-                                    <i className="fa fa-facebook"/>
-                                </a>
-                                <a href="#" className="login100-social-item bg2">
-                                    <i className="fa fa-twitter"/>
-                                </a>
-                                <a href="#" className="login100-social-item bg3">
-                                    <i className="fa fa-google"/>
-                                </a>
-                            </div>
+                            {/*<div className="flex-c-m">*/}
+                            {/*    <a href="#" className="login100-social-item bg1">*/}
+                            {/*        <i className="fa fa-facebook"/>*/}
+                            {/*    </a>*/}
+                            {/*    <a href="#" className="login100-social-item bg2">*/}
+                            {/*        <i className="fa fa-twitter"/>*/}
+                            {/*    </a>*/}
+                            {/*    <a href="#" className="login100-social-item bg3">*/}
+                            {/*        <i className="fa fa-google"/>*/}
+                            {/*    </a>*/}
+                            {/*</div>*/}
                         </Form>
                     </div>
                 </div>

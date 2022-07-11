@@ -9,13 +9,14 @@ import org.apache.commons.io.FileUtils;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * @Create 5/7/2022
  * @Author Michael Terletskyi
  */
 
-public class FileDTO {
+public class FileDto {
     private Long id;
     private String contentType;
     private String fileName;
@@ -30,7 +31,7 @@ public class FileDTO {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime dateOfLastUpdate;
 
-    public FileDTO(Long id, String contentType, String fileName, String originalFilename,
+    public FileDto(Long id, String contentType, String fileName, String originalFilename,
                    BigInteger sizeInBytes, LocalDateTime dateOfUpload, LocalDateTime dateOfLastUpdate) {
         this.id = id;
         this.contentType = contentType;
@@ -74,8 +75,27 @@ public class FileDTO {
         return FileUtils.byteCountToDisplaySize(sizeInBytes);
     }
 
-    public static FileDTO makeDTO(File file) {
-        return new FileDTO(file.getId(), file.getContentType(), file.getFileName(),
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof FileDto)) return false;
+        FileDto fileDTO = (FileDto) o;
+        return Objects.equals(id, fileDTO.id) &&
+                Objects.equals(contentType, fileDTO.contentType) &&
+                Objects.equals(fileName, fileDTO.fileName) &&
+                Objects.equals(originalFilename, fileDTO.originalFilename) &&
+                Objects.equals(sizeInBytes, fileDTO.sizeInBytes) &&
+                Objects.equals(dateOfUpload, fileDTO.dateOfUpload) &&
+                Objects.equals(dateOfLastUpdate, fileDTO.dateOfLastUpdate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, contentType, fileName, originalFilename, sizeInBytes, dateOfUpload, dateOfLastUpdate);
+    }
+
+    public static FileDto makeDTO(File file) {
+        return new FileDto(file.getId(), file.getContentType(), file.getFileName(),
                 file.getOriginalFilename(), file.sizeInBytes(), file.getDateOfUpload(), file.getDateOfLastUpdate());
     }
 }

@@ -1,7 +1,7 @@
 package com.cloud.server.backend.controllers.models.files;
 
 import com.cloud.server.backend.models.files.File;
-import com.cloud.server.backend.models.files.FileDTO;
+import com.cloud.server.backend.models.files.FileDto;
 import com.cloud.server.backend.models.users.User;
 import com.cloud.server.backend.services.models.files.impls.FileServiceImpl;
 import com.cloud.server.backend.services.models.users.UserService;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @Create 4/15/2022
@@ -58,7 +57,7 @@ public class FileRestController {
 
     @GetMapping("/get/all/files/metadata/by/user/id={id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Set<FileDTO>> getAllFilesMetadataByUserId(@PathVariable Long id) {
+    public ResponseEntity<Set<FileDto>> getAllFilesMetadataByUserId(@PathVariable Long id) {
         if (!userService.isExistById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -71,7 +70,7 @@ public class FileRestController {
 
     @PostMapping("/save/files/user/id={id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Set<FileDTO>> uploadFiles(@RequestParam(name = "file") MultipartFile[] files, @PathVariable Long id) {
+    public ResponseEntity<Set<FileDto>> uploadFiles(@RequestParam(name = "file") MultipartFile[] files, @PathVariable Long id) {
         return fileService.uploadFilesToDatabase(files, id);
     }
 

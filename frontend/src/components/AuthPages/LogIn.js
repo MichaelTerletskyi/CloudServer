@@ -1,7 +1,7 @@
 import React, {useState, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect} from 'react-router-dom';
-import {login} from "../../actions/auth";
+import {login} from "./../../repository/UserRepository"
 
 import Form from "react-validation/build/form";
 import CheckButton from "react-validation/build/button";
@@ -53,21 +53,9 @@ export const LogIn = (props) => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        setLoading(true);
-        form.current.validateAll();
-        if (checkBtn.current.context._errors.length === 0) {
-            dispatch(login(username, password))
-                .then(() => {
-                    setSuccessful(true);
-                    props.history.push(HOME);
-                    window.location.reload();
-                })
-                .catch(() => {
-                    setLoading(false);
-                });
-        } else {
-            setLoading(false);
-        }
+        await login(username, password).then(r => {
+            alert(JSON.stringify(r))
+        });
     };
 
     if (isLoggedIn && successful) {
@@ -128,9 +116,14 @@ export const LogIn = (props) => {
                             </div>
 
 
-                            <div className="text-right p-t-8 p-b-31">
-                                <a href="#">Forgot password?</a>
-                            </div>
+                            {/*<div className="text-right p-t-8 p-b-31">*/}
+                            {/*    <a href="#">Forgot password ?</a>*/}
+                            {/*</div>*/}
+
+                            {/*<div className="text-left p-t-8 p-b-31">*/}
+                            {/*    <span className="label-input100">Remember me </span>*/}
+                            {/*    <input type="checkbox"/>*/}
+                            {/*</div>*/}
 
                             <div className="container-login100-form-btn">
                                 <div className="wrap-login100-form-btn">
@@ -147,21 +140,21 @@ export const LogIn = (props) => {
                             <CheckButton style={{display: "none"}} ref={checkBtn}/>
 
 
-                            <div className="txt1 text-center p-t-25 p-b-20">
-                                <span>Or Sign Up Using</span>
-                            </div>
+                            {/*<div className="txt1 text-center p-t-25 p-b-20">*/}
+                            {/*    <span>Or Sign Up Using</span>*/}
+                            {/*</div>*/}
 
-                            <div className="flex-c-m">
-                                <a href="#" className="login100-social-item bg1">
-                                    <i className="fa fa-facebook"/>
-                                </a>
-                                <a href="#" className="login100-social-item bg2">
-                                    <i className="fa fa-twitter"/>
-                                </a>
-                                <a href="#" className="login100-social-item bg3">
-                                    <i className="fa fa-google"/>
-                                </a>
-                            </div>
+                            {/*<div className="flex-c-m">*/}
+                            {/*    <a href="#" className="login100-social-item bg1">*/}
+                            {/*        <i className="fa fa-facebook"/>*/}
+                            {/*    </a>*/}
+                            {/*    <a href="#" className="login100-social-item bg2">*/}
+                            {/*        <i className="fa fa-twitter"/>*/}
+                            {/*    </a>*/}
+                            {/*    <a href="#" className="login100-social-item bg3">*/}
+                            {/*        <i className="fa fa-google"/>*/}
+                            {/*    </a>*/}
+                            {/*</div>*/}
 
 
                             <div className="flex-col-c p-t-25">

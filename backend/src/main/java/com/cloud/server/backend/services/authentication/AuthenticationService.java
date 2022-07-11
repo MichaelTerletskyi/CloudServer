@@ -37,7 +37,8 @@ public class AuthenticationService {
     private final UserService userService;
 
     @Autowired
-    public AuthenticationService(AuthenticationManager authenticationManager, TransactionTemplate template, PasswordEncoder encoder, JwtUtils jwtUtils, SignupRequestValidator validator, UserService userService) {
+    public AuthenticationService(AuthenticationManager authenticationManager, TransactionTemplate template,
+                                 PasswordEncoder encoder, JwtUtils jwtUtils, SignupRequestValidator validator, UserService userService) {
         this.authenticationManager = authenticationManager;
         this.template = template;
         this.encoder = encoder;
@@ -57,7 +58,7 @@ public class AuthenticationService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
         UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
-        JwtResponse build = JwtResponse.builder()
+        JwtResponse jwtResponse = JwtResponse.builder()
                 .setToken(jwt)
                 .setId(user.getId())
                 .setUsername(user.getUsername())
@@ -65,7 +66,7 @@ public class AuthenticationService {
                 .setRoles(user.roles())
                 .build();
 
-        return new LoginResponse(build, LOGIN_SUCCESS_MSG);
+        return new LoginResponse(jwtResponse, LOGIN_SUCCESS_MSG);
     }
 
     public SignUpResponse registerUser(SignupRequest request) {
