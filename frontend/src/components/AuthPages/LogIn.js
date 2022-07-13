@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {login} from "./../../repository/UserRepository";
 import {saveJWT} from "../../services/AuthService";
 
-import {REGISTER} from "../../consts/RoutePathes";
+import {HOME, REGISTER} from "../../consts/RoutePathes";
 
 import Form from "react-validation/build/form";
 import CheckButton from "react-validation/build/button";
@@ -29,6 +29,7 @@ export const LogIn = () => {
     const [formData, setFormData] = useState({
         username: "",
         password: "",
+        rememberMe: false
     });
 
     function validateUsername() {
@@ -43,14 +44,20 @@ export const LogIn = () => {
         e.preventDefault();
         let username = formData.username;
         let password = formData.password;
+        let rememberMe = formData.rememberMe;
+
+        alert(JSON.stringify(formData));
 
         if (validateUsername() && validatePassword()) {
             setLoading(true);
-            await login(username, password)
+            await login(username, password, rememberMe)
                 .then(response => {
                     saveJWT(response.data.jwtResponse);
                     setSuccessfully(response.data.successful);
-                    setMessages(response.data.message)
+                    setMessages(response.data.message);
+                    setTimeout(() => {
+                        window.location.href = HOME;
+                    }, successfully ? 200 : 5000);
                 });
         }
     };
@@ -65,6 +72,14 @@ export const LogIn = () => {
         })
     };
 
+    const rememberMeStatus = (e) => {
+        const {checked} = e.target;
+        if(checked) {
+            formData.rememberMe = true;
+        }
+    };
+
+
     useEffect(() => {
 
     }, [messages]);
@@ -74,9 +89,6 @@ export const LogIn = () => {
             <div className="bg-login"/>
             <div className="bg-login bg2"/>
             <div className="bg-login bg3"/>
-            {/*<div className="content">*/}
-            {/*    <h1>Sliding Diagonals Background Effect</h1>*/}
-            {/*</div>*/}
 
             <div className="limiter">
                 <div className="container-login100">
@@ -122,15 +134,14 @@ export const LogIn = () => {
                                 <a>&nbsp;{!validatePassword() ? "Password length must be between 8 and 254 characters" : ""}</a>
                             </div>
 
-
-                            {/*<div className="text-right p-t-8 p-b-31">*/}
-                            {/*    <a href="#">Forgot password ?</a>*/}
-                            {/*</div>*/}
-
-                            {/*<div className="text-left p-t-8 p-b-31">*/}
-                            {/*    <span className="label-input100">Remember me </span>*/}
-                            {/*    <input type="checkbox"/>*/}
-                            {/*</div>*/}
+                            <div className="text-right p-t-8 p-b-31">
+                                <span className="label-input100">Remember me </span>
+                                <input type="checkbox"
+                                       name="remember me"
+                                       value={formData.rememberMe}
+                                       onClick={rememberMeStatus}
+                                />
+                            </div>
 
                             <div className="container-login100-form-btn">
                                 <div className="wrap-login100-form-btn">

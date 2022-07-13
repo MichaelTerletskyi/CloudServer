@@ -5,12 +5,13 @@ const AUTH = process.env.REACT_APP_BACKEND_API_AUTH;
 const SIGNIN = process.env.REACT_APP_BACKEND_API_SIGNIN;
 const SIGNUP = process.env.REACT_APP_BACKEND_API_SIGNUP;
 
-export const login = (username, password) => {
+export const login = (username, password, rememberMe) => {
     let url = `${BACKEND_API}${AUTH}${SIGNIN}`;
     return axios
         .post(url, {
             username,
             password,
+            rememberMe
         })
         .then((response) => {
             return response;

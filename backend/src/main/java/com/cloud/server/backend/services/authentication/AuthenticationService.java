@@ -59,12 +59,12 @@ public class AuthenticationService {
         try {
             Authentication authentication = authenticationManager.authenticate(authToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtUtils.generateJwtToken(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication, request.isRememberMe());
             UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
             JwtResponse jwtResponse = JwtResponse.builder()
                     .setToken(jwt)
                     .setId(user.getId())
-                    .setUsername(user.getUsername())
+                        .setUsername(user.getUsername())
                     .setEmail(user.getEmail())
                     .setRoles(user.roles())
                     .build();
