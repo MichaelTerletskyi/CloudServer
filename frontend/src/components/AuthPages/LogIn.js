@@ -1,6 +1,4 @@
-import React, {useState, useRef} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {Redirect} from 'react-router-dom';
+import React, {useEffect, useRef, useState} from "react";
 import {login} from "./../../repository/UserRepository"
 
 import Form from "react-validation/build/form";
@@ -17,50 +15,58 @@ import "./vendor/daterangepicker/daterangepicker.css";
 import "./css/util.css";
 import "./css/main.css";
 import "./style.css"
-import {ADMIN, USER} from "../../consts/StorageEntities";
-import {ACCESS_DENIED, HOME, REGISTER} from "../../consts/RoutePathes";
 
-export const LogIn = (props) => {
-    const [isLoggedAsUser] = useState(sessionStorage.hasOwnProperty(USER));
-    const [isLoggedAsAdmin] = useState(sessionStorage.hasOwnProperty(ADMIN));
+import {REGISTER} from "../../consts/RoutePathes";
 
-    if(isLoggedAsUser || isLoggedAsAdmin) {
-        window.location.href = ACCESS_DENIED;
-    }
-
+export const LogIn = () => {
     const form = useRef();
     const checkBtn = useRef();
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [successful, setSuccessful] = useState(false);
+    const [successfully, setSuccessfully] = useState(false);
+    const [messages, setMessages] = useState("");
+    const [formData, setFormData] = useState({
+        username: "",
+        password: "",
+    });
 
-    const {isLoggedIn} = useSelector(state => state.auth);
-    const {message} = useSelector(state => state.message);
+    function validateUsername() {
+        return formData.username.length >= 2 && formData.username.length <= 32;
+    }
 
-    const dispatch = useDispatch();
-
-    const onChangeUsername = (e) => {
-        const username = e.target.value;
-        setUsername(username);
-    };
-
-    const onChangePassword = (e) => {
-        const password = e.target.value;
-        setPassword(password);
-    };
+    function validatePassword() {
+        return formData.password.length >= 8 && formData.password.length <= 32;
+    }
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        await login(username, password).then(r => {
-            alert(JSON.stringify(r))
-        });
+        let username = formData.username;
+        let password = formData.password;
+
+        if (validateUsername() && validatePassword()) {
+            setLoading(true);
+            await login(username, password)
+                .then(response => {
+                    alert(JSON.stringify(response.data));
+                    setSuccessfully(response.data.successful);
+                    setMessages(response.data.message)
+                });
+        }
     };
 
-    if (isLoggedIn && successful) {
-        return <Redirect to={HOME}/>;
-    }
+    const InputChange = (e) => {
+        const {name, value} = e.target;
+        setFormData((preData) => {
+            return {
+                ...preData,
+                [name]: value
+            }
+        })
+    };
+
+    useEffect(() => {
+
+    }, [messages]);
 
     return (
         <>
@@ -86,14 +92,14 @@ export const LogIn = (props) => {
                                        min={2}
                                        max={32}
                                        placeholder="Type your username"
-                                       value={username}
-                                       onChange={onChangeUsername}
+                                       value={formData.username}
+                                       onChange={InputChange}
                                 />
                                 <span className="focus-input100" data-symbol="&#xf206;"/>
                             </div>
 
                             <div role="login-alert" className={"login-alert-msg"}>
-                                <a>&nbsp;{message && (username.length < 2 || username.length > 32) ? "Minimum 2 characters are required" : ""}</a>
+                                <a>&nbsp;{!validateUsername() ? "Username length must be between 2 and 32 characters" : ""}</a>
                             </div>
 
 
@@ -101,18 +107,18 @@ export const LogIn = (props) => {
                                 <span className="label-input100">Password</span>
                                 <input className="input100"
                                        type="password"
-                                       name="pass"
-                                       min={3}
+                                       name="password"
+                                       min={8}
                                        max={254}
                                        placeholder="Type your password"
-                                       value={password}
-                                       onChange={onChangePassword}
+                                       value={formData.password}
+                                       onChange={InputChange}
                                 />
                                 <span className="focus-input100" data-symbol="&#xf190;"/>
                             </div>
 
                             <div role="login-alert" className={"login-alert-msg"}>
-                                <a>&nbsp;{message && (password.length < 8 || password.length > 32) ? "Minimum 8 characters are required" : ""}</a>
+                                <a>&nbsp;{!validatePassword() ? "Password length must be between 8 and 254 characters" : ""}</a>
                             </div>
 
 
@@ -133,8 +139,8 @@ export const LogIn = (props) => {
                                 </div>
                             </div>
 
-                            <div role="login-alert" className={"login-alert-msg"}>
-                                <a>&nbsp;{message}</a>
+                            <div role="login-alert" className={successfully ? "login-success-msg" : "login-alert-msg"}>
+                                <a>&nbsp;{messages}</a>
                             </div>
 
                             <CheckButton style={{display: "none"}} ref={checkBtn}/>

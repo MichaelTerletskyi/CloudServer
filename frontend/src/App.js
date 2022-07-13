@@ -1,7 +1,8 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {Routes} from "react-router";
+import {BrowserRouter as Router, Route} from "react-router-dom";
 
 import NavBar from "./components/NavBarPage/NavBar";
 import {Home} from "./components/HomePage/Home";
@@ -15,26 +16,28 @@ import {AccessDenied} from "./components/AccessDeniedPage/AccessDenied";
 import {AdminPage} from "./components/AdminPage/AdminPage";
 import {FILES, HOME, LOGIN, PROFILE, REGISTER, LOGOUT, UPLOAD, ACCESS_DENIED, ADMIN_PAGE} from "./consts/RoutePathes";
 
+
 const App = () => {
     return (
         <>
             <Router>
                 <NavBar/>
                 <div className="pages">
-                    <Switch>
-                        <Route exact path={HOME} component={Home}/>
-                        <Route exact path={LOGIN} component={LogIn}/>
-                        <Route exact path={REGISTER} component={Register}/>
+                    <Routes>
+                        <Route exact path={HOME} element={<Home/>}/>
 
-                        <Route exact path={PROFILE} component={Profile}/>
-                        <Route exact path={FILES} component={Files}/>
-                        <Route exact path={UPLOAD} component={Upload}/>
+                        <Route exact path={LOGIN} element={<LogIn/>}/>
+                        <Route exact path={REGISTER} element={<Register/>}/>
 
-                        <Route exact path={ADMIN_PAGE} component={AdminPage}/>
+                        <Route exact path={PROFILE} element={<Profile/>}/>
+                        <Route exact path={FILES} element={<Files/>}/>
+                        <Route exact path={UPLOAD} element={<Upload/>}/>
 
-                        <Route exact path={ACCESS_DENIED} component={AccessDenied}/>
-                        <Route path={LOGOUT} component={LogOut}/>
-                    </Switch>
+                        <Route exact path={ADMIN_PAGE} element={<AdminPage/>}/>
+
+                        <Route exact path={ACCESS_DENIED} element={<AccessDenied/>}/>
+                        <Route path={LOGOUT} element={<LogOut/>}/>
+                    </Routes>
                 </div>
             </Router>
         </>

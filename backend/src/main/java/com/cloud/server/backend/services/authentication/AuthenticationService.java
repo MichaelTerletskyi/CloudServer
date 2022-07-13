@@ -12,6 +12,7 @@ import com.cloud.server.backend.services.authentication.validation.SignupRequest
 import com.cloud.server.backend.services.models.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,8 +27,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 @Service
 public class AuthenticationService {
-    private static final String LOGIN_SUCCESS_MSG = "Login Success";
+    public static final String LOGIN_SUCCESS_MSG = "Login Success";
     private static final String LOGIN_FAILED_USER_NOT_EXIST_MSG = "User with username '%s' does't exist";
+    private static final String INCORRECT_PASSWORD = "Incorrect password";
     private static final String REGISTER_SUCCESS_MSG = "User '%s' registered successfully!";
     private final AuthenticationManager authenticationManager;
     private final TransactionTemplate template;
@@ -47,26 +49,31 @@ public class AuthenticationService {
         this.userService = userService;
     }
 
-    public LoginResponse authenticateUser(LoginRequest loginRequest) {
-        if(!userService.existsByUsername(loginRequest.getUsername())) {
-            return new LoginResponse(null, String.format(LOGIN_FAILED_USER_NOT_EXIST_MSG, loginRequest.getUsername()));
+    public LoginResponse authenticateUser(LoginRequest request) {
+        if (!userService.existsByUsername(request.getUsername())) {
+            return new LoginResponse(String.format(LOGIN_FAILED_USER_NOT_EXIST_MSG, request.getUsername()));
         }
 
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(), loginRequest.getPassword());
-        Authentication authentication = authenticationManager.authenticate(authToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-        UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
-        JwtResponse jwtResponse = JwtResponse.builder()
-                .setToken(jwt)
-                .setId(user.getId())
-                .setUsername(user.getUsername())
-                .setEmail(user.getEmail())
-                .setRoles(user.roles())
-                .build();
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(request.getUsername(),
+                request.getPassword());
+        try {
+            Authentication authentication = authenticationManager.authenticate(authToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication);
+            UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+            JwtResponse jwtResponse = JwtResponse.builder()
+                    .setToken(jwt)
+                    .setId(user.getId())
+                    .setUsername(user.getUsername())
+                    .setEmail(user.getEmail())
+                    .setRoles(user.roles())
+                    .build();
 
-        return new LoginResponse(jwtResponse, LOGIN_SUCCESS_MSG);
+            return new LoginResponse(jwtResponse, LOGIN_SUCCESS_MSG);
+        } catch (BadCredentialsException e) {
+            e.printStackTrace();
+            return new LoginResponse(INCORRECT_PASSWORD);
+        }
     }
 
     public SignUpResponse registerUser(SignupRequest request) {

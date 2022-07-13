@@ -488,6 +488,12 @@ iframe {
     color: red;
 }
 
+.login-success-msg {
+    background: white;
+    font-family: "Quicksand", sans-serif;
+    color: limegreen;
+}
+
 .register-alert-msg {
     background: white;
     font-family: "Quicksand", sans-serif;

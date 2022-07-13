@@ -24,5 +24,7 @@ export const register = (username, email, password, role) => {
         email,
         password,
         role,
+    }).then((response) => {
+        return response;
     });
 };
