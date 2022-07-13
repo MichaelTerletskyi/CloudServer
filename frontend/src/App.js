@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import {Routes} from "react-router";
 import {BrowserRouter as Router, Route} from "react-router-dom";
 
+import {AuthVerify} from "./services/AuthService";
 import NavBar from "./components/NavBarPage/NavBar";
 import {Home} from "./components/HomePage/Home";
 import {LogIn} from "./components/AuthPages/LogIn";
@@ -16,8 +17,8 @@ import {AccessDenied} from "./components/AccessDeniedPage/AccessDenied";
 import {AdminPage} from "./components/AdminPage/AdminPage";
 import {FILES, HOME, LOGIN, PROFILE, REGISTER, LOGOUT, UPLOAD, ACCESS_DENIED, ADMIN_PAGE} from "./consts/RoutePathes";
 
-
 const App = () => {
+    AuthVerify();
     return (
         <>
             <Router>

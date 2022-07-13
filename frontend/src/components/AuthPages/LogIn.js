@@ -1,5 +1,8 @@
 import React, {useEffect, useRef, useState} from "react";
-import {login} from "./../../repository/UserRepository"
+import {login} from "./../../repository/UserRepository";
+import {saveJWT} from "../../services/AuthService";
+
+import {REGISTER} from "../../consts/RoutePathes";
 
 import Form from "react-validation/build/form";
 import CheckButton from "react-validation/build/button";
@@ -15,8 +18,6 @@ import "./vendor/daterangepicker/daterangepicker.css";
 import "./css/util.css";
 import "./css/main.css";
 import "./style.css"
-
-import {REGISTER} from "../../consts/RoutePathes";
 
 export const LogIn = () => {
     const form = useRef();
@@ -47,7 +48,7 @@ export const LogIn = () => {
             setLoading(true);
             await login(username, password)
                 .then(response => {
-                    alert(JSON.stringify(response.data));
+                    saveJWT(response.data.jwtResponse);
                     setSuccessfully(response.data.successful);
                     setMessages(response.data.message)
                 });
