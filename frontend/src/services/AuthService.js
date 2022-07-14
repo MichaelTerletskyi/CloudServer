@@ -8,6 +8,7 @@ export const logout = () => {
 };
 
 export const saveJWT = (jwtResponse) => {
+    // TODO Don't forget to remove
     sessionStorage.clear();
     sessionStorage.setItem(JWT_KEY, JSON.stringify(jwtResponse));
     // alert(String(getCurrentUserRole()) === String(ROLE_USER));
@@ -25,6 +26,7 @@ const parseJwt = (token) => {
     }
 };
 
+// TODO Something with this later please
 export const AuthVerify = () => {
     const jwt = JSON.parse(getJWT());
     if (jwt) {

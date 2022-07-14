@@ -42,22 +42,19 @@ export const LogIn = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        let username = formData.username;
-        let password = formData.password;
-        let rememberMe = formData.rememberMe;
-
-        alert(JSON.stringify(formData));
-
         if (validateUsername() && validatePassword()) {
             setLoading(true);
-            await login(username, password, rememberMe)
+            await login(formData.username, formData.password, formData.rememberMe)
                 .then(response => {
                     saveJWT(response.data.jwtResponse);
-                    setSuccessfully(response.data.successful);
-                    setMessages(response.data.message);
+                    let success = response.data.successful;
+                    let msg = response.data.message;
+
+                    setSuccessfully(success);
+                    setMessages(msg);
                     setTimeout(() => {
                         window.location.href = HOME;
-                    }, successfully ? 200 : 5000);
+                    }, success ? 500 : 5000);
                 });
         }
     };
@@ -74,11 +71,10 @@ export const LogIn = () => {
 
     const rememberMeStatus = (e) => {
         const {checked} = e.target;
-        if(checked) {
+        if (checked) {
             formData.rememberMe = true;
         }
     };
-
 
     useEffect(() => {
 

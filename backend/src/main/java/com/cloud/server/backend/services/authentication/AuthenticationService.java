@@ -64,7 +64,7 @@ public class AuthenticationService {
             JwtResponse jwtResponse = JwtResponse.builder()
                     .setToken(jwt)
                     .setId(user.getId())
-                        .setUsername(user.getUsername())
+                    .setUsername(user.getUsername())
                     .setEmail(user.getEmail())
                     .setRoles(user.roles())
                     .build();
