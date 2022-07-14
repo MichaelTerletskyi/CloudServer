@@ -21,11 +21,11 @@ public class SignupRequest {
     @Email
     private String email;
 
-    private Set<String> roles;
-
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
+
+    private Set<String> roles;
 
     public String getUsername() {
         return username;
@@ -52,7 +52,7 @@ public class SignupRequest {
     }
 
     public Set<String> getRoles() {
-        return this.roles;
+        return roles;
     }
 
     public void setRoles(Set<String> roles) {

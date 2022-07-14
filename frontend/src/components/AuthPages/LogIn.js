@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {login} from "./../../repository/UserRepository";
 import {saveJWT} from "../../services/AuthService";
+import {validatePassword, validateUsername} from "../../services/validation/AuthValidation";
 
 import {HOME, REGISTER} from "../../consts/RoutePathes";
 
@@ -32,19 +33,15 @@ export const LogIn = () => {
         rememberMe: false
     });
 
-    function validateUsername() {
-        return formData.username.length >= 2 && formData.username.length <= 32;
-    }
-
-    function validatePassword() {
-        return formData.password.length >= 8 && formData.password.length <= 32;
-    }
-
     const handleLogin = async (e) => {
         e.preventDefault();
-        if (validateUsername() && validatePassword()) {
+        let username = formData.username;
+        let password = formData.password;
+        let rememberMe = formData.rememberMe;
+
+        if (validateUsername(username) && validatePassword(password)) {
             setLoading(true);
-            await login(formData.username, formData.password, formData.rememberMe)
+            await login(username, password, rememberMe)
                 .then(response => {
                     saveJWT(response.data.jwtResponse);
                     let success = response.data.successful;
@@ -108,7 +105,7 @@ export const LogIn = () => {
                             </div>
 
                             <div role="login-alert" className={"login-alert-msg"}>
-                                <a>&nbsp;{!validateUsername() ? "Username length must be between 2 and 32 characters" : ""}</a>
+                                <a>&nbsp;{validateUsername(formData.username) ? "" : "Username length must be between 2 and 32 characters"}</a>
                             </div>
 
 
@@ -127,7 +124,7 @@ export const LogIn = () => {
                             </div>
 
                             <div role="login-alert" className={"login-alert-msg"}>
-                                <a>&nbsp;{!validatePassword() ? "Password length must be between 8 and 254 characters" : ""}</a>
+                                <a>&nbsp;{validatePassword(formData.password) ? "" : "Password length must be between 8 and 254 characters"}</a>
                             </div>
 
                             <div className="text-right p-t-8 p-b-31">
