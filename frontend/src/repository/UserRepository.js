@@ -19,7 +19,6 @@ export const login = (username, password, rememberMe) => {
 };
 
 export const register = (username, email, password, role) => {
-    alert("username=" + username + ", email=" + email + ", password=" + password + ", role=" + role);
     let url = `${BACKEND_API}${AUTH}${SIGNUP}`;
     return axios.post(url, {
         username,

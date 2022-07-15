@@ -20,7 +20,6 @@ import "./css/util.css";
 import "./css/main.css";
 import "./style.css"
 
-
 const roleOptions = [
     {value: 'ROLE_USER', label: 'User'},
     {value: 'ROLE_ADMIN', label: 'Admin'}
@@ -36,7 +35,7 @@ export const Register = () => {
         username: "",
         email: "",
         password: "",
-        roles: ""
+        role: ""
     });
 
     const InputChange = (e) => {
@@ -51,7 +50,7 @@ export const Register = () => {
 
     const onChangeRole = (e) => {
         let defaultRole = roleOptions[0].value;
-        formData.roles = (e.value === 0 ? defaultRole : e.value);
+        formData.role = (e.value === 0 ? defaultRole : e.value);
     };
 
     const handleRegister = async (e) => {
@@ -59,7 +58,7 @@ export const Register = () => {
         let username = formData.username;
         let email = formData.email;
         let password = formData.password;
-        let roles = formData.roles;
+        let roles = formData.role;
 
         if (validateUsername(username) && validateEmail(email) && validatePassword(password)) {
             await register(username, email, password, roles)
@@ -173,9 +172,7 @@ export const Register = () => {
                                 Already registered <a href={LOGIN}>log in?</a>
                             </p>
 
-
                             <CheckButton style={{display: "none"}} ref={checkBtn}/>
-
 
                             {/*<div className="txt1 text-center p-t-25 p-b-20">*/}
                             {/*    <span>Or Sign Up Using</span>*/}
