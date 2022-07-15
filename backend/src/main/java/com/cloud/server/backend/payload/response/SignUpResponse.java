@@ -9,6 +9,10 @@ public class SignUpResponse {
     private String message;
     private boolean successful;
 
+    public SignUpResponse(String message) {
+        this.message = message;
+    }
+
     public SignUpResponse(String message, boolean successful) {
         this.message = message;
         this.successful = successful;

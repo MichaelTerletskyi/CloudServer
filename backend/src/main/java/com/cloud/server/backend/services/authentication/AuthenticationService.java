@@ -79,7 +79,7 @@ public class AuthenticationService {
     public SignUpResponse registerUser(SignupRequest request) {
         try (SignupRequestValidator requestValidation = validator.validate(request)) {
             if (!requestValidation.isValid()) {
-                return new SignUpResponse(requestValidation.toString(), false);
+                return new SignUpResponse(requestValidation.toString());
             }
 
             User user = new User(request.getUsername(), request.getEmail(), encoder.encode(request.getPassword()));

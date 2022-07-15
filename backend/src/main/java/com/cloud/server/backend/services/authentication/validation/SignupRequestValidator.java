@@ -48,12 +48,8 @@ public class SignupRequestValidator implements AutoCloseable {
             }
         }
 
-        request.getRoles().forEach(role -> {
-            ERole roleTemp = ERole.findRole(role);
-            Role roleRep = roleService.findByName(roleTemp);
-            roles.add(roleRep);
-        });
-
+        Role roleRep = roleService.findByName(ERole.findRole(request.getRole()));
+        roles.add(roleRep);
         if (CollectionUtils.isEmpty(roles))
             violationMessages.add(ROLES_NOT_FOUND);
         if (userService.existsByUsername(request.getUsername()))
