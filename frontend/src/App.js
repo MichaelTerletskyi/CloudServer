@@ -17,6 +17,7 @@ import {AccessDenied} from "./components/AccessDeniedPage/AccessDenied";
 import {AdminPage} from "./components/AdminPage/AdminPage";
 import {FILES, HOME, LOGIN, PROFILE, REGISTER, LOGOUT, UPLOAD, ACCESS_DENIED, ADMIN_PAGE} from "./consts/RoutePathes";
 
+// TODO https://stackoverflow.com/questions/62384395/protected-route-with-react-router-v6
 const App = () => {
     AuthVerify();
     return (
@@ -25,19 +26,24 @@ const App = () => {
                 <NavBar/>
                 <div className="pages">
                     <Routes>
-                        <Route exact path={HOME} element={<Home/>}/>
-
+                        {/*ALL NO_AUTHENTICATED*/}
+                        <Route exact path={HOME}  element={<Home/> } />
                         <Route exact path={LOGIN} element={<LogIn/>}/>
                         <Route exact path={REGISTER} element={<Register/>}/>
 
-                        <Route exact path={PROFILE} element={<Profile/>}/>
+                        {/*USER AUTHENTICATED*/}
+                        <Route exact path={PROFILE} element={<Profile/>} />
                         <Route exact path={FILES} element={<Files/>}/>
                         <Route exact path={UPLOAD} element={<Upload/>}/>
 
+                        {/*ADMIN AUTHENTICATED*/}
                         <Route exact path={ADMIN_PAGE} element={<AdminPage/>}/>
 
+                        {/*ALL AUTHENTICATED*/}
                         <Route exact path={ACCESS_DENIED} element={<AccessDenied/>}/>
                         <Route path={LOGOUT} element={<LogOut/>}/>
+
+                        {/*TODO Create NotFoundRoute*/}
                     </Routes>
                 </div>
             </Router>

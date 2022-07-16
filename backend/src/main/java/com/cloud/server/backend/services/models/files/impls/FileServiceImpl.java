@@ -138,7 +138,6 @@ public class FileServiceImpl extends FileService<File> {
         if (!userService.isExistById(id)) {
             throw new UserNotFoundException();
         }
-
         File fileTemp = new File(file);
         User user = userService.getById(id);
 

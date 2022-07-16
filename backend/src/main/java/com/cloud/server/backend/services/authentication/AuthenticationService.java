@@ -81,14 +81,12 @@ public class AuthenticationService {
             if (!requestValidation.isValid()) {
                 return new SignUpResponse(requestValidation.toString());
             }
-
             User user = new User(request.getUsername(), request.getEmail(), encoder.encode(request.getPassword()));
             template.execute(status -> {
                 user.setRoles(requestValidation.getRoles());
                 userService.save(user);
                 return user;
             });
-
             return new SignUpResponse(String.format(REGISTER_SUCCESS_MSG, user.getUsername()), true);
         }
     }
