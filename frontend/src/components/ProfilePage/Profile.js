@@ -1,28 +1,21 @@
 import React, {useState} from "react";
 import "./styles.scss";
-import {USER} from "../../consts/StorageEntities";
-import {ACCESS_DENIED, PROFILE} from "../../consts/RoutePathes";
+import {PROFILE} from "../../consts/RoutePathes";
+import {getCurrentUserUsername, getUserMetadata} from "../../services/UserService";
 
 export const Profile = () => {
-    const [isLoggedIn] = useState(sessionStorage.hasOwnProperty(USER));
+    const [userMetadata] = useState(getUserMetadata());
+    const [username] = useState(getCurrentUserUsername());
 
-    if (!isLoggedIn) {
-        window.location.href = ACCESS_DENIED;
-    }
-
-    const [user] = useState(sessionStorage.getItem(USER));
-
-    const [usedMemory] = useState(JSON.parse(user).user.sizeOfAllUserFilesInBytes);
-    const [maxUsageMemory] = useState(JSON.parse(user).user.maxUsageMemory);
+    const [usedMemory] = useState(JSON.parse(userMetadata).sizeOfAllUserFilesInBytes);
+    const [maxUsageMemory] = useState(JSON.parse(userMetadata).maxUsageMemory);
     const [ratioOfUsedToAvailableMemory] = useState((Math.floor(usedMemory / maxUsageMemory * 100 * 10) / 10));
-    const [amountOfFiles] = useState(JSON.parse(user).user.amountOfFiles);
+    const [amountOfFiles] = useState(JSON.parse(userMetadata).amountOfFiles);
 
-    const [displaySizeOfAllUserFiles] = useState(JSON.parse(user).user.displaySizeOfAllUserFiles);
-    const [displayMemoryUsageRemaining] = useState(JSON.parse(user).user.displayMemoryUsageRemaining);
-    const [displayMaxUsageMemory] = useState(JSON.parse(user).user.displayMaxUsageMemory);
+    const [displaySizeOfAllUserFiles] = useState(JSON.parse(userMetadata).displaySizeOfAllUserFiles);
+    const [displayMemoryUsageRemaining] = useState(JSON.parse(userMetadata).displayMemoryUsageRemaining);
+    const [displayMaxUsageMemory] = useState(JSON.parse(userMetadata).displayMaxUsageMemory);
     const [displayMemoryLeft] = useState(100 - ratioOfUsedToAvailableMemory);
-
-    const [username] = useState(JSON.parse(user).user.username);
 
     const displayRatioOfUsedToAvailableMemory = (ration) => ration + '%';
     const progressBarColor = (ration) => {

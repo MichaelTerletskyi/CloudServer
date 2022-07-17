@@ -1,6 +1,7 @@
 package com.cloud.server.backend.services.models.users;
 
 import com.cloud.server.backend.models.users.User;
+import com.cloud.server.backend.payload.response.UserMetadataResponse;
 import com.cloud.server.backend.repository.users.UserRepository;
 import com.cloud.server.backend.services.models.BasicCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +78,9 @@ public class UserService implements BasicCrudService<User> {
 
     public boolean existsByEmail(String email) {
         return this.userRepository.existsByEmail(email);
+    }
+
+    public UserMetadataResponse getUserMetadataResponse(Long id) {
+        return new UserMetadataResponse(this.getById(id));
     }
 }

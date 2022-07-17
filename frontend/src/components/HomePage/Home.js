@@ -8,7 +8,8 @@ import "./assets/theme/css/style.css"
 import "./assets/mobirise/css/mbr-additional.css"
 
 import background from "./assets/video/videoplayback2.mp4"
-import {isAdmin, isAuthenticated, isUser} from "../../services/AuthService";
+import {isAuthenticated} from "../../services/AuthService";
+import {getUserMetadata, isAdmin, isUser} from "../../services/UserService";
 
 export const Home = () => {
     return (
@@ -29,6 +30,7 @@ export const Home = () => {
                                 Server</h1>
                             <p className="mbr-text mbr-white mbr-fonts-style display-7">Principe of work</p>
                             <p className="mbr-text mbr-white mbr-fonts-style display-7">{"Is Auth=" + isAuthenticated() + ", isAdmin=" + isAdmin() + ", isUser=" + isUser()}</p>
+                            <p className="mbr-text mbr-white mbr-fonts-style display-7">{"User Metadata=" +  getUserMetadata()}</p>
 
                             {/*<div className="mbr-section-btn align-center">*/}
                             {/*    <a className="btn btn-primary display-4" href="/">Learn More</a>*/}

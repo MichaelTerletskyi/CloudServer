@@ -1,6 +1,6 @@
-import {USER} from "../consts/StorageEntities";
+import {getJWT} from "./AuthService";
 
 export default function authHeader() {
-    const user = JSON.parse(sessionStorage.getItem(USER));
-    return user && user.accessToken ? {Authorization: "Security " + user.accessToken} : {};
+    const jwtResponse = JSON.parse(getJWT());
+    return jwtResponse && jwtResponse.accessToken ? {Authorization: "Bearer " + jwtResponse.accessToken} : {};
 }

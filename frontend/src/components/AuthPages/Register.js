@@ -1,5 +1,5 @@
 import React, {useRef, useState} from "react";
-import {register} from "./../../repository/UserRepository";
+import {register} from "../../repositoryAPI/UserRepository";
 import {validateEmail, validatePassword, validateUsername} from "../../services/validation/AuthValidation";
 import Select from 'react-select'
 

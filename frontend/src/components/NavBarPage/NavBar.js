@@ -9,7 +9,8 @@ import {NavBarProfile} from "./NavBarProfile";
 import {NavBarFiles} from "./NavBarFiles";
 import {NavBarUpload} from "./NavBarUpload";
 import {NavBarAdminPage} from "./NavBarAdminPage";
-import {isAdmin, isAuthenticated, isUser} from "../../services/AuthService";
+import {isAuthenticated} from "../../services/AuthService";
+import {isAdmin, isUser} from "../../services/UserService";
 
 function NavBar() {
     return (

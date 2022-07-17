@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {login} from "./../../repository/UserRepository";
+import {login} from "../../repositoryAPI/UserRepository";
 import {saveJWT} from "../../services/AuthService";
 import {validatePassword, validateUsername} from "../../services/validation/AuthValidation";
 

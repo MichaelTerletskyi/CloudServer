@@ -5,6 +5,7 @@ import {Routes} from "react-router";
 import {BrowserRouter as Router, Route} from "react-router-dom";
 
 import {AuthVerify} from "./services/AuthService";
+import {fetchUserMetadata} from "./services/UserService";
 import NavBar from "./components/NavBarPage/NavBar";
 import {Home} from "./components/HomePage/Home";
 import {LogIn} from "./components/AuthPages/LogIn";
@@ -20,6 +21,8 @@ import {FILES, HOME, LOGIN, PROFILE, REGISTER, LOGOUT, UPLOAD, ACCESS_DENIED, AD
 // TODO https://stackoverflow.com/questions/62384395/protected-route-with-react-router-v6
 const App = () => {
     AuthVerify();
+    fetchUserMetadata();
+
     return (
         <>
             <Router>

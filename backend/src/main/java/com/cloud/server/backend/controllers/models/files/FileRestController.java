@@ -42,19 +42,6 @@ public class FileRestController {
         return new ResponseEntity<>(file, HttpStatus.OK);
     }
 
-    @GetMapping("/get/all/files/by/user/id={id}")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Set<File>> getAllFilesByUserId(@PathVariable Long id) {
-        if (!userService.isExistById(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        User user = userService.getById(id);
-        if (user.isAdmin()) {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        }
-        return new ResponseEntity<>(fileService.getAllByUserId(id), HttpStatus.OK);
-    }
-
     @GetMapping("/get/all/files/metadata/by/user/id={id}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Set<FileDto>> getAllFilesMetadataByUserId(@PathVariable Long id) {
