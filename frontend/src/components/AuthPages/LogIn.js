@@ -24,7 +24,6 @@ export const LogIn = () => {
     const form = useRef();
     const checkBtn = useRef();
 
-    const [loading, setLoading] = useState(false);
     const [successfully, setSuccessfully] = useState(false);
     const [messages, setMessages] = useState("");
     const [formData, setFormData] = useState({
@@ -40,18 +39,18 @@ export const LogIn = () => {
         let rememberMe = formData.rememberMe;
 
         if (validateUsername(username) && validatePassword(password)) {
-            setLoading(true);
             await login(username, password, rememberMe)
                 .then(response => {
                     saveJWT(response.data.jwtResponse);
                     let success = response.data.successful;
                     let msg = response.data.message;
-
                     setSuccessfully(success);
                     setMessages(msg);
-                    setTimeout(() => {
-                        window.location.href = HOME;
-                    }, success ? 500 : 5000);
+                    if (success) {
+                        setTimeout(() => {
+                            window.location.href = HOME;
+                        }, 500);
+                    }
                 });
         }
     };
@@ -139,7 +138,7 @@ export const LogIn = () => {
                             <div className="container-login100-form-btn">
                                 <div className="wrap-login100-form-btn">
                                     <div className="login100-form-bgbtn"/>
-                                    <button type="submit" className="login100-form-btn" disabled={loading}>Sign in
+                                    <button type="submit" className="login100-form-btn">Sign in
                                     </button>
                                 </div>
                             </div>

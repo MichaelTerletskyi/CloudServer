@@ -25,7 +25,6 @@ public class UserRestController {
     @GetMapping("/get/metadata/by/user/id={id}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getUserMetadata(@PathVariable Long id) {
-        System.err.println("WAS HERE");
         return ResponseEntity.ok(userService.getUserMetadataResponse(id));
     }
 }

@@ -8,7 +8,9 @@ export const logout = () => {
 };
 
 export const saveJWT = (jwtResponse) => {
-    localStorage.setItem(JWT_KEY, JSON.stringify(jwtResponse));
+    if (jwtResponse !== null) {
+        localStorage.setItem(JWT_KEY, JSON.stringify(jwtResponse));
+    }
 };
 
 export const getJWT = () => {
@@ -27,9 +29,13 @@ export const AuthVerify = () => {
     const jwt = JSON.parse(getJWT());
     if (jwt) {
         const decodedJwt = parseJwt(jwt.accessToken);
+        // TODO Create special page in future for 5 seconds ~
         if (decodedJwt.exp * 1000 < Date.now()) {
+            alert("Auth is expired!");
             logout();
         }
+    } else {
+        logout();
     }
 };
 
