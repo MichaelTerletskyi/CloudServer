@@ -1,21 +1,41 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./styles.scss";
 import {PROFILE} from "../../consts/RoutePathes";
 import {getCurrentUserUsername, getUserMetadata} from "../../services/UserService";
+import {useNavigate} from "react-router";
 
 export const Profile = () => {
-    const [userMetadata] = useState(getUserMetadata());
+    const navigate = useNavigate();
+    const [userMetadata, setUserMetadata] = useState("");
+    const [usedMemory, setUsedMemory] = useState(0);
+    const [maxUsageMemory, setMaxUsageMemory] = useState(0);
+    const [ratioOfUsedToAvailableMemory, setRatioOfUsedToAvailableMemory] = useState(0);
+    const [amountOfFiles, setAmountOfFiles] = useState(0);
+    const [displaySizeOfAllUserFiles, setDisplaySizeOfAllUserFiles] = useState("");
+    const [displayMemoryUsageRemaining, setDisplayMemoryUsageRemaining] = useState("");
+    const [displayMaxUsageMemory, setDisplayMaxUsageMemory] = useState("");
+    const [displayMemoryLeft, setDisplayMemoryLeft] = useState(0);
     const [username] = useState(getCurrentUserUsername());
 
-    const [usedMemory] = useState(JSON.parse(userMetadata).sizeOfAllUserFilesInBytes);
-    const [maxUsageMemory] = useState(JSON.parse(userMetadata).maxUsageMemory);
-    const [ratioOfUsedToAvailableMemory] = useState((Math.floor(usedMemory / maxUsageMemory * 100 * 10) / 10));
-    const [amountOfFiles] = useState(JSON.parse(userMetadata).amountOfFiles);
-
-    const [displaySizeOfAllUserFiles] = useState(JSON.parse(userMetadata).displaySizeOfAllUserFiles);
-    const [displayMemoryUsageRemaining] = useState(JSON.parse(userMetadata).displayMemoryUsageRemaining);
-    const [displayMaxUsageMemory] = useState(JSON.parse(userMetadata).displayMaxUsageMemory);
-    const [displayMemoryLeft] = useState(100 - ratioOfUsedToAvailableMemory);
+    useEffect(() => {
+        setUserMetadata(getUserMetadata());
+        if (userMetadata === undefined) {
+            setTimeout(() => {
+                navigate(0);
+            }, 500);
+        } else {
+            if (userMetadata.length > 0) {
+                setUsedMemory(JSON.parse(userMetadata).sizeOfAllUserFilesInBytes);
+                setMaxUsageMemory(JSON.parse(userMetadata).maxUsageMemory);
+                setRatioOfUsedToAvailableMemory((Math.floor(usedMemory / maxUsageMemory * 100 * 10) / 10));
+                setAmountOfFiles(JSON.parse(userMetadata).amountOfFiles);
+                setDisplaySizeOfAllUserFiles(JSON.parse(userMetadata).displaySizeOfAllUserFiles);
+                setDisplayMemoryUsageRemaining(JSON.parse(userMetadata).displayMemoryUsageRemaining);
+                setDisplayMaxUsageMemory(JSON.parse(userMetadata).displayMaxUsageMemory);
+                setDisplayMemoryLeft(100 - ratioOfUsedToAvailableMemory);
+            }
+        }
+    }, [userMetadata]);
 
     const displayRatioOfUsedToAvailableMemory = (ration) => ration + '%';
     const progressBarColor = (ration) => {

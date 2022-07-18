@@ -1,9 +1,10 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
+import {useNavigate} from "react-router";
 import {login} from "../../repositoryAPI/UserRepository";
 import {saveJWT} from "../../services/AuthService";
 import {validatePassword, validateUsername} from "../../services/validation/AuthValidation";
 
-import {HOME, REGISTER} from "../../consts/RoutePathes";
+import {PROFILE, REGISTER} from "../../consts/RoutePathes";
 
 import Form from "react-validation/build/form";
 import CheckButton from "react-validation/build/button";
@@ -21,6 +22,7 @@ import "./css/main.css";
 import "./style.css"
 
 export const LogIn = () => {
+    const navigate = useNavigate();
     const form = useRef();
     const checkBtn = useRef();
 
@@ -48,7 +50,7 @@ export const LogIn = () => {
                     setMessages(msg);
                     if (success) {
                         setTimeout(() => {
-                            window.location.href = HOME;
+                            navigate(PROFILE);
                         }, 500);
                     }
                 });
@@ -71,10 +73,6 @@ export const LogIn = () => {
             formData.rememberMe = true;
         }
     };
-
-    useEffect(() => {
-
-    }, [messages]);
 
     return (
         <>
