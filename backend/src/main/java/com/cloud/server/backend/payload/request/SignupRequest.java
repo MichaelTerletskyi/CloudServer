@@ -2,9 +2,7 @@ package com.cloud.server.backend.payload.request;
 
 import net.sf.oval.constraint.Email;
 import net.sf.oval.constraint.NotBlank;
-import net.sf.oval.constraint.NotNull;
 import net.sf.oval.constraint.Size;
-import net.sf.oval.guard.Guarded;
 
 import java.util.Objects;
 
@@ -13,28 +11,20 @@ import java.util.Objects;
  * @Author Michael Terletskyi
  */
 
-@Guarded
 public class SignupRequest {
-
-    @NotNull
     @NotBlank
-    @Size(min = 2, max = 32)
+    @Size(min = 3, max = 20)
     private String username;
 
-    @NotNull
     @NotBlank
-    @Size(min = 3, max = 254)
+    @Size(max = 50)
     @Email
     private String email;
 
-    @NotNull
     @NotBlank
-    @Size(min = 8, max = 32)
+    @Size(min = 6, max = 40)
     private String password;
 
-    @NotNull
-    @NotBlank
-    @Size(min = 9, max = 10)
     private String role;
 
     public String getUsername() {

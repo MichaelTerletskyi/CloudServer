@@ -1,12 +1,13 @@
 package com.cloud.server.backend.security.services;
 
 import com.cloud.server.backend.models.users.User;
-import com.cloud.server.backend.services.models.users.impls.UserServiceImpl;
+import com.cloud.server.backend.services.models.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @Create 12/19/2021
@@ -16,14 +17,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @Autowired
-    public UserDetailsServiceImpl(UserServiceImpl userService) {
+    public UserDetailsServiceImpl(UserService userService) {
         this.userService = userService;
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findByUsername(username);
         return UserDetailsImpl.build(user);

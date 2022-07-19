@@ -59,7 +59,7 @@ public class BackendApplication {
             }
         };
     }
-
+// TODO make HTTPS
 //    First Start
 //    @Bean
 //    CommandLineRunner commandLineRunner(RoleRepository roleRepository) {

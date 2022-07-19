@@ -1,40 +1,53 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {Routes} from "react-router";
+import {BrowserRouter as Router, Route} from "react-router-dom";
 
-import NavBar from "./components/NavBar/NavBar";
-import {Home} from "./components/Home/Home";
-import {LogIn} from "./components/Auth/LogIn";
-import {Register} from "./components/Auth/Register";
-import {Profile} from "./components/Profile/Profile";
-import {LogOut} from "./components/Auth/LogOut";
-import {Files} from "./components/Files/Files";
-import {Upload} from "./components/Upload/Upload";
-import {AccessDenied} from "./components/AccessDenied/AccessDenied";
+import {AuthVerify} from "./services/AuthService";
+import {fetchUserMetadata} from "./services/UserService";
+import NavBar from "./components/NavBarPage/NavBar";
+import {Home} from "./components/HomePage/Home";
+import {LogIn} from "./components/AuthPages/LogIn";
+import {Register} from "./components/AuthPages/Register";
+import {Profile} from "./components/ProfilePage/Profile";
+import {LogOut} from "./components/AuthPages/LogOut";
+import {Files} from "./components/FilesPage/Files";
+import {Upload} from "./components/UploadPage/Upload";
+import {AccessDenied} from "./components/AccessDeniedPage/AccessDenied";
 import {AdminPage} from "./components/AdminPage/AdminPage";
 import {FILES, HOME, LOGIN, PROFILE, REGISTER, LOGOUT, UPLOAD, ACCESS_DENIED, ADMIN_PAGE} from "./consts/RoutePathes";
 
+// TODO https://stackoverflow.com/questions/62384395/protected-route-with-react-router-v6
 const App = () => {
+    AuthVerify();
+    fetchUserMetadata();
+
     return (
         <>
             <Router>
                 <NavBar/>
                 <div className="pages">
-                    <Switch>
-                        <Route exact path={HOME} component={Home}/>
-                        <Route exact path={LOGIN} component={LogIn}/>
-                        <Route exact path={REGISTER} component={Register}/>
+                    <Routes>
+                        {/*ALL NO_AUTHENTICATED*/}
+                        <Route exact path={HOME}  element={<Home/> } />
+                        <Route exact path={LOGIN} element={<LogIn/>}/>
+                        <Route exact path={REGISTER} element={<Register/>}/>
 
-                        <Route exact path={PROFILE} component={Profile}/>
-                        <Route exact path={FILES} component={Files}/>
-                        <Route exact path={UPLOAD} component={Upload}/>
+                        {/*USER AUTHENTICATED*/}
+                        <Route exact path={PROFILE} element={<Profile/>} />
+                        <Route exact path={FILES} element={<Files/>}/>
+                        <Route exact path={UPLOAD} element={<Upload/>}/>
 
-                        <Route exact path={ADMIN_PAGE} component={AdminPage}/>
+                        {/*ADMIN AUTHENTICATED*/}
+                        <Route exact path={ADMIN_PAGE} element={<AdminPage/>}/>
 
-                        <Route exact path={ACCESS_DENIED} component={AccessDenied}/>
-                        <Route path={LOGOUT} component={LogOut}/>
-                    </Switch>
+                        {/*ALL AUTHENTICATED*/}
+                        <Route exact path={ACCESS_DENIED} element={<AccessDenied/>}/>
+                        <Route path={LOGOUT} element={<LogOut/>}/>
+
+                        {/*TODO Create NotFoundRoute*/}
+                    </Routes>
                 </div>
             </Router>
         </>
