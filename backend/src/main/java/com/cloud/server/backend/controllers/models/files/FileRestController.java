@@ -1,10 +1,10 @@
 package com.cloud.server.backend.controllers.models.files;
 
 import com.cloud.server.backend.models.files.File;
-import com.cloud.server.backend.models.files.FileDTO;
+import com.cloud.server.backend.models.files.FileDto;
 import com.cloud.server.backend.models.users.User;
 import com.cloud.server.backend.services.models.files.impls.FileServiceImpl;
-import com.cloud.server.backend.services.models.users.impls.UserServiceImpl;
+import com.cloud.server.backend.services.models.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @Create 4/15/2022
@@ -25,10 +24,10 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/rest/api/data")
 public class FileRestController {
     private final FileServiceImpl fileService;
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @Autowired
-    public FileRestController(FileServiceImpl fileService, UserServiceImpl userService) {
+    public FileRestController(FileServiceImpl fileService, UserService userService) {
         this.fileService = fileService;
         this.userService = userService;
     }
@@ -43,22 +42,9 @@ public class FileRestController {
         return new ResponseEntity<>(file, HttpStatus.OK);
     }
 
-    @GetMapping("/get/all/files/by/user/id={id}")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Set<File>> getAllFilesByUserId(@PathVariable Long id) {
-        if (!userService.isExistById(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        User user = userService.getById(id);
-        if (user.isAdmin()) {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        }
-        return new ResponseEntity<>(fileService.getAllByUserId(id), HttpStatus.OK);
-    }
-
     @GetMapping("/get/all/files/metadata/by/user/id={id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Set<FileDTO>> getAllFilesMetadataByUserId(@PathVariable Long id) {
+    public ResponseEntity<Set<FileDto>> getAllFilesMetadataByUserId(@PathVariable Long id) {
         if (!userService.isExistById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -71,8 +57,7 @@ public class FileRestController {
 
     @PostMapping("/save/files/user/id={id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Set<FileDTO>> uploadFiles(@RequestParam(name = "file") MultipartFile[] files, @PathVariable Long id)
-            throws ExecutionException, InterruptedException {
+    public ResponseEntity<Set<FileDto>> uploadFiles(@RequestParam(name = "file") MultipartFile[] files, @PathVariable Long id) {
         return fileService.uploadFilesToDatabase(files, id);
     }
 

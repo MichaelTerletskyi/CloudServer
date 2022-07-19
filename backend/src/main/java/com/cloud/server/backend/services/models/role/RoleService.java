@@ -11,8 +11,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @Create 7/9/2022
+ * @Author Michael Terletskyi
+ * @Extends of {@link BasicCrudService} interface.
+ */
+
 @Service
-public class RoleService extends BasicCrudService<Role> {
+public class RoleService implements BasicCrudService<Role> {
     private final RoleRepository roleRepository;
 
     @Autowired
@@ -22,22 +28,23 @@ public class RoleService extends BasicCrudService<Role> {
 
     @Override
     public Role getById(Long id) {
-        return this.roleRepository.getById(id);
+        return roleRepository.findById(id).orElseThrow(()
+                -> new RoleNotFoundException(String.format("Role with id '%d' has not been found", id)));
     }
 
     @Override
     public List<Role> getAll() {
-        return this.roleRepository.findAll();
+        return roleRepository.findAll();
     }
 
     @Override
     public Role save(Role role) {
-        return this.roleRepository.save(role);
+        return roleRepository.save(role);
     }
 
     @Override
     public Role update(Role role) {
-        return this.roleRepository.save(role);
+        return roleRepository.save(role);
     }
 
     @Override
@@ -47,12 +54,12 @@ public class RoleService extends BasicCrudService<Role> {
 
     @Override
     public void deleteById(Long id) {
-        this.roleRepository.deleteById(id);
+        roleRepository.deleteById(id);
     }
 
     @Override
     public void delete(Role role) {
-        this.roleRepository.delete(role);
+        roleRepository.delete(role);
     }
 
     @Override
@@ -60,8 +67,8 @@ public class RoleService extends BasicCrudService<Role> {
         return roleRepository.existsById(id);
     }
 
-    public Role findByName(String name) {
-        ERole role = ERole.findRole(name);
-        return this.roleRepository.findByName(role).orElseThrow(RoleNotFoundException::new);
+    public Role findByName(ERole name) {
+        return this.roleRepository.findByName(name).orElseThrow(()
+                -> new RoleNotFoundException(String.format("Role name '%s' has not been found", name)));
     }
 }

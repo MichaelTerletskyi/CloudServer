@@ -6,25 +6,17 @@ import com.cloud.server.backend.services.models.files.AtomicBigInteger;
 import com.cloud.server.backend.services.models.files.FileServiceUtils;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.maxmind.geoip.Location;
-import com.maxmind.geoip.LookupService;
 import io.jsonwebtoken.lang.Collections;
 import net.sf.oval.constraint.*;
 import net.sf.oval.guard.Guarded;
 import net.sf.oval.guard.PostValidateThis;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONException;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -204,40 +196,6 @@ public class User implements Serializable {
     @JsonGetter
     public String displayMaxUsageMemory() {
         return FileUtils.byteCountToDisplaySize(maxUsageMemory());
-    }
-
-    @JsonGetter
-    public Location serverLocation() {
-        try {
-            ClassPathResource classPathResource = new ClassPathResource("static/GeoLiteCity.dat", this.getClass().getClassLoader());
-            URL url = classPathResource.getURL();
-            java.io.File file = new java.io.File(url.getPath());
-            LookupService lookupService = new LookupService(file, LookupService.GEOIP_MEMORY_CACHE | LookupService.GEOIP_CHECK_CACHE);
-            return lookupService.getLocation(serverIpAddress());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @JsonGetter
-    public String serverIpAddress() {
-        String ipAskUrl = FileServiceUtils.getValueFromJSONFile("ipAskUrl");
-        String ip = StringUtils.EMPTY;
-        try {
-            URL ipUrl = new URL(ipAskUrl);
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(ipUrl.openStream()))) {
-                ip = br.readLine();
-            }
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
-        return StringUtils.defaultIfBlank(ip, "IP is not recognized");
-    }
-
-    @JsonGetter
-    public String serverComputerName() {
-        return System.getenv().get("COMPUTERNAME");
     }
 
     @Override
